@@ -111,7 +111,7 @@
 <script src="/js/backend/dropzone.min.js"></script>
 <script src="{{ asset('js/backend/app.js') }}"></script>
 <script src="/js/backend/bootstrap-tagsinput.min.js"></script>
-
+<script src="/js/backend/ckeditor/ckeditor.js"></script>
 <script>
     function setInitiator(elem) {
         $('#' + $(elem).data('target')).find('button[data-initiator]').eq(0).data('initiator', $(elem).data('initiator'));
@@ -143,6 +143,9 @@
     }
 
     $(document).ready(function () {
+        $('.wysiwyg-textarea').each(function() {
+            CKEDITOR.replace($(this).attr('id'));
+        });
         $('.sidenav').sidenav();
         $('.tabs').tabs();
         $(".dropzone").dropzone({

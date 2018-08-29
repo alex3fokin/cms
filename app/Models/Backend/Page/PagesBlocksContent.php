@@ -74,9 +74,9 @@ class PagesBlocksContent extends Model
             default:
                 $data['value'] = PagesBlocksLocaleContent::where([['locale_id', $locale_id], ['pages_blocks_content_id', $this->attributes['id']]])->get()->pluck('value')->first();
                 $data['title'] = $info_block->title;
-                $data['id'] = $info_block->info_block->type.'_'.$this->attributes['id'];
-                $data['for'] = $info_block->info_block->type.'_'.$this->attributes['id'];
-                $data['name'] = $info_block->info_block->type.'_'.$this->attributes['id'];
+                $data['id'] = 'page_'.$info_block->info_block->type.'_'.$this->attributes['id'];
+                $data['for'] = 'page_'.$info_block->info_block->type.'_'.$this->attributes['id'];
+                $data['name'] = 'page_'.$info_block->info_block->type.'_'.$this->attributes['id'];
         }
         return $data;
     }

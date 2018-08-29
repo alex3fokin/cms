@@ -96,13 +96,17 @@
 
         function updatePageDesignBlockContent(elem) {
             console.log($(elem).parent().serialize());
+            var data = $(':not(textarea[class~="wysiwyg-textarea"])', $(elem).parent()).serialize();
+            $(elem).parent().find('textarea[class~="wysiwyg-textarea"]').each(function() {
+                data += '&'+$(this).attr('name')+'='+CKEDITOR.instances[$(this).attr('id')].getData();
+            });
             $.ajax({
                 type: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: '{!! route('api.page_content.update') !!}',
-                data: $(elem).parent().serialize() + '&locale_id={{$current_locale}}',
+                data: data + '&locale_id={{$current_locale}}',
                 success: function(data) {
                     console.log(data);
                 },

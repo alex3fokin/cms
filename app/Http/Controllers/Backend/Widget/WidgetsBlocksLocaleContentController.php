@@ -20,7 +20,7 @@ class WidgetsBlocksLocaleContentController extends Controller
             $id = substr($name, strrpos($name, '_') + 1);
             $type = substr($name,0 , strrpos($name, '_'));
             switch($type) {
-                case 'media':
+                case 'widget_media':
                     $is_image = false;
                     if(substr(Storage::disk('public')->getMimeType('media/'.$value['name']), 0, 5) == 'image' ||
                         substr(Storage::disk('public')->getMimeType('media/'.$value['name']), 0, 5) == 'video') {
@@ -37,7 +37,7 @@ class WidgetsBlocksLocaleContentController extends Controller
                         'value' => serialize($data),
                     ]);
                     break;
-                case 'media_area':
+                case 'widget_media_area':
                     foreach($value as $media) {
                         $is_image = false;
                         if(substr(Storage::disk('public')->getMimeType('media/'.$media['name']), 0, 5) == 'image' ||
