@@ -1,0 +1,95 @@
+@import '~materialize-css/sass/materialize.scss';
+
+.row .main-nav {
+  position:fixed;
+  top:0;
+  height: 100vh;
+  overflow-y: hidden;
+  border-right: 1px solid rgba(0,0,0,0.14);
+  padding: 0;
+}
+
+.main-nav:hover {
+  overflow-y: auto;
+}
+
+.main-nav-header {
+  padding: .75rem;
+  border-bottom: 1px solid rgba(0,0,0,0.14);
+}
+
+.collapsible-header .btn-floating i {
+  width: inherit;
+}
+
+.collapsible-header, #widgets_content .collapsible-header {
+  justify-content: space-between;
+}
+
+.collapsible-disabled {
+  background-color: gainsboro;
+  cursor: not-allowed;
+}
+
+.extra-progress-wrapper {
+  display: none;
+}
+
+.media-container {
+  min-height: 300px;
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.media-item {
+  cursor: pointer;
+  word-wrap: break-word;
+}
+
+.media-item img {
+  width: 150px;
+  height: 150px;
+}
+
+.media-item:hover .card-image-cover {
+  display: flex;
+}
+
+.media-item .card-image-cover,
+.img-input-card .card-image-overlay {
+  position: absolute;
+  top: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255,255,255, 0.5);
+  width: 100%;
+  height: 100%;
+}
+
+.img-input-card .card-image {
+  min-height: 100px;
+}
+
+.img-input-card .card-image-overlay {
+  display: flex;
+}
+
+.media-item.z-depth-3 {
+  border: 1px solid transparent;
+}
+
+.media-item.z-depth-3:hover  {
+  -webkit-box-shadow: 0 8px 17px 2px rgba(43, 187, 173, 0.14), 0 3px 14px 2px rgba(43, 187, 173, 0.12), 0 5px 5px -3px rgba(43, 187, 173, 0.2);
+  box-shadow: 0 8px 17px 2px rgba(43, 187, 173, 0.14), 0 3px 14px 2px rgba(43, 187, 173, 0.12), 0 5px 5px -3px rgba(43, 187, 173, 0.2);
+  border: 1px solid rgba(43, 187, 173, 0.3);
+  transform: scale(1.2);
+}
+
+.media-item.active.z-depth-3 {
+  -webkit-box-shadow: 0 8px 17px 2px rgba(43, 187, 173, 0.14), 0 3px 14px 2px rgba(43, 187, 173, 0.12), 0 5px 5px -3px rgba(43, 187, 173, 0.2);
+  box-shadow: 0 8px 17px 2px rgba(43, 187, 173, 0.14), 0 3px 14px 2px rgba(43, 187, 173, 0.12), 0 5px 5px -3px rgba(43, 187, 173, 0.2);
+  border: 1px solid rgba(43, 187, 173, 0.3);
+  transform: scale(1.1);
+}
