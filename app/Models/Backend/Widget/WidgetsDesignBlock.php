@@ -67,7 +67,7 @@ class WidgetsDesignBlock extends Model
         }
     }
 
-    public function mappedInfoBlocks($locale_id) {
+    public function mappedInfoBlocks($locale_id = null) {
         $widgets_design_block_id = $this->attributes['id'];
         return $this->design_block->info_blocks->mapWithKeys(function($info_block) use ($locale_id, $widgets_design_block_id) {
             if($info_block->info_block->type === 'media' || $info_block->info_block->type === 'media_area') {

@@ -1,14 +1,5 @@
 <div class="row">
     <div class="col s12">
-        <div class="row">
-            <div class="col s12">
-                <select id="widget_locale_select_id">
-                    @foreach($locales as $locale)
-                        <option value="{{$locale->id}}" {{intval($current_locale) === intval($locale->id) ? "selected" : ''}}>{{$locale->title}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
         <ul class="collapsible">
             @foreach($widgets as $widget)
             <li>
@@ -85,10 +76,6 @@
         }
 
         $(document).ready(function() {
-            $('#widget_locale_select_id').change(function() {
-                window.location = window.location.origin + window.location.pathname + '?locale_id=' + $(this).val();
-            });
-
             $('.collapsible').collapsible();
             $('.widget-sortable').sortable({
                 stop: function( event, ui ) {

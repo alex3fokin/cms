@@ -20,7 +20,7 @@
                 <select id="default_locale">
                     <option value="" selected disabled>Choose locale</option>
                     @foreach($locales as $locale)
-                        <option value="{{$locale->short_code}}" {{$locale->short_code === $default_language ? 'selected' : ''}}>{{$locale->title}}</option>
+                        <option value="{{$locale->id}}" {{intval($locale->id) === intval($default_language) ? 'selected' : ''}}>{{$locale->title}}</option>
                     @endforeach
                 </select>
             </div>
@@ -68,114 +68,113 @@
     </div>
 </div>
 
+@push('after-scripts')
+    <script>
+        function updateDefaultLocale() {
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{route('api.default.locale.update')}}',
+                data: {
+                    default_locale: $('#default_locale').val(),
+                    _method: 'PUT'
+                },
+                success:function(data) {
+                    console.log(data);
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        }
 
-    @push('after-scripts')
-        <script>
-            function updateDefaultLocale() {
+        function updateLocale(elem) {
+            var id = $(elem).data('id');
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{route('api.locale.update')}}',
+                data: {
+                    id: id,
+                    title: $('#locale_title_' + id).val(),
+                    short_code: $('#locale_short_code_' + id).val(),
+                    _method: 'PUT'
+                },
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (data) {
+                    console.log(data);
+                },
+            });
+        }
+
+        function deleteLocale(elem) {
+            var id = $(elem).data('id');
+            var that = elem;
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{route('api.locale.delete')}}',
+                data: {id: id, _method: 'DELETE'},
+                success: function (data) {
+                    data = data.status;
+                    if (data) {
+                        $(that).parent().parent().remove();
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                },
+            });
+        }
+
+        $(document).ready(function () {
+            $('#add_locale').submit(function (e) {
+                e.preventDefault();
                 $.ajax({
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: '{{route('api.default.locale.update')}}',
+                    url: '{{route('api.locale.add')}}',
                     data: {
-                        default_locale: $('#default_locale').val(),
-                        _method: 'PUT'
+                        title: $('#locale_title').val(),
+                        short_code: $('#locale_short_code').val(),
                     },
-                    success:function(data) {
-                        console.log(data);
+                    success: function (data) {
+                        data = data.locale;
+                        $('#locale_table').append('<tr>\n' +
+                            '                    <td>\n' +
+                            '                        <div class="input-field col">\n' +
+                            '                            <label class="active" for="locale_title_' + data.id + '">Title</label>\n' +
+                            '                            <input type="text" name="locale_title_' + data.id + '" id="locale_title_' + data.id + '" value="' + data.title + '">\n' +
+                            '                        </div>\n' +
+                            '                    </td>\n' +
+                            '                    <td>\n' +
+                            '                        <div class="input-field col">\n' +
+                            '                            <label class="active" for="locale_short_code_' + data.id + '">Short code</label>\n' +
+                            '                            <input type="text" name="locale_short_code_' + data.id + '" id="locale_short_code_' + data.id + '" value="' + data.short_code + '">\n' +
+                            '                        </div>\n' +
+                            '                    </td>\n' +
+                            '                    <td>\n' +
+                            '                        <button class="btn-floating waves-effect waves-light green" data-id="' + data.id + '" onclick="updateLocale(this)"><i class="material-icons">save</i></button>\n' +
+                            '                        <button class="btn-floating waves-effect waves-light red" data-id="' + data.id + '" onclick="deleteLocale(this)"><i class="material-icons">delete</i></button>\n' +
+                            '                    </td>\n' +
+                            '                </tr>');
                     },
-                    error: function(data) {
+                    error: function (data) {
                         console.log(data);
                     }
                 });
-            }
-
-            function updateLocale(elem) {
-                var id = $(elem).data('id');
-                $.ajax({
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url: '{{route('api.locale.update')}}',
-                    data: {
-                        id: id,
-                        title: $('#locale_title_' + id).val(),
-                        short_code: $('#locale_short_code_' + id).val(),
-                        _method: 'PUT'
-                    },
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (data) {
-                        console.log(data);
-                    },
-                });
-            }
-
-            function deleteLocale(elem) {
-                var id = $(elem).data('id');
-                var that = elem;
-                $.ajax({
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url: '{{route('api.locale.delete')}}',
-                    data: {id: id, _method: 'DELETE'},
-                    success: function (data) {
-                        data = data.status;
-                        if (data) {
-                            $(that).parent().parent().remove();
-                        }
-                    },
-                    error: function (data) {
-                        console.log(data);
-                    },
-                });
-            }
-
-            $(document).ready(function () {
-                $('#add_locale').submit(function (e) {
-                    e.preventDefault();
-                    $.ajax({
-                        type: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        url: '{{route('api.locale.add')}}',
-                        data: {
-                            title: $('#locale_title').val(),
-                            short_code: $('#locale_short_code').val(),
-                        },
-                        success: function (data) {
-                            data = data.locale;
-                            $('#locale_table').append('<tr>\n' +
-                                '                    <td>\n' +
-                                '                        <div class="input-field col">\n' +
-                                '                            <label class="active" for="locale_title_' + data.id + '">Title</label>\n' +
-                                '                            <input type="text" name="locale_title_' + data.id + '" id="locale_title_' + data.id + '" value="' + data.title + '">\n' +
-                                '                        </div>\n' +
-                                '                    </td>\n' +
-                                '                    <td>\n' +
-                                '                        <div class="input-field col">\n' +
-                                '                            <label class="active" for="locale_short_code_' + data.id + '">Short code</label>\n' +
-                                '                            <input type="text" name="locale_short_code_' + data.id + '" id="locale_short_code_' + data.id + '" value="' + data.short_code + '">\n' +
-                                '                        </div>\n' +
-                                '                    </td>\n' +
-                                '                    <td>\n' +
-                                '                        <button class="btn-floating waves-effect waves-light green" data-id="' + data.id + '" onclick="updateLocale(this)"><i class="material-icons">save</i></button>\n' +
-                                '                        <button class="btn-floating waves-effect waves-light red" data-id="' + data.id + '" onclick="deleteLocale(this)"><i class="material-icons">delete</i></button>\n' +
-                                '                    </td>\n' +
-                                '                </tr>');
-                        },
-                        error: function (data) {
-                            console.log(data);
-                        }
-                    });
-                    $(this).find('input').val('');
-                });
+                $(this).find('input').val('');
             });
-        </script>
+        });
+    </script>
 @endpush

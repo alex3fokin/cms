@@ -1,13 +1,4 @@
 <div class="row">
-    <div class="row">
-        <div class="col s12">
-            <select id="page_locale_select_id">
-                @foreach($locales as $locale)
-                    <option value="{{$locale->id}}" {{intval($current_locale) === $locale->id ? "selected" : ''}}>{{$locale->title}}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
     <ul class="collapsible">
         @foreach($pages as $page)
             <li>
@@ -181,10 +172,6 @@
                         }
                     });
                 }
-            });
-
-            $('#page_locale_select_id').change(function() {
-                window.location = window.location.origin + window.location.pathname + '?locale_id=' + $(this).val();
             });
 
             $('.page_published_checkbox').change(function() {

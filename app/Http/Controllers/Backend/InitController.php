@@ -26,8 +26,13 @@ class InitController extends Controller
 
     public function index(Request $request)
     {
+        $current_locale = $request->locale_id;
         $locales = Locale::all();
-        $current_locale = $request->locale_id ?? 1;
+        if($current_locale) {
+            $locales->each(function($locale) use ($current_locale) {
+                $locale->translate($current_locale);
+            });
+        }
         $general_infos = GeneralInfo::all();
         $available_block_types = InfoBlock::all();
         $design_blocks = DesignBlock::all();

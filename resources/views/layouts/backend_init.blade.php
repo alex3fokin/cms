@@ -21,6 +21,16 @@
 <div class="row main-wrapper">
     <div class="row">
         <div class="col s12">
+            <select id="locale_select_id">
+                <option value="" selected>Choose language</option>
+                @foreach($locales as $locale)
+                    <option value="{{$locale->id}}" {{intval($current_locale) === intval($locale->id) ? "selected" : ''}}>{{$locale->title}}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
             <ul class="tabs">
                 <li class="tab col s1"><a href="#locales">Locales</a></li>
                 <li class="tab col s1"><a href="#general">General</a></li>
@@ -103,6 +113,9 @@
         });
     }
     $(document).ready(function () {
+        $('#locale_select_id').change(function() {
+            window.location = window.location.origin + window.location.pathname + '?locale_id=' + $(this).val();
+        });
         $('.wysiwyg-textarea').each(function() {
             CKEDITOR.replace($(this).attr('id'));
         });

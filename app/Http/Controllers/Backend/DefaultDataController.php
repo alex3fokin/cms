@@ -11,7 +11,7 @@ class DefaultDataController extends Controller
 {
     public function updateLocale(Request $request) {
         $v = Validator::make($request->all(), [
-            'default_locale' => 'required|exists:locales,short_code',
+            'default_locale' => 'required|exists:locales,id',
         ]);
 
         if($v->fails()) {

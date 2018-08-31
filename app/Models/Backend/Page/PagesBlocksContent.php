@@ -15,7 +15,7 @@ class PagesBlocksContent extends Model
         return $this->belongsTo(DesignBlocksInfoBlock::class);
     }
 
-    public function getInputData($locale_id) {
+    public function getInputData($locale_id = null) {
         $info_block = $this->design_blocks_info_block;
         switch($info_block->info_block->type) {
             case 'media':
