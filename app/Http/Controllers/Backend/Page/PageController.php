@@ -81,32 +81,12 @@ class PageController extends Controller
         }
         $seo_id = Page::where('id', $request->id)->get()->pluck('seo_id')->first();
         PagesDesignBlock::where([['page_id', $request->id], ['parent_design_block', null]])->get()->each(function ($page_design_block) {
-            $this->removeDesignBlocks($page_design_block->id);
+            PagesDesignBlock::removeDesignBlocks($page_design_block->id);
         });
-        $this->removeDesignBlocks($request->id);
+        PagesDesignBlock::removeDesignBlocks($request->id);
         Page::where('id', $request->id)->delete();
         Seo::where('id', $seo_id)->delete();
         return response()->json(['status' => 1], 200);
-    }
-
-    private function removeDesignBlocks($id)
-    {
-        if (!PagesDesignBlock::where('parent_design_block', $id)->get()->count()) {
-            PagesBlocksContent::where('pages_design_block_id', $id)->get()->each(function($pages_blocks_content) {
-                PagesBlocksLocaleContent::where('pages_blocks_content_id', $pages_blocks_content->id)->delete();
-            });
-            PagesBlocksContent::where('pages_design_block_id', $id)->delete();
-            return PagesDesignBlock::where('id', $id)->delete();
-        } else {
-            PagesDesignBlock::where('parent_design_block', $id)->get()->each(function ($page_design_block) {
-                $this->removeDesignBlocks($page_design_block->id);
-            });
-            PagesBlocksContent::where('pages_design_block_id', $id)->get()->each(function($pages_blocks_content) {
-                PagesBlocksLocaleContent::where('pages_blocks_content_id', $pages_blocks_content->id)->delete();
-            });
-            PagesBlocksContent::where('pages_design_block_id', $id)->delete();
-            return PagesDesignBlock::where('id', $id)->delete();
-        }
     }
 
     public function updatePublicity(Request $request) {

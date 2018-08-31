@@ -17,6 +17,7 @@ class CreatePagesBlocksContentsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('design_blocks_info_block_id');
             $table->unsignedInteger('pages_design_block_id');
+            $table->string('value')->nullable();
 
             $table->foreign('design_blocks_info_block_id')->references('id')->on('design_blocks_info_blocks');
             $table->foreign('pages_design_block_id')->references('id')->on('pages_design_blocks');

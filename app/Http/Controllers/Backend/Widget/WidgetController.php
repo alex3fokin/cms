@@ -36,7 +36,7 @@ class WidgetController extends Controller
             'title' => $request->title,
         ]);
 
-        $this->addDesignBlocks($widget->id, null, $request->design_blocks);
+        WidgetsDesignBlock::addDesignBlocks($widget->id, null, $request->design_blocks);
 
         return response()->json(['widget' => $widget], 200);
     }
@@ -51,44 +51,12 @@ class WidgetController extends Controller
         if ($v->fails()) {
             return response()->json(['errors' => $v->errors()], 400);
         }
-        $this->addDesignBlocks(
+        WidgetsDesignBlock::addDesignBlocks(
             WidgetsDesignBlock::where('id', $request->parent_design_block)->get()->pluck('widget_id')->first(),
             $request->parent_design_block,
             [$request->design_block]);
 
         return response()->json(['status' => 1], 200);
-    }
-
-    private function addDesignBlocks($id, $parent_id, $design_blocks)
-    {
-        $i = WidgetsDesignBlock::where('parent_design_block', $parent_id)->max('order') ?? 0;
-        $i++;
-        foreach ($design_blocks as $design_block) {
-            $design_block = DesignBlock::where('title', $design_block)->get()->first();
-            $widget_design_block = WidgetsDesignBlock::create([
-                'order' => $i,
-                'widget_id' => $id,
-                'design_block_id' => $design_block->id,
-                'parent_design_block' => $parent_id,
-            ]);
-            foreach ($design_block->info_blocks as $info_block) {
-                $widget_design_block_content = WidgetsBlocksContent::create([
-                    'design_blocks_info_block_id' => $info_block->id,
-                    'widgets_design_block_id' => $widget_design_block->id,
-                ]);
-                Locale::all()->each(function ($locale) use ($widget_design_block_content) {
-                    WidgetsBlocksLocaleContent::create([
-                        'widgets_blocks_content_id' => $widget_design_block_content->id,
-                        'locale_id' => $locale->id,
-                        'value' => '',
-                    ]);
-                });
-            }
-            $i++;
-            if ($children_design_blocks = $design_block->children) {
-                $this->addDesignBlocks($id, $widget_design_block->id, $children_design_blocks->pluck('title'));
-            }
-        }
     }
 
     public function update(Request $request)
@@ -118,7 +86,7 @@ class WidgetController extends Controller
             return response()->json(['errors' => $v->errors()], 400);
         }
         WidgetsDesignBlock::where([['widget_id', $request->id], ['parent_design_block', null]])->get()->each(function ($widget_design_block) {
-            $this->removeDesignBlocks($widget_design_block->id);
+            WidgetsDesignBlock::removeDesignBlocks($widget_design_block->id);
 
         });
         Widget::where('id', $request->id)->delete();
@@ -135,29 +103,9 @@ class WidgetController extends Controller
             return response()->json(['errors' => $v->errors()], 400);
         }
 
-        $this->removeDesignBlocks($request->id);
+        WidgetsDesignBlock::removeDesignBlocks($request->id);
 
         return response()->json(['status' => 1], 200);
-    }
-
-    private function removeDesignBlocks($id)
-    {
-        if (!WidgetsDesignBlock::where('parent_design_block', $id)->get()->count()) {
-            WidgetsBlocksContent::where('widgets_design_block_id', $id)->get()->each(function($widgets_blocks_content) {
-                WidgetsBlocksLocaleContent::where('widgets_blocks_content_id', $widgets_blocks_content->id)->delete();
-            });
-            WidgetsBlocksContent::where('widgets_design_block_id', $id)->delete();
-            return WidgetsDesignBlock::where('id', $id)->delete();
-        } else {
-            WidgetsDesignBlock::where('parent_design_block', $id)->get()->each(function ($widget_design_block) {
-                $this->removeDesignBlocks($widget_design_block->id);
-            });
-            WidgetsBlocksContent::where('widgets_design_block_id', $id)->get()->each(function($widgets_blocks_content) {
-                WidgetsBlocksLocaleContent::where('widgets_blocks_content_id', $widgets_blocks_content->id)->delete();
-            });
-            WidgetsBlocksContent::where('widgets_design_block_id', $id)->delete();
-            return WidgetsDesignBlock::where('id', $id)->delete();
-        }
     }
 
     public function updateDesignBlocksOrder(Request $request)

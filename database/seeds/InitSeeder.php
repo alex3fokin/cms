@@ -31,14 +31,9 @@ class InitSeeder extends Seeder
                 ]);
             }
         }
-        $locale = Locale::create([
-            'title' => 'English',
-            'short_code' => 'en'
-        ]);
-
         DefaultData::create([
             'title' => 'Locale',
-            'value' => $locale->short_code,
+            'value' => 'default',
         ]);
     }
 }

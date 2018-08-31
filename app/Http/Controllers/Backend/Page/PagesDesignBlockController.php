@@ -28,7 +28,7 @@ class PagesDesignBlockController extends Controller
             return response()->json(['errors' => $v->errors()],400);
         }
 
-        $this->addDesignBlocks($request->page_id, null, DesignBlock::where('id', $request->design_block_id)->get()->pluck('title'));
+        PagesDesignBlock::addDesignBlocks($request->page_id, null, DesignBlock::where('id', $request->design_block_id)->get()->pluck('title'));
 
         return response()->json(['status' => 1],200);
     }
@@ -42,44 +42,12 @@ class PagesDesignBlockController extends Controller
         if ($v->fails()) {
             return response()->json(['errors' => $v->errors()], 400);
         }
-        $this->addDesignBlocks(
+        PagesDesignBlock::addDesignBlocks(
             PagesDesignBlock::where('id', $request->parent_design_block)->get()->pluck('page_id')->first(),
             $request->parent_design_block,
             [$request->design_block]);
 
         return response()->json(['status' => 1], 200);
-    }
-
-    private function addDesignBlocks($id, $parent_id, $design_blocks)
-    {
-        $i = PagesDesignBlock::where('parent_design_block', $parent_id)->max('order') ?? 0;
-        $i++;
-        foreach ($design_blocks as $design_block) {
-            $design_block = DesignBlock::where('title', $design_block)->get()->first();
-            $page_design_block = PagesDesignBlock::create([
-                'order' => $i,
-                'page_id' => $id,
-                'design_block_id' => $design_block->id,
-                'parent_design_block' => $parent_id,
-            ]);
-            foreach ($design_block->info_blocks as $info_block) {
-                $page_design_block_content = PagesBlocksContent::create([
-                    'design_blocks_info_block_id' => $info_block->id,
-                    'pages_design_block_id' => $page_design_block->id,
-                ]);
-                Locale::all()->each(function ($locale) use ($page_design_block_content) {
-                    PagesBlocksLocaleContent::create([
-                        'pages_blocks_content_id' => $page_design_block_content->id,
-                        'locale_id' => $locale->id,
-                        'value' => '',
-                    ]);
-                });
-            }
-            $i++;
-            if ($children_design_blocks = $design_block->children) {
-                $this->addDesignBlocks($id, $page_design_block->id, $children_design_blocks->pluck('title'));
-            }
-        }
     }
 
     public function addWidget(Request $request) {
@@ -109,29 +77,9 @@ class PagesDesignBlockController extends Controller
             return response()->json(['errors' => $v->errors()], 400);
         }
 
-        $this->removeDesignBlocks($request->id);
+        PagesDesignBlock::removeDesignBlocks($request->id);
 
         return response()->json(['status' => 1], 200);
-    }
-
-    private function removeDesignBlocks($id)
-    {
-        if (!PagesDesignBlock::where('parent_design_block', $id)->get()->count()) {
-            PagesBlocksContent::where('pages_design_block_id', $id)->get()->each(function($pages_blocks_content) {
-                PagesBlocksLocaleContent::where('pages_blocks_content_id', $pages_blocks_content->id)->delete();
-            });
-            PagesBlocksContent::where('pages_design_block_id', $id)->delete();
-            return PagesDesignBlock::where('id', $id)->delete();
-        } else {
-            PagesDesignBlock::where('parent_design_block', $id)->get()->each(function ($page_design_block) {
-                $this->removeDesignBlocks($page_design_block->id);
-            });
-            PagesBlocksContent::where('pages_design_block_id', $id)->get()->each(function($pages_blocks_content) {
-                PagesBlocksLocaleContent::where('pages_blocks_content_id', $pages_blocks_content->id)->delete();
-            });
-            PagesBlocksContent::where('pages_design_block_id', $id)->delete();
-            return PagesDesignBlock::where('id', $id)->delete();
-        }
     }
 
     public function updateDesignBlocksOrder(Request $request)

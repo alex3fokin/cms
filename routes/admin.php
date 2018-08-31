@@ -25,7 +25,7 @@ Route::post('/update-widget-design-blocks-order', 'Backend\Widget\WidgetControll
 Route::put('/update-widget', 'Backend\Widget\WidgetController@update')->name('api.widget.update');
 Route::delete('/delete-widget', 'Backend\Widget\WidgetController@delete')->name('api.widget.delete');
 Route::delete('/delete-widget-design-block', 'Backend\Widget\WidgetController@deleteDesignBlock')->name('api.widget.design_block.delete');
-Route::post('/update-widget-content', 'Backend\Widget\WidgetsBlocksLocaleContentController@update')->name('api.widget_content.update');
+Route::post('/update-widget-content', 'Backend\Widget\WidgetsBlocksContentController@update')->name('api.widget_content.update');
 
 Route::post('/add-page-template', 'Backend\Page\PageTemplateController@add')->name('api.page_template.add');
 Route::put('/update-page-template', 'Backend\Page\PageTemplateController@update')->name('api.page_template.update');
@@ -41,7 +41,7 @@ Route::post('/add-page-child-design-block', 'Backend\Page\PagesDesignBlockContro
 Route::post('/add-page-widget', 'Backend\Page\PagesDesignBlockController@addWidget')->name('api.page.widget.add');
 Route::delete('/delete-page-design-block', 'Backend\Page\PagesDesignBlockController@deleteDesignBlock')->name('api.page.design_block.delete');
 Route::delete('/delete-page-widget', 'Backend\Page\PagesDesignBlockController@deleteWidget')->name('api.page.widget.delete');
-Route::post('/update-page-content', 'Backend\Page\PagesBlocksLocaleContentController@update')->name('api.page_content.update');
+Route::post('/update-page-content', 'Backend\Page\PagesBlocksContentController@update')->name('api.page_content.update');
 
 Route::post('/upload-media-file', 'Backend\MediaController@uploadFile')->name('api.file.upload');
 Route::delete('/delete-media-file', 'Backend\MediaController@deleteFile')->name('api.file.delete');

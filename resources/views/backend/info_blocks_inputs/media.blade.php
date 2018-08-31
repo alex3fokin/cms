@@ -3,7 +3,7 @@
         <label>{{$data['title']}}</label>
         <div class="card img-input-card" id="{{$data['media_card_id']}}">
             <div class="card-image">
-                <img id="img_src" src="{{$data['media_file_path'] ? $data['media_file_path'] : '/storage/document.png'}}">
+                <img id="img_src" src="{{$data['media_file_path'] ? $data['media_file_path'] : '/storage/media/document.png'}}">
                 <div class="card-image-overlay">
                     <p>
                         Choose a file

@@ -8,22 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class WidgetsBlocksContent extends Model
 {
     protected $fillable = [
-       'design_blocks_info_block_id', 'widgets_design_block_id',
+        'design_blocks_info_block_id', 'widgets_design_block_id', 'value'
     ];
 
-    public function widgets_blocks_locale_contents() {
-        return $this->hasMany(WidgetsBlocksLocaleContent::class);
-    }
-
-    public function design_blocks_info_block() {
+    public function design_blocks_info_block()
+    {
         return $this->belongsTo(DesignBlocksInfoBlock::class);
     }
 
-    public function getInputData($locale_id) {
+    public function getInputData($locale_id = null) {
         $info_block = $this->design_blocks_info_block;
         switch($info_block->info_block->type) {
             case 'media':
-                $media_data = WidgetsBlocksLocaleContent::where([['locale_id', $locale_id], ['widgets_blocks_content_id', $this->attributes['id']]])->get()->pluck('value')->first();
+                $media_data = $this->attributes['value'];
                 $media_data = unserialize($media_data);
                 $data['media_card_id'] = 'media_card_id_'.$this->attributes['id'];
                 $data['media_file_path'] = $media_data['path'];
@@ -37,7 +34,7 @@ class WidgetsBlocksContent extends Model
                 $data['title'] = $info_block->title;
                 break;
             case 'media_area':
-                $media_datas = WidgetsBlocksLocaleContent::where([['locale_id', $locale_id], ['widgets_blocks_content_id', $this->attributes['id']]])->get()->pluck('value')->first();
+                $media_datas = $this->attributes['value'];
                 $media_datas = unserialize($media_datas);
                 if($media_datas) {
                     $i = 0;
@@ -72,7 +69,7 @@ class WidgetsBlocksContent extends Model
                 }
                 break;
             default:
-                $data['value'] = WidgetsBlocksLocaleContent::where([['locale_id', $locale_id], ['widgets_blocks_content_id', $this->attributes['id']]])->get()->pluck('value')->first();
+                $data['value'] = $this->attributes['value'];
                 $data['title'] = $info_block->title;
                 $data['id'] = 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'];
                 $data['for'] = 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'];

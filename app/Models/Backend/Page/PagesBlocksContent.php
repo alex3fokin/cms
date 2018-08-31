@@ -8,12 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class PagesBlocksContent extends Model
 {
     protected $fillable = [
-        'design_blocks_info_block_id', 'pages_design_block_id'
+        'design_blocks_info_block_id', 'pages_design_block_id', 'value'
     ];
-
-    public function pages_blocks_locale_contents() {
-        return $this->hasMany(PagesBlocksLocaleContent::class);
-    }
 
     public function design_blocks_info_block() {
         return $this->belongsTo(DesignBlocksInfoBlock::class);
@@ -23,7 +19,7 @@ class PagesBlocksContent extends Model
         $info_block = $this->design_blocks_info_block;
         switch($info_block->info_block->type) {
             case 'media':
-                $media_data = PagesBlocksLocaleContent::where([['locale_id', $locale_id], ['pages_blocks_content_id', $this->attributes['id']]])->get()->pluck('value')->first();
+                $media_data = $this->attributes['value'];
                 $media_data = unserialize($media_data);
                 $data['media_card_id'] = 'media_card_id_page_'.$this->attributes['id'];
                 $data['media_file_path'] = $media_data['path'];
@@ -37,7 +33,7 @@ class PagesBlocksContent extends Model
                 $data['title'] = $info_block->title;
                 break;
             case 'media_area':
-                $media_datas = PagesBlocksLocaleContent::where([['locale_id', $locale_id], ['pages_blocks_content_id', $this->attributes['id']]])->get()->pluck('value')->first();
+                $media_datas = $this->attributes['value'];
                 $media_datas = unserialize($media_datas);
                 if($media_datas) {
                     $i = 0;
@@ -72,7 +68,7 @@ class PagesBlocksContent extends Model
                 }
                 break;
             default:
-                $data['value'] = PagesBlocksLocaleContent::where([['locale_id', $locale_id], ['pages_blocks_content_id', $this->attributes['id']]])->get()->pluck('value')->first();
+                $data['value'] = $this->attributes['value'];
                 $data['title'] = $info_block->title;
                 $data['id'] = 'page_'.$info_block->info_block->type.'_'.$this->attributes['id'];
                 $data['for'] = 'page_'.$info_block->info_block->type.'_'.$this->attributes['id'];
