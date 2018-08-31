@@ -95,4 +95,22 @@ class MenuItemController extends Controller
             return MenuItem::where('id', $id)->delete();
         }
     }
+
+    public function updateMenuItemOrder(Request $request)
+    {
+        $v = Validator::make($request->all(), [
+            'order.*.id' => 'required|exists:menu_items,id',
+        ]);
+
+        if ($v->fails()) {
+            return response()->json(['errors' => $v->errors()], 400);
+        }
+        foreach ($request->order as $order) {
+            MenuItem::where('id', $order['id'])->update([
+                'order' => $order['order'],
+            ]);
+        }
+
+        return response()->json(['status' => 1], 200);
+    }
 }

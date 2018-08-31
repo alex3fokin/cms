@@ -165,6 +165,35 @@
         }
 
         $(document).ready(function () {
+            $('.menu_items-sortable').sortable({
+                stop: function( event, ui ) {
+                    var elements = $(ui.item).parent().children();
+                    var order = [];
+                    console.log(elements);
+                    var length = elements.length;
+                    for(i = 0; i < length; i++) {
+                        if(!$(elements[i]).hasClass('ui-sortable-placeholder')) {
+                            order.push({id: $(elements[i]).data('id'), order: (i+1)});
+                        }
+                    }
+                    console.log(order);
+                    $.ajax({
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: '{{route('api.menu_item.order.update')}}',
+                        data: {order: order},
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function(data) {
+                            console.log(data);
+                        }
+                    });
+                }
+            });
+
             $('#add_menu_form').submit(function(e) {
                 e.preventDefault();
                 $.ajax({

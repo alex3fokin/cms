@@ -53,6 +53,7 @@ Route::post('/add-menu-item', 'Backend\MenuItemController@add')->name('api.menu_
 Route::post('/add-child-menu-item', 'Backend\MenuItemController@addChild')->name('api.child_menu_item.add');
 Route::post('/update-menu-item', 'Backend\MenuItemController@update')->name('api.menu_item.update');
 Route::delete('/delete-menu-item', 'Backend\MenuItemController@delete')->name('api.menu_item.delete');
+Route::post('/update-menu-item-order', 'Backend\MenuItemController@updateMenuItemOrder')->name('api.menu_item.order.update');
 
 Route::put('/update-default-locale', 'Backend\DefaultDataController@updateLocale')->name('api.default.locale.update');
 Route::put('/update-default-home-page', 'Backend\DefaultDataController@updateHomePage')->name('api.default.home_page.update');
