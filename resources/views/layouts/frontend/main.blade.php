@@ -64,46 +64,50 @@
                     <ul class="nav navbar-nav">
                         @php
                             $current_active_page_menu_item = $page->menu_item;
-                            if(is_null($current_active_page_menu_item->parent_menu)) {
-                                  $current_active_menu = $current_active_page_menu_item->title;
-                            } else {
-                                  $current_active_menu = $current_active_page_menu_item->main_parent->title;
+                            if($current_active_page_menu_item) {
+                                if(is_null($current_active_page_menu_item->parent_menu)) {
+                                      $current_active_menu = $current_active_page_menu_item->title;
+                                } else {
+                                      $current_active_menu = $current_active_page_menu_item->main_parent->title;
+                                }
                             }
                         @endphp
-                        @foreach($menus['top menu']->menu_items as $menu_item)
-                            @php
-                                $url = $menu_item->page ? $menu_item->page->url : '#';
-                            @endphp
-                            @if(count($menu_item->children))
-                                <li class="dropdown {{$current_active_menu === $menu_item->title ? 'active' : ''}}">
-                                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">{{$menu_item->title}} <i class="fa fa-angle-down"></i></a>
-                                    <ul class="dropdown-menu">
-                                        @foreach($menu_item->children as $menu_item)
-                                            @php
-                                                $url = $menu_item->page ? $menu_item->page->url : '#';
-                                            @endphp
-                                            @if(count($menu_item->children))
-                                                <li class="dropdown-submenu">
-                                                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown">Pages</a>
-                                                    <ul class="dropdown-menu">
-                                                        @foreach($menu_item->children as $menu_item)
-                                                            @php
-                                                                $url = $menu_item->page ? $menu_item->page->url : '#';
-                                                            @endphp
-                                                        @endforeach
-                                                        <li><a href="/{{$url}}{{request()->lang ? '?lang='.request()->lang : ''}}">{{$menu_item->title}}</a></li>
-                                                    </ul>
-                                                </li>
-                                            @else
-                                                <li><a href="/{{$url}}{{request()->lang ? '?lang='.request()->lang : ''}}">{{$menu_item->title}}</a></li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                </li>
-                            @else
-                                <li class="{{$current_active_menu === $menu_item->title ? 'active' : ''}}"><a href="/{{$url}}{{request()->lang ? '?lang='.request()->lang : ''}}">{{$menu_item->title}}</a></li>
-                            @endif
-                        @endforeach
+                        @if(array_key_exists('top menu', $menus))
+                            @foreach($menus['top menu']->menu_items as $menu_item)
+                                @php
+                                    $url = $menu_item->page ? $menu_item->page->url : '#';
+                                @endphp
+                                @if(count($menu_item->children))
+                                    <li class="dropdown {{$current_active_menu === $menu_item->title ? 'active' : ''}}">
+                                        <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">{{$menu_item->title}} <i class="fa fa-angle-down"></i></a>
+                                        <ul class="dropdown-menu">
+                                            @foreach($menu_item->children as $menu_item)
+                                                @php
+                                                    $url = $menu_item->page ? $menu_item->page->url : '#';
+                                                @endphp
+                                                @if(count($menu_item->children))
+                                                    <li class="dropdown-submenu">
+                                                        <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown">Pages</a>
+                                                        <ul class="dropdown-menu">
+                                                            @foreach($menu_item->children as $menu_item)
+                                                                @php
+                                                                    $url = $menu_item->page ? $menu_item->page->url : '#';
+                                                                @endphp
+                                                            @endforeach
+                                                            <li><a href="/{{$url}}{{request()->lang ? '?lang='.request()->lang : ''}}">{{$menu_item->title}}</a></li>
+                                                        </ul>
+                                                    </li>
+                                                @else
+                                                    <li><a href="/{{$url}}{{request()->lang ? '?lang='.request()->lang : ''}}">{{$menu_item->title}}</a></li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                @else
+                                    <li class="{{$current_active_menu === $menu_item->title ? 'active' : ''}}"><a href="/{{$url}}{{request()->lang ? '?lang='.request()->lang : ''}}">{{$menu_item->title}}</a></li>
+                                @endif
+                            @endforeach
+                        @endif
                         <li>
                             <select id="locale_select" class="form-control">
                                 @foreach($locales as $locale)

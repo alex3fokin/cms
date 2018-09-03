@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Backend\DefaultData;
+use App\Models\Backend\LocaleContent;
 use App\Models\Backend\MenuItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -58,18 +60,28 @@ class MenuItemController extends Controller
             'id' => 'required|exists:menu_items,id',
             'page_id' => 'sometimes|nullable|exists:pages,id',
             'title' => 'required',
+            'locale_id' => 'sometimes|nullable|exists:locales,id',
         ]);
 
         if($v->fails()) {
             return response()->json(['errors' => $v->errors()],200);
         }
 
-        return response()->json(['status' => MenuItem::where([
-            'id' => $request->id,
-        ])->update([
-            'title' => $request->title,
-            'page_id' => $request->page_id,
-        ])],200);
+        if(!$request->locale_id || ($request->locale_id === DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
+            $status = MenuItem::where(['id' => $request->id])->update(['title' => $request->title, 'page_id' => $request->page_id]);
+        } else if($request->locale_id && ($request->locale_id !== DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
+            LocaleContent::updateOrCreate([
+                'model' => MenuItem::class,
+                'property' => 'title',
+                'model_id' => $request->id,
+                'locale_id' => $request->locale_id,
+            ],[
+                'value' => $request->title
+            ]);
+            $status = 1;
+        }
+
+        return response()->json(['status' => $status],200);
     }
 
     public function delete(Request $request) {

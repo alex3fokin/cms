@@ -15,7 +15,7 @@
             @if(count($design_block->widgets_blocks_contents))
                 <form onkeypress="return event.keyCode != 13;">
                 @foreach($design_block->widgets_blocks_contents as $widget_block_content)
-                    @include('backend.info_blocks_inputs.'.$widget_block_content->design_blocks_info_block->info_block->type, ['data' => $widget_block_content->getInputData($current_locale)])
+                    @include('backend.info_blocks_inputs.'.$widget_block_content->design_blocks_info_block->info_block->type, ['data' => $widget_block_content->getInputData(($current_locale !== $default_language) ? $current_locale : null)])
                 @endforeach
                     <button class="btn waves-effect waves-light green" type="button" name="action" onclick="updateWidgetDesignBlockContent(this)">Save
                         <i class="material-icons right">save</i>

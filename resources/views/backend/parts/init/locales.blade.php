@@ -102,6 +102,7 @@
                     id: id,
                     title: $('#locale_title_' + id).val(),
                     short_code: $('#locale_short_code_' + id).val(),
+                    locale_id: $('#locale_select_id').val(),
                     _method: 'PUT'
                 },
                 success: function (data) {

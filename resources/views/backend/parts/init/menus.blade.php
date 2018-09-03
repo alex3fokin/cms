@@ -46,7 +46,7 @@
                                             <i class="material-icons right">add</i>
                                         </button>
                                     </form>
-                                    @include('backend.parts.init.parts.menus.menu_items', ['menu_items' => $menu->menu_items])
+                                    @include('backend.parts.init.parts.menus.menu_items', ['menu_items' => $menu->translatedMenuItems(($current_locale !== $default_language) ? $current_locale : null)])
                                 </div>
                             </div>
                         </li>
@@ -107,7 +107,8 @@
                 data: {
                     id: id,
                     title: $('#menu_title_'+id).val(),
-                    page_id: $('#menu_item_page_id_'+id).val()
+                    page_id: $('#menu_item_page_id_'+id).val(),
+                    locale_id: $('#locale_select_id').val(),
                 },
                 success: function(data) {
                     console.log(data);

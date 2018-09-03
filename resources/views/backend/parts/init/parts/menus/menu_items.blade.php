@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     @if(count($menu_item->children))
-                        @include('backend.parts.init.parts.menus.menu_items', ['menu_items' => $menu_item->children])
+                        @include('backend.parts.init.parts.menus.menu_items', ['menu_items' => $menu_item->translatedChildren(($current_locale !== $default_language) ? $current_locale : null)])
                     @endif
                 </div>
             </div>

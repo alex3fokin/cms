@@ -29,7 +29,7 @@
                     @if(count($design_block->pages_blocks_contents))
                         <form onkeypress="return event.keyCode != 13;">
                             @foreach($design_block->pages_blocks_contents as $page_block_content)
-                                @include('backend.info_blocks_inputs.'.$page_block_content->design_blocks_info_block->info_block->type, ['data' => $page_block_content->getInputData($current_locale)])
+                                @include('backend.info_blocks_inputs.'.$page_block_content->design_blocks_info_block->info_block->type, ['data' => $page_block_content->getInputData(($current_locale !== $default_language) ? $current_locale : null)])
                             @endforeach
                             <button class="btn waves-effect waves-light green" type="button" name="action"
                                     onclick="updatePageDesignBlockContent(this)">Save

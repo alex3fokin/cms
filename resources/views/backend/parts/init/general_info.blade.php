@@ -59,7 +59,13 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: '{{route('api.general_info.update')}}',
-                data: {id: id, value: $('#general_info_value_'+id).val(), title: $('#general_info_title_'+id).val(), _method: 'PUT'},
+                data: {
+                    id: id,
+                    value: $('#general_info_value_'+id).val(),
+                    title: $('#general_info_title_'+id).val(),
+                    locale_id: $('#locale_select_id').val(),
+                    _method: 'PUT'
+                },
                 success:function(data){
                     console.log(data);
                 },

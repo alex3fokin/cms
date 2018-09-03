@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Backend\Page;
 
 use App\Http\Controllers\Controller;
+use App\Models\Backend\DefaultData;
+use App\Models\Backend\LocaleContent;
 use App\Models\Backend\Page\PagesBlocksContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class PagesBlocksContentController extends Controller
 {
@@ -14,7 +17,24 @@ class PagesBlocksContentController extends Controller
         $this->middleware('auth:admin');
     }
     public function update(Request $request) {
+        $v = Validator::make($request->all(), [
+            'locale_id' => 'sometimes|nullable|exists:locales,id',
+        ]);
+
+        if($v->fails()) {
+            return response()->json(['errors' => $v->errors()], 400);
+        }
+
+        if(!$request->locale_id || ($request->locale_id === DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
+            $is_default_locale = true;
+        } else if($request->locale_id && ($request->locale_id !== DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
+            $is_default_locale = false;
+        }
+
         foreach($request->all() as $name => $value) {
+            if($name === 'locale_id') {
+                continue;
+            }
             $id = substr($name, strrpos($name, '_') + 1);
             $type = substr($name,0 , strrpos($name, '_'));
             switch($type) {
@@ -31,9 +51,20 @@ class PagesBlocksContentController extends Controller
                         'alt' => $value['alt'],
                         'path' => $path
                     ];
-                    PagesBlocksContent::where('id', $id)->update([
-                        'value' => serialize($data),
-                    ]);
+                    if($is_default_locale) {
+                        PagesBlocksContent::where('id', $id)->update([
+                            'value' => serialize($data),
+                        ]);
+                    } else {
+                        LocaleContent::updateOrCreate([
+                            'model' => PagesBlocksContent::class,
+                            'property' => 'value',
+                            'model_id' => $id,
+                            'locale_id' => $request->locale_id,
+                        ],[
+                            'value' => serialize($data)
+                        ]);
+                    }
                     break;
                 case 'page_media_area':
                     foreach($value as $media) {
@@ -50,14 +81,36 @@ class PagesBlocksContentController extends Controller
                             'path' => $path
                         ];
                     }
-                    PagesBlocksContent::where('id', $id)->update([
-                        'value' => serialize($data),
-                    ]);
+                    if($is_default_locale) {
+                        PagesBlocksContent::where('id', $id)->update([
+                            'value' => serialize($data),
+                        ]);
+                    } else {
+                        LocaleContent::updateOrCreate([
+                            'model' => PagesBlocksContent::class,
+                            'property' => 'value',
+                            'model_id' => $id,
+                            'locale_id' => $request->locale_id,
+                        ],[
+                            'value' => serialize($data)
+                        ]);
+                    }
                     break;
                 default:
-                    PagesBlocksContent::where('id', $id)->update([
-                        'value' => $value,
-                    ]);
+                    if($is_default_locale) {
+                        PagesBlocksContent::where('id', $id)->update([
+                            'value' => $value,
+                        ]);
+                    } else {
+                        LocaleContent::updateOrCreate([
+                            'model' => PagesBlocksContent::class,
+                            'property' => 'value',
+                            'model_id' => $id,
+                            'locale_id' => $request->locale_id,
+                        ],[
+                            'value' => $value
+                        ]);
+                    }
             }
         }
         return response()->json(['status' => 1],200);

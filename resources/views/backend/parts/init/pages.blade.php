@@ -136,7 +136,15 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: '{{route('api.page.update')}}',
-                data: {id: id, url: $('#page_url_'+id).val(), title: $('#page_title_'+id).val(), description: $('#page_description_'+id).val(), keywords: $('#page_keywords_'+id).val(), page_template_id: $('#page_template_id_'+id).val(), _method: 'PUT'},
+                data: {
+                    id: id,
+                    url: $('#page_url_'+id).val(),
+                    title: $('#page_title_'+id).val(),
+                    description: $('#page_description_'+id).val(),
+                    keywords: $('#page_keywords_'+id).val(),
+                    page_template_id: $('#page_template_id_'+id).val(),
+                    locale_id: $('#locale_select_id').val(),
+                    _method: 'PUT'},
                 success:function(data){
                     console.log(data);
                 },

@@ -3,6 +3,7 @@
 namespace App\Models\Backend\Page;
 
 use App\Models\Backend\DesignBlock;
+use App\Models\Backend\LocaleContent;
 use App\Models\Backend\Widget\Widget;
 use Illuminate\Database\Eloquent\Model;
 
@@ -64,30 +65,56 @@ class PagesDesignBlock extends Model
     public static function removeDesignBlocks($id)
     {
         if (!PagesDesignBlock::where('parent_design_block', $id)->get()->count()) {
+            PagesBlocksContent::where('pages_design_block_id', $id)->each(function($pages_blocks_content) {
+                LocaleContent::where([
+                    ['model', PagesBlocksContent::class],
+                    ['model_id', $pages_blocks_content->id]
+                ])->delete();
+            });
             PagesBlocksContent::where('pages_design_block_id', $id)->delete();
             return PagesDesignBlock::where('id', $id)->delete();
         } else {
             PagesDesignBlock::where('parent_design_block', $id)->get()->each(function ($page_design_block) {
                 self::removeDesignBlocks($page_design_block->id);
             });
+            PagesBlocksContent::where('pages_design_block_id', $id)->each(function($pages_blocks_content) {
+                LocaleContent::where([
+                    ['model', PagesBlocksContent::class],
+                    ['model_id', $pages_blocks_content->id]
+                ])->delete();
+            });
             PagesBlocksContent::where('pages_design_block_id', $id)->delete();
             return PagesDesignBlock::where('id', $id)->delete();
         }
     }
 
-    public function mappedInfoBlocks($locale_id = null) {
+    public function mappedInfoBlocks($locale_id) {
         $pages_design_block_id = $this->attributes['id'];
         return $this->design_block->info_blocks->mapWithKeys(function($info_block) use ($locale_id, $pages_design_block_id) {
-            if($info_block->info_block->type === 'media' || $info_block->info_block->type === 'media_area') {
-                $value = unserialize(PagesBlocksContent::where([
+            if($locale_id) {
+                $value = LocaleContent::where([
+                    ['model', PagesBlocksContent::class],
+                    ['property', 'value'],
+                    ['locale_id', $locale_id],
+                    ['model_id', PagesBlocksContent::where([
                         ['design_blocks_info_block_id', $info_block->id],
                         ['pages_design_block_id', $pages_design_block_id]
-                    ])->pluck('value')->first());
+                    ])->pluck('id')->first()]
+                ])->pluck('value')->first();
+                if(!$value) {
+                    $value = $value = PagesBlocksContent::where([
+                        ['design_blocks_info_block_id', $info_block->id],
+                        ['pages_design_block_id', $pages_design_block_id]
+                    ])->pluck('value')->first();
+                }
             } else {
                 $value = PagesBlocksContent::where([
                     ['design_blocks_info_block_id', $info_block->id],
                     ['pages_design_block_id', $pages_design_block_id]
                 ])->pluck('value')->first();
+            }
+            if($info_block->info_block->type === 'media' || $info_block->info_block->type === 'media_area') {
+                $value = unserialize($value);
             }
 
            return [

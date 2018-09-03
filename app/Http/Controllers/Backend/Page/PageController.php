@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Backend\Page;
 
 use App\Http\Controllers\Controller;
+use App\Models\Backend\DefaultData;
+use App\Models\Backend\LocaleContent;
 use App\Models\Backend\Page\Page;
 use App\Models\Backend\Page\PagesBlocksContent;
 use App\Models\Backend\Page\PagesBlocksLocaleContent;
@@ -52,22 +54,52 @@ class PageController extends Controller
             'url' => ['required', Rule::unique('pages')->ignore($request->id)],
             'keywords' => 'required',
             'description' => 'required',
-            'page_template_id' => 'required|exists:page_templates,id'
+            'page_template_id' => 'required|exists:page_templates,id',
+            'locale_id' => 'sometimes|nullable|exists:locales,id',
         ]);
 
         if ($v->fails()) {
             return response()->json(['errors' => $v->errors()], 400);
         }
         $page = Page::where('id', $request->id)->get()->first();
-        Seo::where('id', $page->seo_id)->update([
-            'keywords' => $request->keywords,
-            'description' => $request->description,
-        ]);
-        $page->update([
-            'title' => $request->title,
-            'url' => $request->url,
-            'page_template_id' => $request->page_template_id
-        ]);
+
+        if(!$request->locale_id || ($request->locale_id === DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
+            Seo::where('id', $page->seo_id)->update([
+                'keywords' => $request->keywords,
+                'description' => $request->description,
+            ]);
+            $page->update([
+                'title' => $request->title,
+                'url' => $request->url,
+                'page_template_id' => $request->page_template_id
+            ]);
+        } else if($request->locale_id && ($request->locale_id !== DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
+            LocaleContent::updateOrCreate([
+                'model' => Page::class,
+                'property' => 'title',
+                'model_id' => $request->id,
+                'locale_id' => $request->locale_id,
+            ],[
+                'value' => $request->title
+            ]);
+            LocaleContent::updateOrCreate([
+                'model' => Seo::class,
+                'property' => 'description',
+                'model_id' => Seo::where('id', $page->seo_id)->pluck('id')->first(),
+                'locale_id' => $request->locale_id,
+            ],[
+                'value' => $request->description
+            ]);
+            LocaleContent::updateOrCreate([
+                'model' => Seo::class,
+                'property' => 'keywords',
+                'model_id' => Seo::where('id', $page->seo_id)->pluck('id')->first(),
+                'locale_id' => $request->locale_id,
+            ],[
+                'value' => $request->keywords
+            ]);
+        }
+
         return response()->json(['status' => 1], 200);
     }
 
@@ -84,6 +116,14 @@ class PageController extends Controller
             PagesDesignBlock::removeDesignBlocks($page_design_block->id);
         });
         PagesDesignBlock::removeDesignBlocks($request->id);
+        LocaleContent::where([
+            ['model', Page::class],
+            ['model_id', $request->id]
+        ])->delete();
+        LocaleContent::where([
+            ['model', Seo::class],
+            ['model_id', $seo_id]
+        ])->delete();
         Page::where('id', $request->id)->delete();
         Seo::where('id', $seo_id)->delete();
         return response()->json(['status' => 1], 200);
