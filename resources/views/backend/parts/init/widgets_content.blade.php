@@ -5,7 +5,7 @@
             <li>
                 <div class="collapsible-header">{{$widget->title}}</div>
                 <div class="collapsible-body">
-                    @include('backend.parts.init.parts.widgets_content.design_blocks', ['widgets_current_design_blocks' => $widget->design_blocks, 'is_sortable' => false])
+                    @include('backend.parts.init.parts.widgets_content.design_blocks', ['widgets_current_design_blocks' => $widget->design_blocks, 'is_sortable' => true])
                 </div>
             </li>
             @endforeach

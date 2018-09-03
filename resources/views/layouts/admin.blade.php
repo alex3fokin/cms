@@ -20,6 +20,16 @@
 <body>
 <div class="row main-wrapper">
     <nav class="nav-extended">
+        <div class="row">
+            <div class="col s12">
+                <select id="locale_select_id">
+                    <option value="" selected>Choose language</option>
+                    @foreach($locales as $locale)
+                        <option value="{{$locale->id}}" {{intval($current_locale) === intval($locale->id) ? "selected" : ''}}>{{$locale->title}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
         <div class="nav-wrapper">
             <a href="#" class="brand-logo">ADmin</a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -143,6 +153,9 @@
     }
 
     $(document).ready(function () {
+        $('#locale_select_id').change(function() {
+            window.location = window.location.origin + window.location.pathname + '?locale_id=' + $(this).val();
+        });
         $('.wysiwyg-textarea').each(function() {
             CKEDITOR.replace($(this).attr('id'));
         });
