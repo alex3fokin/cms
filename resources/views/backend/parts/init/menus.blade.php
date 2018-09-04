@@ -36,10 +36,17 @@
                                         </div>
                                         <div class="input-field col s6">
                                             <select id="menu_item_page_id">
-                                                <option value="" selected disabled>Choose page to add</option>
-                                                @foreach($pages as $page)
-                                                    <option value="{{$page->id}}">{{$page->title}}</option>
-                                                @endforeach
+                                                <option value="" selected disabled>Choose page\category to add</option>
+                                                <optgroup label="Pages">
+                                                    @foreach($pages as $page)
+                                                        <option value="page_{{$page->id}}">{{$page->title}}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                                <optgroup label="Categories">
+                                                    @foreach($categories as $category)
+                                                        <option value="category_{{$category->id}}">{{$category->title}}</option>
+                                                    @endforeach
+                                                </optgroup>
                                             </select>
                                         </div>
                                         <button class="btn waves-effect waves-light" data-id="{{$menu->id}}" onclick="addMenuItem(this)" type="button" name="action">Add

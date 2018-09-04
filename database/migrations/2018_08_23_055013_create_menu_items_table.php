@@ -20,10 +20,12 @@ class CreateMenuItemsTable extends Migration
             $table->unsignedInteger('menu_id');
             $table->unsignedInteger('parent_menu')->nullable();
             $table->unsignedInteger('page_id')->nullable();
+            $table->unsignedInteger('category_id')->nullable();
 
             $table->foreign('menu_id')->references('id')->on('menus');
             $table->foreign('parent_menu')->references('id')->on('menu_items');
             $table->foreign('page_id')->references('id')->on('pages');
+            $table->foreign('category_id')->references('id')->on('categories');
 
             $table->timestamps();
         });

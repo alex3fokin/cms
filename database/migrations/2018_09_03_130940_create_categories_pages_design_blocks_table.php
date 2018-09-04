@@ -18,7 +18,7 @@ class CreateCategoriesPagesDesignBlocksTable extends Migration
             $table->unsignedInteger('order');
             $table->unsignedInteger('categories_pages_id');
             $table->unsignedInteger('design_block_id');
-            $table->unsignedInteger('parent_design_block');
+            $table->unsignedInteger('parent_design_block')->nullable();
 
             $table->foreign('categories_pages_id')->references('id')->on('categories_pages');
             $table->foreign('design_block_id')->references('id')->on('design_blocks');

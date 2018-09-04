@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Backend\Category\Category;
 use App\Models\Backend\DefaultData;
 use App\Models\Backend\InfoBlock;
 use App\Models\Backend\DesignBlock;
@@ -44,10 +45,12 @@ class InitController extends Controller
         $available_block_types = InfoBlock::all();
         $design_blocks = DesignBlock::all();
         $available_design_blocks = DesignBlock::all()->pluck('title');
+        $available_categories = Category::all()->pluck('title');
         $page_templates = PageTemplate::all();
         $widgets = Widget::all();
         $media = Media::getAllMedia();
         $menus = Menu::all();
+        $categories = Category::all();
         return view('backend.init', compact(
             'locales',
             'general_infos',
@@ -61,6 +64,8 @@ class InitController extends Controller
             'media',
             'menus',
             'default_language',
-            'default_home_page'));
+            'default_home_page',
+            'categories',
+            'available_categories'));
     }
 }

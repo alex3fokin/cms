@@ -2,13 +2,14 @@
 
 namespace App\Models\Backend;
 
+use App\Models\Backend\Category\Category;
 use App\Models\Backend\Page\Page;
 use Illuminate\Database\Eloquent\Model;
 
 class MenuItem extends Model
 {
     protected $fillable = [
-        'title', 'order', 'menu_id', 'parent_menu', 'page_id'
+        'title', 'order', 'menu_id', 'parent_menu', 'page_id', 'category_id'
     ];
 
     protected $appends = [
@@ -17,6 +18,10 @@ class MenuItem extends Model
 
     public function page() {
         return $this->belongsTo(Page::class);
+    }
+
+    public function category() {
+        return $this->belongsTo(Category::class);
     }
 
     public function getChildrenAttribute()

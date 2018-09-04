@@ -38,6 +38,7 @@
                 <li class="tab col s1"><a href="#widgets_tab">Widgets</a></li>
                 <li class="tab col s1"><a href="#widgets_content">Widgets content</a></li>
                 <li class="tab col s1"><a href="#page_templates">Page Templates</a></li>
+                <li class="tab col s1"><a href="#categories">Categories</a></li>
                 <li class="tab col s1"><a href="#pages">Pages</a></li>
                 <li class="tab col s1"><a href="#pages_contents">Pages contents</a></li>
                 <li class="tab col s1"><a href="#menus">Menus</a></li>
@@ -113,6 +114,9 @@
         });
     }
     $(document).ready(function () {
+        $('.tab').click(function() {
+            window.location = window.location.origin + window.location.pathname + window.location.search + $(this).find('a').attr('href');
+        });
         $('#locale_select_id').change(function() {
             window.location = window.location.origin + window.location.pathname + '?locale_id=' + $(this).val();
         });

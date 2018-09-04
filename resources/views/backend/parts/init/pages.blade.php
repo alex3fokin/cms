@@ -30,6 +30,10 @@
                 </select>
             </div>
             <div class="col s12">
+                <label class="active" for="page_categories">Categories</label>
+                <input type="text" name="page_categories" id="page_categories" data-role="tagsinput">
+            </div>
+            <div class="col s12">
                 <button class="btn waves-effect waves-light" type="submit" name="action">Add
                     <i class="material-icons right">add</i>
                 </button>
@@ -60,6 +64,7 @@
                     <th>Description</th>
                     <th>Keywords</th>
                     <th>Page template</th>
+                    <th>Page categories</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -99,6 +104,12 @@
                         </select>
                     </td>
                     <td>
+                        <div class="col s12">
+                            <label class="active" for="page_categories_{{$page_item->id}}">Categories</label>
+                            <input type="text" name="page_categories_{{$page_item->id}}" id="page_categories_{{$page_item->id}}" data-role="tagsinput" value="{{implode(',',$page_item->categories()->pluck('title')->toArray())}}">
+                        </div>
+                    </td>
+                    <td>
                         <button class="btn-floating waves-effect waves-light green" data-id="{{$page_item->id}}" onclick="updatePage(this)"><i class="material-icons">save</i></button>
                         <button class="btn-floating waves-effect waves-light red" data-id="{{$page_item->id}}" onclick="deletePage(this)"><i class="material-icons">delete</i></button>
                     </td>
@@ -111,7 +122,8 @@
 
 @push('after-scripts')
     <script>
-        var page_templates = {!! json_encode($page_templates) !!};
+        var available_categories = {!! json_encode($available_categories) !!};
+
         function updateHomePage() {
             $.ajax({
                 type: 'POST',
@@ -144,7 +156,9 @@
                     keywords: $('#page_keywords_'+id).val(),
                     page_template_id: $('#page_template_id_'+id).val(),
                     locale_id: $('#locale_select_id').val(),
-                    _method: 'PUT'},
+                    categories: $('#page_categories_' + id).val().split(','),
+                    _method: 'PUT'
+                },
                 success:function(data){
                     console.log(data);
                 },
@@ -177,6 +191,13 @@
         }
 
         $(document).ready(function () {
+            $('input[id^="page_categories"]').on('itemAdded', function (event) {
+                if ($.inArray(event.item, available_categories) === -1) {
+                    $(this).tagsinput('remove', event.item);
+                    M.toast({html: 'There is no such a category ' + event.item, classes: 'red'});
+                }
+            });
+
             $('#add_page').submit(function (e) {
                 e.preventDefault();
                 var data = {
@@ -184,7 +205,8 @@
                     url: $('#page_url').val(),
                     description: $('#page_description').val(),
                     keywords: $('#page_keywords').val(),
-                    page_template_id: $('#page_template_id').val()
+                    page_template_id: $('#page_template_id').val(),
+                    categories: $('#page_categories').val().split(',')
                 };
                 $.ajax({
                     type:'POST',
@@ -195,48 +217,7 @@
                     data: data,
                     success:function(data){
                         console.log(data);
-                        data = data.page;
-                        var page_template_options = '';
-                        page_templates.forEach(function(option) {
-                            var selected = (parseInt(option.id) === parseInt(data.page_template_id)) ? 'selected' : '';
-                            page_template_options += '<option value="'+option.id+'" '+selected+'>'+option.title+'</option>';
-                        });
-                        $('#all_pages_table').append('<tr>\n' +
-                            '                    <td>\n' +
-                            '                        <div class="input-field col">\n' +
-                            '                            <label class="active" for="page_title_'+data.id+'">Title</label>\n' +
-                            '                            <input type="text" name="page_title_'+data.id+'" id="page_title_'+data.id+'" value="'+data.title+'">\n' +
-                            '                        </div>\n' +
-                            '                    </td>\n' +
-                            '                    <td>\n' +
-                            '                        <div class="input-field col">\n' +
-                            '                            <label class="active" for="page_url_'+data.id+'">Value</label>\n' +
-                            '                            <input type="text" name="page_url_'+data.id+'" id="page_url_'+data.id+'" value="'+data.url+'">\n' +
-                            '                        </div>\n' +
-                            '                    </td>\n' +
-                            '                    <td>\n' +
-                            '                        <div class="input-field col s12">\n' +
-                            '                            <label class="active" for="page_description_'+data.id+'">Description</label>\n' +
-                            '                            <textarea id="page_description_'+data.id+'" name="page_description_'+data.id+'" class="materialize-textarea">'+data.seo.description+'</textarea>\n' +
-                            '                        </div>\n' +
-                            '                    </td>\n' +
-                            '                    <td>\n' +
-                            '                        <div class="col s12">\n' +
-                            '                            <label class="active" for="page_keywords_'+data.id+'">Keywords</label>\n' +
-                            '                            <input type="text" name="page_keywords_'+data.id+'" id="page_keywords_'+data.id+'" data-role="tagsinput" value="'+data.seo.keywords+'">\n' +
-                            '                        </div>\n' +
-                            '                    </td>\n' +
-                            '                    <td>\n' +
-                            '                        <select name="page_template_id_'+data.id+'" id="page_template_id_'+data.id+'">\n' +
-                            '                            <option value="" disabled selected>Choose page template</option>\n' +page_template_options+
-                            '                        </select>\n' +
-                            '                    </td>\n' +
-                            '                    <td>\n' +
-                            '                        <button class="btn-floating waves-effect waves-light green" data-id="'+data.id+'" onclick="updatePage(this)"><i class="material-icons">save</i></button>\n' +
-                            '                        <button class="btn-floating waves-effect waves-light red" data-id="'+data.id+'" onclick="deletePage(this)"><i class="material-icons">delete</i></button>\n' +
-                            '                    </td>\n' +
-                            '                </tr>');
-                        $('#page_keywords_' + data.id).tagsinput();
+                        window.location.reload();
                     },
                     error: function(data) {
                         console.log(data);

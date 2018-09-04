@@ -2,6 +2,8 @@
 
 namespace App\Models\Backend\Page;
 
+use App\Models\Backend\CategoriesPages;
+use App\Models\Backend\Category\Category;
 use App\Models\Backend\MenuItem;
 use App\Models\Backend\Seo;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +24,14 @@ class Page extends Model
 
     public function seo() {
         return $this->belongsTo(Seo::class);
+    }
+
+    public function categories() {
+        return $this->hasManyThrough(Category::class, CategoriesPages::class, 'page_id', 'id', 'id', 'category_id');
+    }
+
+    public function categories_pages() {
+        return $this->hasMany(CategoriesPages::class, 'page_id', 'id');
     }
 
     public function menu_item() {

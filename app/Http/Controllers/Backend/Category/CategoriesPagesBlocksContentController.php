@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Page;
+namespace App\Http\Controllers\Backend\Category;
 
 use App\Http\Controllers\Controller;
+use App\Models\Backend\Category\CategoriesPagesBlocksContent;
 use App\Models\Backend\DefaultData;
 use App\Models\Backend\LocaleContent;
-use App\Models\Backend\Page\PagesBlocksContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class PagesBlocksContentController extends Controller
+class CategoriesPagesBlocksContentController extends Controller
 {
     public function __construct()
     {
@@ -53,12 +53,12 @@ class PagesBlocksContentController extends Controller
                         'path' => $path
                     ];
                     if($is_default_locale) {
-                        PagesBlocksContent::where('id', $id)->update([
+                        CategoriesPagesBlocksContent::where('id', $id)->update([
                             'value' => serialize($data),
                         ]);
                     } else {
                         LocaleContent::updateOrCreate([
-                            'model' => PagesBlocksContent::class,
+                            'model' => CategoriesPagesBlocksContent::class,
                             'property' => 'value',
                             'model_id' => $id,
                             'locale_id' => $request->locale_id,
@@ -83,12 +83,12 @@ class PagesBlocksContentController extends Controller
                         ];
                     }
                     if($is_default_locale) {
-                        PagesBlocksContent::where('id', $id)->update([
+                        CategoriesPagesBlocksContent::where('id', $id)->update([
                             'value' => serialize($data),
                         ]);
                     } else {
                         LocaleContent::updateOrCreate([
-                            'model' => PagesBlocksContent::class,
+                            'model' => CategoriesPagesBlocksContent::class,
                             'property' => 'value',
                             'model_id' => $id,
                             'locale_id' => $request->locale_id,
@@ -99,12 +99,12 @@ class PagesBlocksContentController extends Controller
                     break;
                 default:
                     if($is_default_locale) {
-                        PagesBlocksContent::where('id', $id)->update([
+                        CategoriesPagesBlocksContent::where('id', $id)->update([
                             'value' => $value,
                         ]);
                     } else {
                         LocaleContent::updateOrCreate([
-                            'model' => PagesBlocksContent::class,
+                            'model' => CategoriesPagesBlocksContent::class,
                             'property' => 'value',
                             'model_id' => $id,
                             'locale_id' => $request->locale_id,

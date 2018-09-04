@@ -5,6 +5,18 @@
                 <div class="collapsible-header">{{$page->title}}</div>
                 <div class="collapsible-body">
                     <div class="row">
+                        <div class="col s12">
+                            <ul class="collapsible">
+                                @foreach($page->categories_pages as $category_page)
+                                    <li>
+                                        <div class="collapsible-header">{{$category_page->category->title}}</div>
+                                        <div class="collapsible-body">
+                                            @include('backend.parts.init.parts.pages_contents.categories_design_blocks', ['categories_current_design_blocks' => $category_page->design_blocks, 'is_sortable' => false])
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                         <div class="col s5">
                             <select name="pages_content_design_block_id" id="pages_content_design_block_id_{{$page->id}}">
                                 <option value="" disabled selected>Choose design block</option>
@@ -47,6 +59,66 @@
 
 @push('after-scripts')
     <script>
+        function updateCategoriesPagesDesignBlockContent(elem) {
+            console.log($(elem).parent().serialize());
+            var data = $(':not(textarea[class~="wysiwyg-textarea"])', $(elem).parent()).serialize();
+            $(elem).parent().find('textarea[class~="wysiwyg-textarea"]').each(function() {
+                data += '&'+$(this).attr('name')+'='+CKEDITOR.instances[$(this).attr('id')].getData();
+            });
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{!! route('api.category_page_content.update') !!}',
+                data: data + '&locale_id={{$current_locale}}',
+                success: function(data) {
+                    console.log(data);
+                },
+                error:function(data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function deleteCategoriesPagesChildrenDesignBlock(elem) {
+            var id = $(elem).data('id');
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{route('api.category_page.design_block.delete')}}',
+                data: {id: id, _method: 'DELETE'},
+                success:function(data) {
+                    console.log(data);
+                    window.location.reload();
+                },
+                error:function(data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function addCategoriesPagesChildrenDesignBlock(elem) {
+            var id = $(elem).data('parent-id');
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{route('api.category_page.child_design_block.add')}}',
+                data: {parent_design_block: id, design_block: $('#categories_pages_children_design_blocks_select_' + id).val()},
+                success: function(data){
+                    console.log(data);
+                    window.location.reload();
+                },
+                error:function(data){
+                    console.log(data);
+                }
+            });
+        }
+
         function addPageDesignBlock(elem) {
             var id = $(elem).data('id');
             $.ajax({
@@ -163,6 +235,35 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         url: '{{route('api.page.design_blocks.order.update')}}',
+                        data: {order: order},
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function(data) {
+                            console.log(data);
+                        }
+                    });
+                }
+            });
+
+            $('.categories-sortable').sortable({
+                stop: function( event, ui ) {
+                    var elements = $(ui.item).parent().children();
+                    var order = [];
+                    console.log(elements);
+                    var length = elements.length;
+                    for(i = 0; i < length; i++) {
+                        if(!$(elements[i]).hasClass('ui-sortable-placeholder')) {
+                            order.push({id: $(elements[i]).data('id'), order: (i+1)});
+                        }
+                    }
+                    console.log(order);
+                    $.ajax({
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: '{{route('api.category_page.design_blocks.order.update')}}',
                         data: {order: order},
                         success: function (data) {
                             console.log(data);

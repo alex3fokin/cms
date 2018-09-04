@@ -20,10 +20,17 @@
                         </div>
                         <div class="input-field col s6">
                             <select id="menu_item_page_id_{{$menu_item->id}}">
-                                <option value="" selected disabled>Choose page to add</option>
-                                @foreach($pages as $page)
-                                    <option value="{{$page->id}}" {{$page->id === $menu_item->page_id ? 'selected' : ''}}>{{$page->title}}</option>
-                                @endforeach
+                                <option value="" selected disabled>Choose page\category to add</option>
+                                <optgroup label="Pages">
+                                    @foreach($pages as $page)
+                                        <option value="page_{{$page->id}} {{$page->id == $menu_item->page_id ? 'selected' : ''}}">{{$page->title}}</option>
+                                    @endforeach
+                                </optgroup>
+                                <optgroup label="Categories">
+                                    @foreach($categories as $category)
+                                        <option value="category_{{$category->id}} {{$category->id == $menu_item->category_id ? 'selected' : ''}}">{{$category->title}}</option>
+                                    @endforeach
+                                </optgroup>
                             </select>
                         </div>
                         <button class="btn waves-effect waves-light green" type="button" name="action"
@@ -41,10 +48,17 @@
                                 </div>
                                 <div class="input-field col s6">
                                     <select id="child_menu_item_page_id_{{$menu_item->id}}">
-                                        <option value="" selected disabled>Choose page to add</option>
-                                        @foreach($pages as $page)
-                                            <option value="{{$page->id}}">{{$page->title}}</option>
-                                        @endforeach
+                                        <option value="" selected disabled>Choose page\category to add</option>
+                                        <optgroup label="Pages">
+                                            @foreach($pages as $page)
+                                                <option value="page_{{$page->id}}">{{$page->title}}</option>
+                                            @endforeach
+                                        </optgroup>
+                                        <optgroup label="Categories">
+                                            @foreach($categories as $category)
+                                                <option value="category_{{$category->id}}">{{$category->title}}</option>
+                                            @endforeach
+                                        </optgroup>
                                     </select>
                                 </div>
                                 <button class="btn waves-effect waves-light" data-parent-id="{{$menu_item->id}}" onclick="addChildMenuItem(this)" type="button" name="action">Add

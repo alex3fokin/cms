@@ -19,6 +19,9 @@
     <div id="page_templates" class="col s12">
         @include('backend.parts.init.page_templates')
     </div>
+    <div id="categories" class="col s12">
+        @include('backend.parts.init.categories')
+    </div>
     <div id="pages" class="col s12">
         @include('backend.parts.init.pages')
     </div>

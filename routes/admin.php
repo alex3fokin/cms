@@ -55,5 +55,14 @@ Route::post('/update-menu-item', 'Backend\MenuItemController@update')->name('api
 Route::delete('/delete-menu-item', 'Backend\MenuItemController@delete')->name('api.menu_item.delete');
 Route::post('/update-menu-item-order', 'Backend\MenuItemController@updateMenuItemOrder')->name('api.menu_item.order.update');
 
+Route::post('/add-category', 'Backend\Category\CategoryController@add')->name('api.category.add');
+Route::put('/update-category', 'Backend\Category\CategoryController@update')->name('api.category.update');
+Route::delete('/delete-category', 'Backend\Category\CategoryController@delete')->name('api.category.delete');
+
+Route::post('/add-category-page-child-design-block', 'Backend\Category\CategoriesPagesDesignBlockController@addChildDesignBlock')->name('api.category_page.child_design_block.add');
+Route::delete('/delete-category-page-design-block', 'Backend\Category\CategoriesPagesDesignBlockController@deleteDesignBlock')->name('api.category_page.design_block.delete');
+Route::post('/update-category-page-content', 'Backend\Category\CategoriesPagesBlocksContentController@update')->name('api.category_page_content.update');
+Route::post('/update-category-page-design-blocks-order', 'Backend\Category\CategoriesPagesDesignBlockController@updateDesignBlocksOrder')->name('api.category_page.design_blocks.order.update');
+
 Route::put('/update-default-locale', 'Backend\DefaultDataController@updateLocale')->name('api.default.locale.update');
 Route::put('/update-default-home-page', 'Backend\DefaultDataController@updateHomePage')->name('api.default.home_page.update');
