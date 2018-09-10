@@ -413,6 +413,11 @@
 					this.commitContent( IMAGE, this.imageElement );
 					this.commitContent( LINK, this.linkElement );
 
+                    if(this.imageElement.$.style.float === 'left') {
+                        this.imageElement.$.classList.add('alignleft');
+					} else if(this.imageElement.$.style.float === 'right') {
+                        this.imageElement.$.classList.add('alignright');
+					}
 					// Remove empty style attribute.
 					if ( !this.imageElement.getAttribute( 'style' ) )
 						this.imageElement.removeAttribute( 'style' );

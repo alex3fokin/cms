@@ -20,16 +20,16 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
 		{ name: 'editing',     groups: [ 'find', 'selection' ] },
 		{ name: 'links' },
+        { name: 'insert' },
 		{ name: 'forms' },
 		{ name: 'tools' },
-		{ name: 'document',	   groups: [ 'document', 'doctools' ] },
+		{ name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
 		{ name: 'others' },
 		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
 		{ name: 'paragraph',   groups: [ 'list', 'align', 'bidi' ] },
 		{ name: 'styles' },
 		{ name: 'colors' }
 	];
-
 	// Remove some buttons provided by the standard plugins, which are
 	// not needed in the Standard(s) toolbar.
 	config.removeButtons = 'Underline,Subscript,Superscript';
@@ -39,4 +39,9 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
+    config.shiftEnterMode = CKEDITOR.ENTER_BR;
+    config.forcePasteAsPlainText = true;
+    config.filebrowserBrowseUrl = '/browse-files';
+    config.filebrowserUploadUrl = '/upload-media-file';
+    config.justifyClasses = [ 'AlignLeft', 'AlignCenter', 'AlignRight', 'AlignJustify' ];
 };

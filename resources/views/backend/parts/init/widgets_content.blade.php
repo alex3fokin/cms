@@ -19,7 +19,7 @@
             console.log($(elem).parent().serialize());
             var data = $(':not(textarea[class~="wysiwyg-textarea"])', $(elem).parent()).serialize();
             $(elem).parent().find('textarea[class~="wysiwyg-textarea"]').each(function() {
-                data += '&'+$(this).attr('name')+'='+CKEDITOR.instances[$(this).attr('id')].getData();
+                data += '&'+$(this).attr('name')+'='+$('<textarea />').html(CKEDITOR.instances[$(this).attr('id')].getData()).text();
             });
             $.ajax({
                 type: 'POST',

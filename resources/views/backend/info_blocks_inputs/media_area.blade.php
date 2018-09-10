@@ -1,4 +1,5 @@
 <div class="row" id="container_{{$data[0]['media_card_id']}}">
+    <p>{{$data[0]['title']}}</p>
     @php
         $index = 0
     @endphp

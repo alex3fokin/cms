@@ -39,7 +39,7 @@ class CategoriesPagesBlocksContentController extends Controller
             $id = substr($name, strrpos($name, '_') + 1);
             $type = substr($name,0 , strrpos($name, '_'));
             switch($type) {
-                case 'page_media':
+                case 'category_media':
                     $is_image = false;
                     if(substr(Storage::disk('public')->getMimeType('media/'.$value['name']), 0, 5) == 'image' ||
                         substr(Storage::disk('public')->getMimeType('media/'.$value['name']), 0, 5) == 'video') {
@@ -67,7 +67,7 @@ class CategoriesPagesBlocksContentController extends Controller
                         ]);
                     }
                     break;
-                case 'page_media_area':
+                case 'category_media_area':
                     foreach($value as $media) {
                         $is_image = false;
                         if(substr(Storage::disk('public')->getMimeType('media/'.$media['name']), 0, 5) == 'image' ||

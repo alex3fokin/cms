@@ -43,6 +43,7 @@ Route::delete('/delete-page-design-block', 'Backend\Page\PagesDesignBlockControl
 Route::delete('/delete-page-widget', 'Backend\Page\PagesDesignBlockController@deleteWidget')->name('api.page.widget.delete');
 Route::post('/update-page-content', 'Backend\Page\PagesBlocksContentController@update')->name('api.page_content.update');
 
+Route::get('/browse-files', 'Backend\MediaController@browseFiles')->name('api.files.browse');
 Route::post('/upload-media-file', 'Backend\MediaController@uploadFile')->name('api.file.upload');
 Route::delete('/delete-media-file', 'Backend\MediaController@deleteFile')->name('api.file.delete');
 

@@ -30,7 +30,7 @@ class WidgetsDesignBlock extends Model
 
     public static function addDesignBlocks($id, $parent_id, $design_blocks)
     {
-        $i = WidgetsDesignBlock::where([['parent_design_block', $parent_id], ['id', $id]])->max('order') ?? 0;
+        $i = WidgetsDesignBlock::where([['parent_design_block', $parent_id], ['widget_id', $id]])->max('order') ?? 0;
         $i++;
         foreach ($design_blocks as $design_block) {
             $design_block = DesignBlock::where('title', $design_block)->get()->first();

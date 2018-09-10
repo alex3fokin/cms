@@ -37,11 +37,11 @@ class CategoriesPagesBlocksContent extends Model
                 $media_data = unserialize($init_data);
                 $data['media_card_id'] = 'media_card_id_'.$this->attributes['id'];
                 $data['media_file_path'] = $media_data['path'];
-                $data['media_file_name_name'] = 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'].'[name]';
-                $data['media_file_name_id'] = 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'];
+                $data['media_file_name_name'] = 'category_'.$info_block->info_block->type.'_'.$this->attributes['id'].'[name]';
+                $data['media_file_name_id'] = 'category_'.$info_block->info_block->type.'_'.$this->attributes['id'];
                 $data['media_file_name_value'] = $media_data['name'];
                 $data['media_alt_label'] = 'media_alt_label';
-                $data['media_alt_name'] = 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'].'[alt]';
+                $data['media_alt_name'] = 'category_'.$info_block->info_block->type.'_'.$this->attributes['id'].'[alt]';
                 $data['media_alt_id'] = 'media_alt_id';
                 $data['media_alt_value'] = $media_data['alt'];
                 $data['title'] = $info_block->title;
@@ -54,11 +54,11 @@ class CategoriesPagesBlocksContent extends Model
                         $data[] = [
                             'media_card_id' => 'media_card_id_'.$this->attributes['id'].'_'.$i,
                             'media_file_path' => $media_data['path'],
-                            'media_file_name_name' => 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'].'['.$i.'][name]',
-                            'media_file_name_id' => 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'],
+                            'media_file_name_name' => 'category_'.$info_block->info_block->type.'_'.$this->attributes['id'].'['.$i.'][name]',
+                            'media_file_name_id' => 'category_'.$info_block->info_block->type.'_'.$this->attributes['id'],
                             'media_file_name_value' => $media_data['name'],
                             'media_alt_label' => 'media_alt_label',
-                            'media_alt_name' => 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'].'['.$i.'][alt]',
+                            'media_alt_name' => 'category_'.$info_block->info_block->type.'_'.$this->attributes['id'].'['.$i.'][alt]',
                             'media_alt_id' => 'media_alt_id',
                             'media_alt_value' => $media_data['alt'],
                             'title' => $info_block->title,
@@ -69,11 +69,11 @@ class CategoriesPagesBlocksContent extends Model
                     $data[] = [
                         'media_card_id' => 'media_card_id_'.$this->attributes['id'].'_0',
                         'media_file_path' => '',
-                        'media_file_name_name' => 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'].'[0][name]',
-                        'media_file_name_id' => 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'],
+                        'media_file_name_name' => 'category_'.$info_block->info_block->type.'_'.$this->attributes['id'].'[0][name]',
+                        'media_file_name_id' => 'category_'.$info_block->info_block->type.'_'.$this->attributes['id'],
                         'media_file_name_value' => '',
                         'media_alt_label' => 'media_alt_label',
-                        'media_alt_name' => 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'].'[0][alt]',
+                        'media_alt_name' => 'category_'.$info_block->info_block->type.'_'.$this->attributes['id'].'[0][alt]',
                         'media_alt_id' => 'media_alt_id',
                         'media_alt_value' => '',
                         'title' => $info_block->title,
@@ -83,9 +83,9 @@ class CategoriesPagesBlocksContent extends Model
             default:
                 $data['value'] = $init_data;
                 $data['title'] = $info_block->title;
-                $data['id'] = 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'];
-                $data['for'] = 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'];
-                $data['name'] = 'widget_'.$info_block->info_block->type.'_'.$this->attributes['id'];
+                $data['id'] = 'category_'.$info_block->info_block->type.'_'.$this->attributes['id'];
+                $data['for'] = 'category_'.$info_block->info_block->type.'_'.$this->attributes['id'];
+                $data['name'] = 'category_'.$info_block->info_block->type.'_'.$this->attributes['id'];
         }
         return $data;
     }

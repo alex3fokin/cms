@@ -27,6 +27,7 @@ class MenuItemController extends Controller
                 $value = explode('_', $value);
                 $entity = $value[0];
                 $entity = ucfirst($entity);
+                $entity = 'App\Models\Backend\\'.$entity.'\\'.$entity;
                 $id = $value[1];
                     if (!$entity::where('id', $id)->exists($id)) {
                         return $fail($attribute . ' is invalid.');

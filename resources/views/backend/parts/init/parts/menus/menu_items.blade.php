@@ -19,16 +19,16 @@
                             <input type="text" name="menu_title_{{$menu_item->id}}" id="menu_title_{{$menu_item->id}}" value="{{$menu_item->title}}">
                         </div>
                         <div class="input-field col s6">
-                            <select id="menu_item_page_id_{{$menu_item->id}}">
+                            <select name="menu_item_page_id_{{$menu_item->id}}" id="menu_item_page_id_{{$menu_item->id}}">
                                 <option value="" selected disabled>Choose page\category to add</option>
                                 <optgroup label="Pages">
                                     @foreach($pages as $page)
-                                        <option value="page_{{$page->id}} {{$page->id == $menu_item->page_id ? 'selected' : ''}}">{{$page->title}}</option>
+                                        <option value="page_{{$page->id}}" {{$page->id == $menu_item->page_id ? 'selected' : ''}}>{{$page->title}}</option>
                                     @endforeach
                                 </optgroup>
                                 <optgroup label="Categories">
                                     @foreach($categories as $category)
-                                        <option value="category_{{$category->id}} {{$category->id == $menu_item->category_id ? 'selected' : ''}}">{{$category->title}}</option>
+                                        <option value="category_{{$category->id}}" {{$category->id == $menu_item->category_id ? 'selected' : ''}}>{{$category->title}}</option>
                                     @endforeach
                                 </optgroup>
                             </select>

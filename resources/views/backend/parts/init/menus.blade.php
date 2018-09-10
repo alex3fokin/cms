@@ -168,6 +168,7 @@
                 },
                 error: function(data) {
                     console.log(data);
+                    M.toast({html: 'Error! Menu item hasn\'t been added', classes: 'red'});
                 }
             });
         }

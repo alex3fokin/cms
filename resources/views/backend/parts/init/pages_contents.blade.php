@@ -63,7 +63,7 @@
             console.log($(elem).parent().serialize());
             var data = $(':not(textarea[class~="wysiwyg-textarea"])', $(elem).parent()).serialize();
             $(elem).parent().find('textarea[class~="wysiwyg-textarea"]').each(function() {
-                data += '&'+$(this).attr('name')+'='+CKEDITOR.instances[$(this).attr('id')].getData();
+                data += '&'+$(this).attr('name')+'='+$('<textarea />').html(CKEDITOR.instances[$(this).attr('id')].getData()).text();
             });
             $.ajax({
                 type: 'POST',
@@ -74,9 +74,11 @@
                 data: data + '&locale_id={{$current_locale}}',
                 success: function(data) {
                     console.log(data);
+                    M.toast({html: 'Data has been saved successfully', classes: 'green'});
                 },
                 error:function(data) {
                     console.log(data);
+                    M.toast({html: 'Error! Data hasn\'t been saved', classes: 'red'});
                 }
             });
         }
@@ -161,7 +163,7 @@
             console.log($(elem).parent().serialize());
             var data = $(':not(textarea[class~="wysiwyg-textarea"])', $(elem).parent()).serialize();
             $(elem).parent().find('textarea[class~="wysiwyg-textarea"]').each(function() {
-                data += '&'+$(this).attr('name')+'='+CKEDITOR.instances[$(this).attr('id')].getData();
+                data += '&'+$(this).attr('name')+'='+$('<textarea />').html(CKEDITOR.instances[$(this).attr('id')].getData()).text();
             });
             $.ajax({
                 type: 'POST',
@@ -172,9 +174,11 @@
                 data: data + '&locale_id={{$current_locale}}',
                 success: function(data) {
                     console.log(data);
+                    M.toast({html: 'Data has been saved successfully', classes: 'green'});
                 },
                 error:function(data) {
                     console.log(data);
+                    M.toast({html: 'Error! Data hasn\'t been saved', classes: 'red'});
                 }
             });
         }

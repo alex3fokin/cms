@@ -9,8 +9,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-    @stack('before-styles')
-    <!-- Styles -->
+@stack('before-styles')
+<!-- Styles -->
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ asset('css/backend/app.css') }}" rel="stylesheet">
@@ -51,7 +51,16 @@
     <div class="modal-content">
         <div class="row">
             <div class="col s12">
-                <div class="dropzone"></div>
+                {{--<div id="dropzone"></div>--}}
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>File</span>
+                        <input type="file" name="files" id="media_upload_input" multiple>
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row media-container">
@@ -64,7 +73,8 @@
                                 <p class="card-image-name">
                                     {{$media_item['name']}}
                                 </p>
-                                <button class="btn-floating waves-effect waves-light red" data-name="{{$media_item['name']}}"
+                                <button class="btn-floating waves-effect waves-light red"
+                                        data-name="{{$media_item['name']}}"
                                         onclick="deleteMediaFile(this)"><i class="material-icons">delete</i></button>
                             </div>
                         </div>
@@ -73,8 +83,11 @@
             @endforeach
         </div>
         <div class="modal-footer">
-            <button class="btn-floating waves-effect waves-light green modal-close" data-initiator="" data-modal="#modalPullOfFiles" onclick="returnToInitiator(this)"><i class="material-icons">done</i>Select</button>
-            <button class="btn-floating waves-effect waves-light red modal-close"><i class="material-icons">close</i>Close</button>
+            <button class="btn-floating waves-effect waves-light green modal-close" data-initiator=""
+                    data-modal="#modalPullOfFiles" onclick="returnToInitiator(this)"><i class="material-icons">done</i>Select
+            </button>
+            <button class="btn-floating waves-effect waves-light red modal-close"><i class="material-icons">close</i>Close
+            </button>
         </div>
     </div>
 </div>
@@ -87,7 +100,7 @@
 <script src="/js/backend/ckeditor/ckeditor.js"></script>
 <script>
     function setInitiator(elem) {
-        $('#'+$(elem).data('target')).find('button[data-initiator]').eq(0).data('initiator', $(elem).data('initiator'));
+        $('#' + $(elem).data('target')).find('button[data-initiator]').eq(0).data('initiator', $(elem).data('initiator'));
     }
 
     function returnToInitiator(elem) {
@@ -96,6 +109,7 @@
         console.log($($(elem).data('modal')).find('.card.media-item.active .card-image-name').eq(0).html());
         $($(elem).data('initiator')).find('input[type="hidden"]').eq(0).val($($(elem).data('modal')).find('.card.media-item.active .card-image-name').eq(0).text().trim());
     }
+
     function deleteMediaFile(elem) {
         $.ajax({
             type: 'POST',
@@ -104,58 +118,113 @@
             },
             url: '{{route('api.file.delete')}}',
             data: {name: $(elem).data('name'), _method: 'DELETE'},
-            success: function(data) {
+            success: function (data) {
                 console.log(data);
                 $(elem).parent().parent().parent().remove();
             },
-            error:function(data) {
+            error: function (data) {
                 console.log(data);
             }
         });
     }
+
     $(document).ready(function () {
-        $('.tab').click(function() {
+        $('.tab').click(function () {
             window.location = window.location.origin + window.location.pathname + window.location.search + $(this).find('a').attr('href');
         });
-        $('#locale_select_id').change(function() {
+        $('#locale_select_id').change(function () {
             window.location = window.location.origin + window.location.pathname + '?locale_id=' + $(this).val();
         });
-        $('.wysiwyg-textarea').each(function() {
-            CKEDITOR.replace($(this).attr('id'));
+        $('.wysiwyg-textarea').each(function () {
+            var editor = CKEDITOR.replace($(this).attr('id'));
+            var that = this;
+            editor.on('instanceReady', function () {
+                $(that).parent().find('label').eq(0).addClass('active');
+            });
         });
         $('.tabs').tabs();
-        $(".dropzone").dropzone({
-            type: 'POST',
-            url: '{{route('api.file.upload')}}',
-            filesName: 'file',
-            width: '100%',
-            height: '100px',
-            params: {
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success:function(data) {
-                var file = JSON.parse(data.response);
-                file = file.file;
-                $('.media-container').append('<div class="col s3">\n' +
-                    '                    <div class="card media-item z-depth-3">\n' +
-                    '                        <div class="card-image">\n' +
-                    '                            <img src="'+file.path+'">\n' +
-                    '                            <div class="card-image-cover">\n' +
-                    '                                <p class="card-image-name">\n' +
-                    '                                    '+file.name+'\n' +
-                    '                                </p>\n' +
-                    '                                <button class="btn-floating waves-effect waves-light red" data-name="'+file.name+'"\n' +
-                    '                                        onclick="deleteMediaFile(this)"><i class="material-icons">delete</i></button>\n' +
-                    '                            </div>\n' +
-                    '                        </div>\n' +
-                    '                    </div>\n' +
-                    '                </div>');
-                $('.media-item').click(function () {
-                    $('.media-container').find('.media-item.active').removeClass('active');
-                    $(this).addClass('active');
-                });
+        $('#media_upload_input').change(function () {
+            var length = this.files.length;
+            var data = new FormData();
+            for (i = 0; i < length; i++) {
+                data.append('file[]', this.files[i]);
             }
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{route('api.file.upload')}}',
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (data) {
+                    console.log(data);
+                    file = data.file;
+                    $('.media-container').append('<div class="col s3">\n' +
+                        '                    <div class="card media-item z-depth-3">\n' +
+                        '                        <div class="card-image">\n' +
+                        '                            <img src="' + file.path + '">\n' +
+                        '                            <div class="card-image-cover">\n' +
+                        '                                <p class="card-image-name">\n' +
+                        '                                    ' + file.name + '\n' +
+                        '                                </p>\n' +
+                        '                                <button class="btn-floating waves-effect waves-light red" data-name="' + file.name + '"\n' +
+                        '                                        onclick="deleteMediaFile(this)"><i class="material-icons">delete</i></button>\n' +
+                        '                            </div>\n' +
+                        '                        </div>\n' +
+                        '                    </div>\n' +
+                        '                </div>');
+                    $('.media-item').click(function () {
+                        $('.media-container').find('.media-item.active').removeClass('active');
+                        $(this).addClass('active');
+                    });
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
         });
+        {{--$("#dropzone").dropzone({--}}
+        {{--type: 'POST',--}}
+        {{--url: '{{route('api.file.upload')}}',--}}
+        {{--filesName: 'file',--}}
+        {{--maxFilesize: 256,--}}
+        {{--width: '100%',--}}
+        {{--height: '100px',--}}
+        {{--params: {--}}
+        {{--_token: $('meta[name="csrf-token"]').attr('content')--}}
+        {{--},--}}
+        {{--success:function(data) {--}}
+        {{--console.log(data);--}}
+        {{--var file = JSON.parse(data.response);--}}
+        {{--file = file.file;--}}
+        {{--$('.media-container').append('<div class="col s3">\n' +--}}
+        {{--'                    <div class="card media-item z-depth-3">\n' +--}}
+        {{--'                        <div class="card-image">\n' +--}}
+        {{--'                            <img src="'+file.path+'">\n' +--}}
+        {{--'                            <div class="card-image-cover">\n' +--}}
+        {{--'                                <p class="card-image-name">\n' +--}}
+        {{--'                                    '+file.name+'\n' +--}}
+        {{--'                                </p>\n' +--}}
+        {{--'                                <button class="btn-floating waves-effect waves-light red" data-name="'+file.name+'"\n' +--}}
+        {{--'                                        onclick="deleteMediaFile(this)"><i class="material-icons">delete</i></button>\n' +--}}
+        {{--'                            </div>\n' +--}}
+        {{--'                        </div>\n' +--}}
+        {{--'                    </div>\n' +--}}
+        {{--'                </div>');--}}
+        {{--$('.media-item').click(function () {--}}
+        {{--$('.media-container').find('.media-item.active').removeClass('active');--}}
+        {{--$(this).addClass('active');--}}
+        {{--});--}}
+        {{--},--}}
+        {{--error: function(data) {--}}
+        {{--console.log(data);--}}
+        {{--},--}}
+        {{--drop: function() {--}}
+        {{--console.log($(this));--}}
+        {{--}--}}
+        {{--});--}}
         $('.modal').modal();
         $('.media-item').click(function () {
             $('.media-container').find('.media-item.active').removeClass('active');

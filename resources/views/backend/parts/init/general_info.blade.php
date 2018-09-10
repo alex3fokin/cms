@@ -27,13 +27,13 @@
             @foreach($general_infos as $general_info_item)
                 <tr>
                     <td>
-                        <div class="input-field col">
+                        <div class="input-field col s12">
                             <label class="active" for="general_info_title_{{$general_info_item->id}}">Title</label>
                             <input type="text" name="general_info_title_{{$general_info_item->id}}" id="general_info_title_{{$general_info_item->id}}" value="{{$general_info_item->title}}">
                         </div>
                     </td>
                     <td>
-                        <div class="input-field col">
+                        <div class="input-field col s12">
                             <label for="general_info_value_{{$general_info_item->id}}">Value</label>
                             <input type="text" name="general_info_value_{{$general_info_item->id}}" id="general_info_value_{{$general_info_item->id}}" value="{{$general_info_item->value}}">
                         </div>
@@ -114,13 +114,13 @@
                         data = data.general_info;
                         $('#general-info-items').append('<tr>\n' +
                             '                            <td>\n' +
-                            '                                <div class="input-field col">\n' +
+                            '                                <div class="input-field col s12">\n' +
                             '                                    <label class="active" for="general_info_title_'+data.id+'">Title</label>\n' +
                             '                                    <input class="active" type="text" name="general_info_title_'+data.id+'" id="general_info_title_'+data.id+'" value="'+data.title+'">\n' +
                             '                                </div>\n' +
                             '                            </td>\n' +
                             '                            <td>\n' +
-                            '                                <div class="input-field col">\n' +
+                            '                                <div class="input-field col s12">\n' +
                             '                                    <label class="active" for="general_info_value_'+data.id+'">Value</label>\n' +
                             '                                    <input type="text" name="general_info_value_'+data.id+'" id="general_info_value_'+data.id+'" value="'+data.value+'">\n' +
                             '                                </div>\n' +

@@ -33,7 +33,7 @@ class InitSeeder extends Seeder
         }
         DefaultData::create([
             'title' => 'Locale',
-            'value' => 'default',
+            'value' => '',
         ]);
     }
 }

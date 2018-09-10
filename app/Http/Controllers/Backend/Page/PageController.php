@@ -48,14 +48,16 @@ class PageController extends Controller
             'page_template_id' => $request->page_template_id,
             'seo_id' => $seo->id,
         ]);
-        foreach($request->categories as $category) {
-            $categories_pages = CategoriesPages::create([
-                'page_id' => $page->id,
-                'category_id' => Category::where('title', $category)->pluck('id')->first(),
-            ]);
-            $design_blocks = explode(',', $categories_pages->category->design_blocks);
-            if($design_blocks) {
-                CategoriesPagesDesignBlock::addDesignBlocks($categories_pages->id, null, $design_blocks);
+        if($request->categories) {
+            foreach($request->categories as $category) {
+                $categories_pages = CategoriesPages::create([
+                    'page_id' => $page->id,
+                    'category_id' => Category::where('title', $category)->pluck('id')->first(),
+                ]);
+                $design_blocks = explode(',', $categories_pages->category->design_blocks);
+                if($design_blocks) {
+                    CategoriesPagesDesignBlock::addDesignBlocks($categories_pages->id, null, $design_blocks);
+                }
             }
         }
 

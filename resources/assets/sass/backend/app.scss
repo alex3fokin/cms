@@ -41,6 +41,12 @@
   overflow-y: scroll;
 }
 
+.browse-media-container {
+  min-height: 600px;
+  max-height: 600px;
+  overflow-y: scroll;
+}
+
 .media-item {
   cursor: pointer;
   word-wrap: break-word;

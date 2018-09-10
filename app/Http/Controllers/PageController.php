@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Backend\Category\Category;
 use App\Models\Backend\DefaultData;
 use App\Models\Backend\GeneralInfo;
 use App\Models\Backend\Locale;
@@ -9,52 +10,59 @@ use App\Models\Backend\LocaleContent;
 use App\Models\Backend\Menu;
 use App\Models\Backend\Page\Page;
 use Illuminate\Http\Request;
+use League\Flysystem\Adapter\Local;
 
 class PageController extends Controller
 {
     public function show(Request $request) {
-        $page = Page::where('url', $request->path())->get()->first();
-        if(!$page || !$page->published) {
-            abort(404);
-        }
-        $general_info = GeneralInfo::all()->mapWithKeys(function($general_info_item) {
-            return [$general_info_item->title => $general_info_item->value];
-        });
-        $menus = Menu::all()->mapWithKeys(function($menu_item) {
-            return [$menu_item->title => $menu_item];
-        });
-
-        $locales = Locale::all();
-        $default_language = DefaultData::where('title', 'locale')->pluck('value')->first();
-        $locale_id = $request->lang ?? ($default_language ?? '');
-
-        if($locale_id && ($locale_id !== $default_language) || !$locale_id) {
-            LocaleContent::translate($locales, $locale_id);
-        }
-
-        return view($page->page_template->view, compact('page', 'general_info', 'locale_id', 'menus', 'locales'));
+        $page = Page::where('url', urldecode($request->path()))->get()->first();
+        return $this->render($request, $page);
     }
 
     public function home(Request $request) {
         $page = Page::where('title', DefaultData::where('title', 'home_page')->get()->pluck('value')->first())->get()->first();
-        if(!$page) {
+        return $this->render($request, $page);
+    }
+
+    private function render(Request $request, Page $page = null) {
+        $path = urldecode($request->path());
+        $category = Category::where('url', $path)->get()->first();
+        if(!($page && $page->published) && !$category) {
             abort(404);
         }
-        $general_info = GeneralInfo::all()->mapWithKeys(function($general_info_item) {
+        $locales = Locale::all();
+        $default_language = DefaultData::where('title', 'locale')->pluck('value')->first();
+        $locale_id = $request->lang ?? ($default_language ?? '');
+        $general_info = GeneralInfo::all();
+        if($locale_id && ($locale_id !== $default_language) || !$locale_id) {
+            LocaleContent::translate($locales, $locale_id);
+            LocaleContent::translate($general_info, $locale_id);
+            if($page) {
+                LocaleContent::translate(collect([$page->seo]), $locale_id);
+            } else if($category) {
+                LocaleContent::translate(collect([$category->seo]), $locale_id);
+            }
+        }
+
+        $general_info = $general_info->mapWithKeys(function($general_info_item) {
             return [$general_info_item->title => $general_info_item->value];
         });
         $menus = Menu::all()->mapWithKeys(function($menu_item) {
             return [$menu_item->title => $menu_item];
         });
-
-        $locales = Locale::all();
-        $default_language = DefaultData::where('title', 'locale')->pluck('value')->first();
-        $locale_id = $request->lang ?? ($default_language ?? '');
-
-        if($locale_id && ($locale_id !== $default_language) || !$locale_id) {
-            LocaleContent::translate($locales, $locale_id);
+        if($page) {
+            $view = $page->page_template->view;
+        } else if($category) {
+            $view = $category->page_template->view;
         }
 
-        return view($page->page_template->view, compact('page', 'general_info', 'locale_id', 'menus', 'locales'));
+        return view($view, compact(
+            'page',
+            'category',
+            'general_info',
+            'locale_id',
+            'menus',
+            'locales',
+            'default_language'));
     }
 }

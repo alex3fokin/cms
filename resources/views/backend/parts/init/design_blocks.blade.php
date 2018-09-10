@@ -148,9 +148,11 @@
                 success: function (data) {
                     console.log(data);
                     available_design_blocks = data.design_blocks;
+                    M.toast({html: 'Success! Design block has been updated.', classes: 'green'});
                 },
                 error: function (data) {
                     console.log(data);
+                    M.toast({html: 'Error! Design block hasn\'t been updated.', classes: 'red'});
                 },
             });
         }
@@ -213,6 +215,7 @@
             $('input[id^="design_block_children_design_blocks"]').on('itemAdded', function (event) {
                 if ($.inArray(event.item, available_design_blocks) === -1) {
                     $(this).tagsinput('remove', event.item);
+                    M.toast({html: 'Error! There is no such a design block ' + event.item, classes: 'red'});
                 }
             });
 

@@ -10,6 +10,9 @@
     <div id="widgets_content" class="col-12">
         @include('backend.parts.init.widgets_content')
     </div>
+    <div id="categories" class="col s12">
+        @include('backend.parts.init.categories')
+    </div>
     <div id="pages" class="col s12">
         @include('backend.parts.init.pages')
     </div>

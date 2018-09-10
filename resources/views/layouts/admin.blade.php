@@ -51,9 +51,10 @@
         </div>
         <div class="nav-content">
             <ul class="tabs tabs-transparent">
-                <li class="tab col s2"><a href="#locales">Locales</a></li>
-                <li class="tab col s2"><a href="#general">General</a></li>
+                <li class="tab col s1"><a href="#locales">Locales</a></li>
+                <li class="tab col s1"><a href="#general">General</a></li>
                 <li class="tab col s2"><a href="#widgets_content">Widgets content</a></li>
+                <li class="tab col s2"><a href="#categories">Categories</a></li>
                 <li class="tab col s2"><a href="#pages">Pages</a></li>
                 <li class="tab col s2"><a href="#pages_contents">Pages contents</a></li>
                 <li class="tab col s2"><a href="#menus">Menus</a></li>
@@ -157,7 +158,11 @@
             window.location = window.location.origin + window.location.pathname + '?locale_id=' + $(this).val();
         });
         $('.wysiwyg-textarea').each(function() {
-            CKEDITOR.replace($(this).attr('id'));
+            var editor = CKEDITOR.replace($(this).attr('id'));
+            var that = this;
+            editor.on('instanceReady', function() {
+                $(that).parent().find('label').eq(0).addClass('active');
+            });
         });
         $('.sidenav').sidenav();
         $('.tabs').tabs();
@@ -167,6 +172,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             filesName: 'file',
+            maxFilesize: 256,
             width: '100%',
             height: '100px',
             success: function (data) {

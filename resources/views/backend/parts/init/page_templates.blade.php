@@ -27,13 +27,13 @@
             @foreach($page_templates as $page_template)
                 <tr>
                     <td>
-                        <div class="input-field col">
+                        <div class="input-field col s12">
                             <label class="active" for="page_template_title_{{$page_template->id}}">Title</label>
                             <input type="text" name="page_template_title_{{$page_template->id}}" id="page_template_title_{{$page_template->id}}" value="{{$page_template->title}}">
                         </div>
                     </td>
                     <td>
-                        <div class="input-field col">
+                        <div class="input-field col s12">
                             <label for="page_template_view_{{$page_template->id}}">View</label>
                             <input type="text" name="page_template_view_{{$page_template->id}}" id="page_template_view_{{$page_template->id}}" value="{{$page_template->view}}">
                         </div>
@@ -105,13 +105,13 @@
                         data = data.page_template;
                         $('#page_templates_info').append('<tr>\n' +
                             '                            <td>\n' +
-                            '                                <div class="input-field col">\n' +
+                            '                                <div class="input-field col s12">\n' +
                             '                                    <label class="active" for="page_template_title_'+data.id+'">Title</label>\n' +
                             '                                    <input class="active" type="text" name="page_template_title_'+data.id+'" id="page_template_title_'+data.id+'" value="'+data.title+'">\n' +
                             '                                </div>\n' +
                             '                            </td>\n' +
                             '                            <td>\n' +
-                            '                                <div class="input-field col">\n' +
+                            '                                <div class="input-field col s12">\n' +
                             '                                    <label class="active" for="page_template_view_'+data.id+'">Value</label>\n' +
                             '                                    <input type="text" name="page_template_view_'+data.id+'" id="page_template_view_'+data.id+'" value="'+data.view+'">\n' +
                             '                                </div>\n' +

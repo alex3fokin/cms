@@ -30,7 +30,7 @@ class CategoriesPagesDesignBlock extends Model
 
     public static function addDesignBlocks($id, $parent_id, $design_blocks)
     {
-        $i = CategoriesPagesDesignBlock::where([['parent_design_block', $parent_id], ['id', $id]])->max('order') ?? 0;
+        $i = CategoriesPagesDesignBlock::where([['parent_design_block', $parent_id], ['categories_pages_id', $id]])->max('order') ?? 0;
         $i++;
         foreach ($design_blocks as $design_block) {
             $design_block = DesignBlock::where('title', $design_block)->get()->first();
