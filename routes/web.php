@@ -21,6 +21,8 @@ Route::get('/init', 'Backend\InitController@index')->name('init');
 
 Route::get('/', 'PageController@home');
 
+Route::post('/feedback', 'PageController@feedback')->name('feedback');
+
 Route::get('/{word}', 'PageController@show');
 Route::get('/{word}/{word2}', 'PageController@show');
 Route::get('/{word}/{word2}/{word3}', 'PageController@show');

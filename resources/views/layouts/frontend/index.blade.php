@@ -433,40 +433,27 @@
                     <div class="col-sm-4">
                         <div class="footer-subscribe">
                             <h5 class="follow-heading">Погружаемся! Есть вопросы?</h5>
-                            <div role="form" class="wpcf7" id="wpcf7-f1341-o1" lang="ru-RU" dir="ltr">
+                            <div lang="ru-RU" dir="ltr">
                                 <div class="screen-reader-response"></div>
-                                <form action="https://divezone.com.ua/#wpcf7-f1341-o1" method="post" class="wpcf7-form"
-                                      novalidate="novalidate">
-                                    <div style="display: none;">
-                                        <input type="hidden" name="_wpcf7" value="1341">
-                                        <input type="hidden" name="_wpcf7_version" value="4.9.2">
-                                        <input type="hidden" name="_wpcf7_locale" value="ru_RU">
-                                        <input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f1341-o1">
-                                        <input type="hidden" name="_wpcf7_container_post" value="0">
-                                    </div>
-                                    <p><span class="wpcf7-form-control-wrap your-name"><input type="text"
-                                                                                              name="your-name" value=""
-                                                                                              size="40"
-                                                                                              class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required"
-                                                                                              aria-required="true"
-                                                                                              aria-invalid="false"
-                                                                                              placeholder="Ваше имя*"></span><br>
-                                        <span class="wpcf7-form-control-wrap your-tel"><input type="tel" name="your-tel"
-                                                                                              value="" size="40"
-                                                                                              class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel"
-                                                                                              aria-required="true"
-                                                                                              aria-invalid="false"
-                                                                                              placeholder="Контактный номер*"></span><br>
-                                        <span class="wpcf7-form-control-wrap your-email"><input type="email"
-                                                                                                name="your-email"
-                                                                                                value="" size="40"
-                                                                                                class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-email"
-                                                                                                aria-invalid="false"
-                                                                                                placeholder="Ваш email"></span>
+                                <form action="{{route('feedback')}}" method="POST">
+                                    {{csrf_field()}}
+                                    <p>
+                                        <span class="your-name">
+                                            <input type="text" name="name" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" aria-required="true" aria-invalid="false" placeholder="Ваше имя*" style="border: 0px solid #000;margin-bottom: 2px;">
+                                        </span>
+                                        <br>
+                                        <span class="your-tel">
+                                            <input type="tel" name="tel" size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel" aria-required="true" aria-invalid="false" placeholder="Контактный номер*" style="border: 0px solid #000;margin-bottom: 2px;">
+                                        </span>
+                                        <br>
+                                        <span class="your-email">
+                                            <input type="email" name="email" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-email" aria-invalid="false" placeholder="Ваш email" style="border: 0px solid #000;margin-bottom: 2px;">
+                                        </span>
                                     </p>
-                                    <p class="form_submit_c"><input type="submit" value="Отправить"
-                                                                    class="wpcf7-form-control wpcf7-submit"><span
-                                                class="ajax-loader"></span></p>
+                                    <p>
+                                        <input type="submit" value="Отправить">
+                                        <span class="ajax-loader"></span>
+                                    </p>
                                     <div class="wpcf7-response-output wpcf7-display-none"></div>
                                 </form>
                             </div>                                    <!--<form novalidate="" target="_blank" class="" name="mc-embedded-subscribe-form" id="mc-embedded-subscribe-form" method="post"

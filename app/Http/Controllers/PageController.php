@@ -9,7 +9,10 @@ use App\Models\Backend\Locale;
 use App\Models\Backend\LocaleContent;
 use App\Models\Backend\Menu;
 use App\Models\Backend\Page\Page;
+use App\Notifications\FeedbackNotification;
 use Illuminate\Http\Request;
+use Notification;
+use Illuminate\Support\Facades\Validator;
 
 class PageController extends Controller
 {
@@ -63,5 +66,25 @@ class PageController extends Controller
             'menus',
             'locales',
             'default_language'));
+    }
+
+    public function feedback(Request $request) {
+        $v = Validator::make($request->all(), [
+            'name' => 'required',
+            'tel' => 'required',
+            'email' => 'required|email'
+        ]);
+
+        if($v->fails()) {
+            return back();
+        }
+
+        Notification::route('mail', GeneralInfo::where('title', 'email')->pluck('value')->first())
+            ->notify(new FeedbackNotification([
+                            'name' => $request->name,
+                            'phone' => $request->tel,
+                            'email' => $request->email
+                        ]));
+        return back();
     }
 }
