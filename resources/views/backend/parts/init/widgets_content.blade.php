@@ -76,7 +76,6 @@
         }
 
         $(document).ready(function() {
-            $('.collapsible').collapsible();
             $('.widget-sortable').sortable({
                 stop: function( event, ui ) {
                     var elements = $(ui.item).parent().children();

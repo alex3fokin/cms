@@ -18,13 +18,15 @@
                             </ul>
                         </div>
                         <div class="col s5">
-                            <select name="pages_content_design_block_id" id="pages_content_design_block_id_{{$page->id}}">
+                            <select name="pages_content_design_block_id"
+                                    id="pages_content_design_block_id_{{$page->id}}">
                                 <option value="" disabled selected>Choose design block</option>
                                 @foreach($design_blocks as $design_block)
                                     <option value="{{$design_block->id}}">{{$design_block->title}}</option>
                                 @endforeach
                             </select>
-                            <button class="btn waves-effect waves-light" type="button" name="action" data-id="{{$page->id}}" onclick="addPageDesignBlock(this)">Add design block
+                            <button class="btn waves-effect waves-light" type="button" name="action"
+                                    data-id="{{$page->id}}" onclick="addPageDesignBlock(this)">Add design block
                                 <i class="material-icons right">add</i>
                             </button>
                         </div>
@@ -35,13 +37,15 @@
                                     <option value="{{$widget->id}}">{{$widget->title}}</option>
                                 @endforeach
                             </select>
-                            <button class="btn waves-effect waves-light" type="button" name="action" data-id="{{$page->id}}" onclick="addPageWidget(this)">Add widget
+                            <button class="btn waves-effect waves-light" type="button" name="action"
+                                    data-id="{{$page->id}}" onclick="addPageWidget(this)">Add widget
                                 <i class="material-icons right">add</i>
                             </button>
                         </div>
                         <div class="col s2">
                             <label>
-                                <input type="checkbox" data-id="{{$page->id}}" class="page_published_checkbox" {{$page->published ? 'checked' : ''}}/>
+                                <input type="checkbox" data-id="{{$page->id}}"
+                                       class="page_published_checkbox" {{$page->published ? 'checked' : ''}}/>
                                 <span>Published</span>
                             </label>
                         </div>
@@ -62,8 +66,8 @@
         function updateCategoriesPagesDesignBlockContent(elem) {
             console.log($(elem).parent().serialize());
             var data = $(':not(textarea[class~="wysiwyg-textarea"])', $(elem).parent()).serialize();
-            $(elem).parent().find('textarea[class~="wysiwyg-textarea"]').each(function() {
-                data += '&'+$(this).attr('name')+'='+$('<textarea />').html(CKEDITOR.instances[$(this).attr('id')].getData()).text();
+            $(elem).parent().find('textarea[class~="wysiwyg-textarea"]').each(function () {
+                data += '&' + $(this).attr('name') + '=' + $('<textarea />').html(CKEDITOR.instances[$(this).attr('id')].getData()).text();
             });
             $.ajax({
                 type: 'POST',
@@ -72,11 +76,11 @@
                 },
                 url: '{!! route('api.category_page_content.update') !!}',
                 data: data + '&locale_id={{$current_locale}}',
-                success: function(data) {
+                success: function (data) {
                     console.log(data);
                     M.toast({html: 'Data has been saved successfully', classes: 'green'});
                 },
-                error:function(data) {
+                error: function (data) {
                     console.log(data);
                     M.toast({html: 'Error! Data hasn\'t been saved', classes: 'red'});
                 }
@@ -92,11 +96,11 @@
                 },
                 url: '{{route('api.category_page.design_block.delete')}}',
                 data: {id: id, _method: 'DELETE'},
-                success:function(data) {
+                success: function (data) {
                     console.log(data);
                     window.location.reload();
                 },
-                error:function(data) {
+                error: function (data) {
                     console.log(data);
                 }
             });
@@ -110,12 +114,15 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: '{{route('api.category_page.child_design_block.add')}}',
-                data: {parent_design_block: id, design_block: $('#categories_pages_children_design_blocks_select_' + id).val()},
-                success: function(data){
+                data: {
+                    parent_design_block: id,
+                    design_block: $('#categories_pages_children_design_blocks_select_' + id).val()
+                },
+                success: function (data) {
                     console.log(data);
                     window.location.reload();
                 },
-                error:function(data){
+                error: function (data) {
                     console.log(data);
                 }
             });
@@ -129,12 +136,12 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: '{{route('api.page.design_block.add')}}',
-                data: {page_id: id, design_block_id: $('#pages_content_design_block_id_'+id).val()},
-                success: function(data) {
+                data: {page_id: id, design_block_id: $('#pages_content_design_block_id_' + id).val()},
+                success: function (data) {
                     console.log(data);
                     window.location.reload();
                 },
-                error: function(data) {
+                error: function (data) {
                     console.log(data);
                 }
             });
@@ -148,12 +155,12 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: '{{route('api.page.widget.add')}}',
-                data: {page_id: id, widget_id: $('#pages_content_widget_id_'+id).val()},
-                success: function(data) {
+                data: {page_id: id, widget_id: $('#pages_content_widget_id_' + id).val()},
+                success: function (data) {
                     console.log(data);
                     window.location.reload();
                 },
-                error: function(data) {
+                error: function (data) {
                     console.log(data);
                 }
             });
@@ -162,8 +169,8 @@
         function updatePageDesignBlockContent(elem) {
             console.log($(elem).parent().serialize());
             var data = $(':not(textarea[class~="wysiwyg-textarea"])', $(elem).parent()).serialize();
-            $(elem).parent().find('textarea[class~="wysiwyg-textarea"]').each(function() {
-                data += '&'+$(this).attr('name')+'='+$('<textarea />').html(CKEDITOR.instances[$(this).attr('id')].getData()).text();
+            $(elem).parent().find('textarea[class~="wysiwyg-textarea"]').each(function () {
+                data += '&' + $(this).attr('name') + '=' + $('<textarea />').html(CKEDITOR.instances[$(this).attr('id')].getData()).text();
             });
             $.ajax({
                 type: 'POST',
@@ -172,11 +179,11 @@
                 },
                 url: '{!! route('api.page_content.update') !!}',
                 data: data + '&locale_id={{$current_locale}}',
-                success: function(data) {
+                success: function (data) {
                     console.log(data);
                     M.toast({html: 'Data has been saved successfully', classes: 'green'});
                 },
-                error:function(data) {
+                error: function (data) {
                     console.log(data);
                     M.toast({html: 'Error! Data hasn\'t been saved', classes: 'red'});
                 }
@@ -192,11 +199,11 @@
                 },
                 url: '{{route('api.page.design_block.delete')}}',
                 data: {id: id, _method: 'DELETE'},
-                success:function(data) {
+                success: function (data) {
                     console.log(data);
                     window.location.reload();
                 },
-                error:function(data) {
+                error: function (data) {
                     console.log(data);
                 }
             });
@@ -211,25 +218,35 @@
                 },
                 url: '{{route('api.page.child_design_block.add')}}',
                 data: {parent_design_block: id, design_block: $('#page_children_design_blocks_select_' + id).val()},
-                success: function(data){
+                success: function (data) {
                     console.log(data);
                     window.location.reload();
                 },
-                error:function(data){
+                error: function (data) {
                     console.log(data);
                 }
             });
         }
-        $(document).ready(function() {
+
+        $(document).ready(function () {
             $('.pages-sortable').sortable({
-                stop: function( event, ui ) {
+                stop: function (event, ui) {
+                    $(ui.item).find('.wysiwyg-textarea').each(function () {
+                        CKEDITOR.instances[$(this).attr('id')].destroy();
+                        var editor = CKEDITOR.replace($(this).attr('id'));
+                        var that = this;
+                        editor.on('instanceReady', function () {
+                            $(that).parent().find('label').eq(0).addClass('active');
+                        });
+
+                    });
                     var elements = $(ui.item).parent().children();
                     var order = [];
                     console.log(elements);
                     var length = elements.length;
-                    for(i = 0; i < length; i++) {
-                        if(!$(elements[i]).hasClass('ui-sortable-placeholder')) {
-                            order.push({id: $(elements[i]).data('id'), order: (i+1)});
+                    for (i = 0; i < length; i++) {
+                        if (!$(elements[i]).hasClass('ui-sortable-placeholder')) {
+                            order.push({id: $(elements[i]).data('id'), order: (i + 1)});
                         }
                     }
                     console.log(order);
@@ -243,7 +260,7 @@
                         success: function (data) {
                             console.log(data);
                         },
-                        error: function(data) {
+                        error: function (data) {
                             console.log(data);
                         }
                     });
@@ -251,14 +268,14 @@
             });
 
             $('.categories-sortable').sortable({
-                stop: function( event, ui ) {
+                stop: function (event, ui) {
                     var elements = $(ui.item).parent().children();
                     var order = [];
                     console.log(elements);
                     var length = elements.length;
-                    for(i = 0; i < length; i++) {
-                        if(!$(elements[i]).hasClass('ui-sortable-placeholder')) {
-                            order.push({id: $(elements[i]).data('id'), order: (i+1)});
+                    for (i = 0; i < length; i++) {
+                        if (!$(elements[i]).hasClass('ui-sortable-placeholder')) {
+                            order.push({id: $(elements[i]).data('id'), order: (i + 1)});
                         }
                     }
                     console.log(order);
@@ -272,14 +289,14 @@
                         success: function (data) {
                             console.log(data);
                         },
-                        error: function(data) {
+                        error: function (data) {
                             console.log(data);
                         }
                     });
                 }
             });
 
-            $('.page_published_checkbox').change(function() {
+            $('.page_published_checkbox').change(function () {
                 $.ajax({
                     type: 'POST',
                     headers: {
@@ -290,7 +307,7 @@
                     success: function (data) {
                         console.log(data);
                     },
-                    error: function(data) {
+                    error: function (data) {
                         console.log(data);
                     }
                 });

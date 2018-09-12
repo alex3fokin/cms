@@ -51,7 +51,6 @@
     <div class="modal-content">
         <div class="row">
             <div class="col s12">
-                {{--<div id="dropzone"></div>--}}
                 <div class="file-field input-field">
                     <div class="btn">
                         <span>File</span>
@@ -129,18 +128,32 @@
     }
 
     $(document).ready(function () {
+        $('.collapsible').collapsible({
+            onOpenStart:function(elem) {
+                $(elem).find('.wysiwyg-textarea').each(function () {
+                    if(!CKEDITOR.instances[$(this).attr('id')]) {
+                        var editor = CKEDITOR.replace($(this).attr('id'));
+                        var that = this;
+                        editor.on('instanceReady', function () {
+                            $(that).parent().find('label').eq(0).addClass('active');
+                        });
+                    }
+                });
+                if ($(elem).parent().is('[class*="sortable"]')) {
+                    $(elem).parent().sortable('option', 'disabled', true);
+                }
+            },
+            onCloseEnd: function (elem) {
+                if ($(elem).parent().is('[class*="sortable"]')) {
+                    $(elem).parent().sortable('option', 'disabled', false);
+                }
+            }
+        });
         $('.tab').click(function () {
             window.location = window.location.origin + window.location.pathname + window.location.search + $(this).find('a').attr('href');
         });
         $('#locale_select_id').change(function () {
             window.location = window.location.origin + window.location.pathname + '?locale_id=' + $(this).val();
-        });
-        $('.wysiwyg-textarea').each(function () {
-            var editor = CKEDITOR.replace($(this).attr('id'));
-            var that = this;
-            editor.on('instanceReady', function () {
-                $(that).parent().find('label').eq(0).addClass('active');
-            });
         });
         $('.tabs').tabs();
         $('#media_upload_input').change(function () {
@@ -185,46 +198,6 @@
                 }
             });
         });
-        {{--$("#dropzone").dropzone({--}}
-        {{--type: 'POST',--}}
-        {{--url: '{{route('api.file.upload')}}',--}}
-        {{--filesName: 'file',--}}
-        {{--maxFilesize: 256,--}}
-        {{--width: '100%',--}}
-        {{--height: '100px',--}}
-        {{--params: {--}}
-        {{--_token: $('meta[name="csrf-token"]').attr('content')--}}
-        {{--},--}}
-        {{--success:function(data) {--}}
-        {{--console.log(data);--}}
-        {{--var file = JSON.parse(data.response);--}}
-        {{--file = file.file;--}}
-        {{--$('.media-container').append('<div class="col s3">\n' +--}}
-        {{--'                    <div class="card media-item z-depth-3">\n' +--}}
-        {{--'                        <div class="card-image">\n' +--}}
-        {{--'                            <img src="'+file.path+'">\n' +--}}
-        {{--'                            <div class="card-image-cover">\n' +--}}
-        {{--'                                <p class="card-image-name">\n' +--}}
-        {{--'                                    '+file.name+'\n' +--}}
-        {{--'                                </p>\n' +--}}
-        {{--'                                <button class="btn-floating waves-effect waves-light red" data-name="'+file.name+'"\n' +--}}
-        {{--'                                        onclick="deleteMediaFile(this)"><i class="material-icons">delete</i></button>\n' +--}}
-        {{--'                            </div>\n' +--}}
-        {{--'                        </div>\n' +--}}
-        {{--'                    </div>\n' +--}}
-        {{--'                </div>');--}}
-        {{--$('.media-item').click(function () {--}}
-        {{--$('.media-container').find('.media-item.active').removeClass('active');--}}
-        {{--$(this).addClass('active');--}}
-        {{--});--}}
-        {{--},--}}
-        {{--error: function(data) {--}}
-        {{--console.log(data);--}}
-        {{--},--}}
-        {{--drop: function() {--}}
-        {{--console.log($(this));--}}
-        {{--}--}}
-        {{--});--}}
         $('.modal').modal();
         $('.media-item').click(function () {
             $('.media-container').find('.media-item.active').removeClass('active');
