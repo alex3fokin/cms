@@ -134,9 +134,11 @@
                 data: {default_home_page: $('#default_home_page').val(), _method: 'PUT'},
                 success:function(data){
                     console.log(data);
+                    M.toast({html: 'Success! Home page has been changed', classes: 'green'});
                 },
                 error:function(data){
                     console.log(data);
+                    M.toast({html: 'Error! Home page hasn\'t been re-set', classes: 'red'});
                 },
             });
         }
@@ -161,9 +163,11 @@
                 },
                 success:function(data){
                     console.log(data);
+                    M.toast({html: 'Success! Page has been updated', classes: 'green'});
                 },
                 error:function(data){
                     console.log(data);
+                    M.toast({html: 'Error! Page hasn\'t been updated', classes: 'red'});
                 },
             });
         }
@@ -186,6 +190,7 @@
                 },
                 error:function(data){
                     console.log(data);
+                    M.toast({html: 'Error! Page hasn\'t been deleted', classes: 'red'});
                 },
             });
         }
@@ -221,6 +226,7 @@
                     },
                     error: function(data) {
                         console.log(data);
+                        M.toast({html: 'Error! Page hasn\'t been created', classes: 'red'});
                     }
                 });
                 $(this).find('input').val('');

@@ -350,7 +350,10 @@
             <div id="primary" class="content-area">
                 <main id="main" class="site-main" role="main">
                     @php
-                        $categories_pages = App\Models\Backend\CategoriesPages::whereIn('category_id', $category->children()->pluck('id'))->get()->groupBy('page_id');
+                        $count_items = App\Models\Backend\CategoriesPages::whereIn('category_id', $category->children()->pluck('id'))->get()->groupBy('page_id')->count();
+                        $current_page = request()->page ? request()->page : 1;
+                        $items_per_page = 10;
+                        $categories_pages = App\Models\Backend\CategoriesPages::whereIn('category_id', $category->children()->pluck('id'))->get()->groupBy('page_id')->slice(($current_page-1) * $items_per_page, $items_per_page);
                     @endphp
                     @if($categories_pages)
                         @foreach($categories_pages as $category_page)
@@ -364,6 +367,19 @@
                             @endif
                         @endforeach
                     @endif
+                    <nav class="navigation posts-navigation" role="navigation">
+                        <h2 class="screen-reader-text">Навигация по записям</h2>
+                        <div class="nav-links">
+                            @if(ceil($count_items/$items_per_page) > 1)
+                                @if(ceil($count_items/$items_per_page) != intval(request()->page))
+                                    <div class="nav-previous"><a href="/{{$category->url}}?page={{request()->page ? request()->page + 1 : 2}}">Предыдущие записи</a></div>
+                                @endif
+                                @if(request()->page && intval(request()->page) > 1)
+                                    <div class="nav-next"><a href="/{{$category->url}}?page={{request()->page - 1}}">Следующие записи</a></div>
+                                @endif
+                            @endif
+                        </div>
+                    </nav>
                 </main><!-- #main -->
             </div>
         </div>

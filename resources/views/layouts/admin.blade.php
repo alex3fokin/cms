@@ -183,6 +183,9 @@
                 }
             }
         });
+        $('.tab').click(function () {
+            window.location = window.location.origin + window.location.pathname + window.location.search + $(this).find('a').attr('href');
+        });
         $('#locale_select_id').change(function() {
             window.location = window.location.origin + window.location.pathname + '?locale_id=' + $(this).val();
         });
