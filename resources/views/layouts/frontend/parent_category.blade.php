@@ -349,7 +349,21 @@
         <div id="content-inside" class="container no-sidebar">
             <div id="primary" class="content-area">
                 <main id="main" class="site-main" role="main">
-
+                    @php
+                        $categories_pages = App\Models\Backend\CategoriesPages::whereIn('category_id', $category->children()->pluck('id'))->get()->groupBy('page_id');
+                    @endphp
+                    @if($categories_pages)
+                        @foreach($categories_pages as $category_page)
+                            @php
+                                $category_page = $category_page[0];
+                            @endphp
+                            @if($category_page->design_blocks)
+                                @foreach($category_page->design_blocks as $design_block)
+                                    @include($design_block->design_block->view, ['data' => $design_block->mappedInfoBlocks($locale_id)])
+                                @endforeach
+                            @endif
+                        @endforeach
+                    @endif
                 </main><!-- #main -->
             </div>
         </div>
@@ -399,7 +413,7 @@
                                     <div class="contact-block__item contact-block__item--icon"><i
                                                 class="contact-block__icon linearicon linearicon-phone-handset"></i><span
                                                 class="contact-block__text"><a
-                                                    href="tel:{{$general_info['Phone number']}}">+{{$general_info['Phone number']}}</a></span>
+                                                    href="tel:{{$general_info['Phone number']}}">{{$general_info['Phone number']}}</a></span>
                                     </div>
                                     <div class="contact-block__item contact-block__item--icon"><i
                                                 class="contact-block__icon linearicon linearicon-envelope"></i><span

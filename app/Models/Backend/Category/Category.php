@@ -21,4 +21,18 @@ class Category extends Model
     public function seo() {
         return $this->belongsTo(Seo::class);
     }
+
+    public function children() {
+        $children = self::where('parent_category', $this->attributes['id'])->get();
+        if($children->count()) {
+            return $children;
+        }
+        return null;
+    }
+
+    public function parent() {
+        return self::where('id', $this->attributes['parent_category'])->first();
+    }
+
+
 }

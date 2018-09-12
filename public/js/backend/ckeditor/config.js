@@ -26,7 +26,7 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
 		{ name: 'others' },
 		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-		{ name: 'paragraph',   groups: [ 'list', 'align', 'bidi' ] },
+		{ name: 'paragraph',   groups: [ 'list', 'blocks', 'align' ] },
 		{ name: 'styles' },
 		{ name: 'colors' }
 	];
@@ -35,7 +35,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeButtons = 'Underline,Subscript,Superscript';
 
 	// Set the most common block elements.
-	config.format_tags = 'p;h1;h2;h3;pre';
+	config.format_tags = 'p;h1;h2;h3;h4;pre';
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
@@ -43,5 +43,5 @@ CKEDITOR.editorConfig = function( config ) {
     config.forcePasteAsPlainText = true;
     config.filebrowserBrowseUrl = '/browse-files';
     config.filebrowserUploadUrl = '/upload-media-file';
-    config.justifyClasses = [ 'AlignLeft', 'AlignCenter', 'AlignRight', 'AlignJustify' ];
+    config.extraPlugins = 'justify';
 };

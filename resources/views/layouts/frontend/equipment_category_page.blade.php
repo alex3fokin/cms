@@ -7,9 +7,9 @@
     <script async="" src="/js/frontend/js.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
-          content="{{$category->seo->description}}">
+          content="{{$page->seo->description}}">
     <meta name="keywords"
-          content="{{str_replace(',', ' ', $category->seo->keywords)}}">
+          content="{{str_replace(',', ' ', $page->seo->keywords)}}">
     <title>{{$general_info['Title']}}</title>
     <script src="/js/frontend/wp-emoji-release.min.js" type="text/javascript"
             defer=""></script>
@@ -302,7 +302,7 @@
                             <ul class="onepress-menu">
                                 @if($menus->has('top menu'))
                                     @php
-                                        $current_category_url = $category->url;
+                                        $current_category_url = $page->url;
                                     @endphp
                                     @foreach($menus['top menu']->translatedMenuItems($locale_id) as $menu_item)
                                         @php
@@ -327,7 +327,7 @@
     </div>
     <div class="page-header">
         <div class="container">
-            <h1 class="entry-title">{{$category->title}}</h1>
+            <h1 class="entry-title">{{$page->title}}</h1>
         </div>
     </div>
     <div id="content" class="site-content">
@@ -341,13 +341,7 @@
                     <meta property="position" content="1">
                 </span>
                 <span property="itemListElement" typeof="ListItem">
-                    <a property="item" title="Перейти к {{$category->parent()->title}}" href="/{{$category->parent()->url}}" class="post-root post post-post">
-                        <span property="name">{{$category->parent()->title}}</span>
-                    </a>
-                    <meta property="position" content="2">
-                </span>
-                <span property="itemListElement" typeof="ListItem">
-                    <span property="name">{{$category->title}}</span>
+                    <span property="name">{{$page->title}}</span>
                     <meta property="position" content="2">
                 </span>
             </div>
@@ -355,18 +349,15 @@
         <div id="content-inside" class="container no-sidebar">
             <div id="primary" class="content-area">
                 <main id="main" class="site-main" role="main">
-                    @php
-                        $categories_pages = App\Models\Backend\CategoriesPages::where('category_id', $category->id)->get();
-                    @endphp
-                    @if($categories_pages)
-                        @foreach($categories_pages as $category_page)
-                            @if($category_page->design_blocks)
-                                @foreach($category_page->design_blocks as $design_block)
-                                    @include($design_block->design_block->view, ['data' => $design_block->mappedInfoBlocks($locale_id)])
-                                @endforeach
-                            @endif
-                        @endforeach
-                    @endif
+                    @foreach($page->design_blocks as $design_block)
+                        @if($design_block->is_widget)
+                            @foreach($design_block->widget->design_blocks as $design_block)
+                                @include($design_block->design_block->view, ['data' => $design_block->mappedInfoBlocks($locale_id)])
+                            @endforeach
+                        @else
+                            @include($design_block->design_block->view, ['data' => $design_block->mappedInfoBlocks($locale_id)])
+                        @endif
+                    @endforeach
                 </main><!-- #main -->
             </div>
         </div>

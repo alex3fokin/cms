@@ -407,7 +407,7 @@
                                     <div class="contact-block__item contact-block__item--icon"><i
                                                 class="contact-block__icon linearicon linearicon-phone-handset"></i><span
                                                 class="contact-block__text"><a
-                                                    href="tel:{{$general_info['Phone number']}}">+{{$general_info['Phone number']}}</a></span>
+                                                    href="tel:{{$general_info['Phone number']}}">{{$general_info['Phone number']}}</a></span>
                                     </div>
                                     <div class="contact-block__item contact-block__item--icon"><i
                                                 class="contact-block__icon linearicon linearicon-envelope"></i><span

@@ -333,22 +333,38 @@
     <div class="breadcrumbs" typeof="BreadcrumbList" vocab="http://schema.org/">
         <div class="container">
             <!-- Breadcrumb NavXT 5.7.1 -->
-            <span property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"
-                                                                  title="Go to DiveZone."
-                                                                  href="https://divezone.com.ua/" class="home"><span
-                            property="name">DiveZone</span></a><meta property="position" content="1"></span><span
-                    property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"
-                                                                    title="Go to Новости."
-                                                                    href="https://divezone.com.ua/news/"
-                                                                    class="post-root post post-post"><span
-                            property="name">Новости</span></a><meta property="position" content="2"></span><span
-                    property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"
-                                                                    title="Go to the Школа category archives."
-                                                                    href="https://divezone.com.ua/category/school/"
-                                                                    class="taxonomy category"><span property="name">Школа</span></a><meta
-                        property="position" content="3"></span><span property="itemListElement" typeof="ListItem"><span
-                        property="name">Подарочные сертификаты. Сделай подарок родным и близким!</span><meta
-                        property="position" content="4"></span></div>
+            <span property="itemListElement" typeof="ListItem">
+                <a property="item" typeof="WebPage" title="Go to DiveZone." href="/" class="home">
+                    <span property="name">DiveZone</span>
+                </a>
+                <meta property="position" content="1">
+            </span>
+            @if($page->categories->count())
+                @if($parent_category = $page->categories->first()->parent())
+                    <span property="itemListElement" typeof="ListItem">
+                        <a property="item" typeof="WebPage" title="Перейти к {{$parent_category->title}}" href="/{{$parent_category->url}}" class="post-root post post-post">
+                            <span property="name">{{$parent_category->title}}</span>
+                        </a>
+                        <meta property="position" content="2">
+                    </span>
+                @endif
+                @foreach($page->categories as $category)
+                        @if(!$loop->first)
+                            /
+                        @endif
+                        <span property="itemListElement" typeof="ListItem" class="{{$loop->last ? '' : 'breadcrumb-m0'}}">
+                            <a title="Перейти к {{$category->title}}" href="/{{$category->url}}" class="{{$loop->last ? '' : 'no-arrow'}}">
+                                <span property="name">{{$category->title}}</span>
+                            </a>
+                            <meta property="position" content="3">
+                        </span>
+                @endforeach
+            @endif
+            <span property="itemListElement" typeof="ListItem">
+                <span property="name">{{$page->title}}</span>
+                <meta property="position" content="4">
+            </span>
+        </div>
     </div>
 
     <div id="content-inside" class="container no-sidebar">
@@ -359,19 +375,32 @@
                 <article id="post-2738"
                          class="post-2738 post type-post status-publish format-standard has-post-thumbnail hentry category-school">
                     <header class="entry-header">
-                        <h1 class="entry-title">Подарочные сертификаты. Сделай подарок родным и близким!</h1>
+                        <h1 class="entry-title">{{$page->title}}</h1>
                         <div class="entry-meta">
                             <span class="posted-on">Posted on <a
                                         href="#"
                                         rel="bookmark"><time
-                                            class="entry-date published updated">Июль 5, 2018</time></a></span><span
-                                    class="byline"> by <span class="author vcard"><a rel="author" class="url fn n"
-                                                                                     href="https://divezone.com.ua/author/god0/">god0</a></span></span>
+                                            class="entry-date published updated">{{$page->created_at->formatLocalized('%B %d, %Y')}}</time></a></span>
                         </div><!-- .entry-meta -->
                     </header><!-- .entry-header -->
-                    <div class="entry-content">
-
-                    </div>
+                    @foreach($page->design_blocks as $design_block)
+                        @if($design_block->is_widget)
+                            @foreach($design_block->widget->design_blocks as $design_block)
+                                @include($design_block->design_block->view, ['data' => $design_block->mappedInfoBlocks($locale_id)])
+                            @endforeach
+                        @else
+                            @include($design_block->design_block->view, ['data' => $design_block->mappedInfoBlocks($locale_id)])
+                        @endif
+                    @endforeach
+                    <footer class="entry-footer">
+                        @if($page->categories)
+                            @foreach($page->categories as $category)
+                                <span class="cat-links">Posted in
+                                    <a href="/{{$category->url}}" rel="category tag">{{$category->title}}</a>
+                                </span>
+                            @endforeach
+                        @endif
+                    </footer>
                 </article>
             </main>
         </div>
@@ -422,7 +451,7 @@
                                 <div class="contact-block__item contact-block__item--icon"><i
                                             class="contact-block__icon linearicon linearicon-phone-handset"></i><span
                                             class="contact-block__text"><a
-                                                href="tel:{{$general_info['Phone number']}}">+{{$general_info['Phone number']}}</a></span>
+                                                href="tel:{{$general_info['Phone number']}}">{{$general_info['Phone number']}}</a></span>
                                 </div>
                                 <div class="contact-block__item contact-block__item--icon"><i
                                             class="contact-block__icon linearicon linearicon-envelope"></i><span

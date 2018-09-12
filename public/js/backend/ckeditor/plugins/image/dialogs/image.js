@@ -418,6 +418,11 @@
 					} else if(this.imageElement.$.style.float === 'right') {
                         this.imageElement.$.classList.add('alignright');
 					}
+
+                    if(this.imageElement.$.src.startsWith('https://s.w.org')) {
+                        this.imageElement.$.classList.add('emoji');
+					}
+
 					// Remove empty style attribute.
 					if ( !this.imageElement.getAttribute( 'style' ) )
 						this.imageElement.removeAttribute( 'style' );

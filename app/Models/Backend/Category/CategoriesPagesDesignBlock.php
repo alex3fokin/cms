@@ -90,19 +90,19 @@ class CategoriesPagesDesignBlock extends Model
                     ['locale_id', $locale_id],
                     ['model_id', CategoriesPagesBlocksContent::where([
                         ['design_blocks_info_block_id', $info_block->id],
-                        ['widgets_design_block_id', $categories_pages_design_block_id]
+                        ['categories_pages_design_block_id', $categories_pages_design_block_id]
                     ])->pluck('id')->first()]
                 ])->pluck('value')->first();
                 if(!$value) {
                     $value = CategoriesPagesBlocksContent::where([
                         ['design_blocks_info_block_id', $info_block->id],
-                        ['widgets_design_block_id', $categories_pages_design_block_id]
+                        ['categories_pages_design_block_id', $categories_pages_design_block_id]
                     ])->pluck('value')->first();
                 }
             } else {
                 $value = CategoriesPagesBlocksContent::where([
                     ['design_blocks_info_block_id', $info_block->id],
-                    ['widgets_design_block_id', $categories_pages_design_block_id]
+                    ['categories_pages_design_block_id', $categories_pages_design_block_id]
                 ])->pluck('value')->first();
             }
             if($info_block->info_block->type === 'media' || $info_block->info_block->type === 'media_area') {

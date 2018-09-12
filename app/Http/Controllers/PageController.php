@@ -10,7 +10,6 @@ use App\Models\Backend\LocaleContent;
 use App\Models\Backend\Menu;
 use App\Models\Backend\Page\Page;
 use Illuminate\Http\Request;
-use League\Flysystem\Adapter\Local;
 
 class PageController extends Controller
 {
@@ -55,7 +54,7 @@ class PageController extends Controller
         } else if($category) {
             $view = $category->page_template->view;
         }
-
+        setlocale(LC_TIME, 'ru_RU.UTF-8');
         return view($view, compact(
             'page',
             'category',

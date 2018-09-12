@@ -335,7 +335,6 @@
                     @include($design_block->design_block->view, ['data' => $design_block->mappedInfoBlocks($locale_id)])
                 @endif
             @endforeach
-
             <section id="news" class="section-news section-padding onepage-section">
                 <div class="container">
                     <div class="section-title-area">
@@ -345,107 +344,24 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="blog-entry wow slideInUp" style="visibility: hidden; animation-name: none;">
-
-
-                                    <article id="post-2738"
-                                             class="list-article clearfix post-2738 post type-post status-publish format-standard has-post-thumbnail hentry category-school">
-
-                                        <div class="list-article-thumb">
-                                            <a href="/school/%d0%bf%d0%be%d0%b4%d0%b0%d1%80%d0%be%d1%87%d0%bd%d1%8b%d0%b5-%d1%81%d0%b5%d1%80%d1%82%d0%b8%d1%84%d0%b8%d0%ba%d0%b0%d1%82%d1%8b-%d1%81%d0%b4%d0%b5%d0%bb%d0%b0%d0%b9-%d0%bf%d0%be%d0%b4%d0%b0%d1%80.php">
-                                                <img width="300" height="150"
-                                                     src="/images/картинка-к-новости-сертификатов-1-300x150.jpg"
-                                                     class="attachment-onepress-blog-small size-onepress-blog-small wp-post-image"
-                                                     alt=""
-                                                     srcset="/images/картинка-к-новости-сертификатов-1-300x150.jpg 300w, /images/картинка-к-новости-сертификатов-1-768x384.jpg 768w, /images/картинка-к-новости-сертификатов-1.jpg 1000w"
-                                                     sizes="(max-width: 300px) 100vw, 300px"> </a>
-                                        </div>
-
-                                        <div class="list-article-content">
-                                            <div class="list-article-meta">
-                                                <a href="/category/school.php" rel="category tag">Школа</a>
-                                            </div>
-                                            <header class="entry-header">
-                                                <h2 class="entry-title"><a
-                                                            href="/school/%d0%bf%d0%be%d0%b4%d0%b0%d1%80%d0%be%d1%87%d0%bd%d1%8b%d0%b5-%d1%81%d0%b5%d1%80%d1%82%d0%b8%d1%84%d0%b8%d0%ba%d0%b0%d1%82%d1%8b-%d1%81%d0%b4%d0%b5%d0%bb%d0%b0%d0%b9-%d0%bf%d0%be%d0%b4%d0%b0%d1%80.php"
-                                                            rel="bookmark">Подарочные сертификаты. Сделай подарок родным
-                                                        и
-                                                        близким!</a></h2></header><!-- .entry-header -->
-                                            <div class="entry-excerpt">
-                                                <p>&nbsp; Школа дайвинга DIVEZONE запускает систему Подарочных
-                                                    сертификатов и предлагает вам сделать приятный подарок своим родным
-                                                    и близким в виде подарочных сертификатов на пробное погружение с
-                                                    аквалангом и на обучение …</p>
-                                            </div><!-- .entry-content -->
-                                        </div>
-
-                                    </article><!-- #post-## -->
-
-
-                                    <article id="post-2736"
-                                             class="list-article clearfix post-2736 post type-post status-publish format-standard has-post-thumbnail hentry category-school">
-
-                                        <div class="list-article-thumb">
-                                            <a href="/school/%d0%bd%d0%b0%d0%b1%d0%be%d1%80-%d0%bd%d0%b0-%d0%ba%d1%83%d1%80%d1%81%d1%8b-cmas.php">
-                                                <img width="300" height="150"
-                                                     src="/images/Dajving_01-300x150.jpg"
-                                                     class="attachment-onepress-blog-small size-onepress-blog-small wp-post-image"
-                                                     alt=""> </a>
-                                        </div>
-
-                                        <div class="list-article-content">
-                                            <div class="list-article-meta">
-                                                <a href="/category/school.php" rel="category tag">Школа</a>
-                                            </div>
-                                            <header class="entry-header">
-                                                <h2 class="entry-title"><a
-                                                            href="/school/%d0%bd%d0%b0%d0%b1%d0%be%d1%80-%d0%bd%d0%b0-%d0%ba%d1%83%d1%80%d1%81%d1%8b-cmas.php"
-                                                            rel="bookmark">Набор на курсы CMAS</a></h2></header>
-                                            <!-- .entry-header -->
-                                            <div class="entry-excerpt">
-                                                <p>Школа дайвинга DIVEZONE приглашает всех желающих сделать первые шаги
-                                                    к познанию подводного мира и начать обучение дайвингу по системе
-                                                    CMAS. Начальный курс предполагает освоение базовых навыков
-                                                    подводного плавания, необходимых и …</p>
-                                            </div><!-- .entry-content -->
-                                        </div>
-
-                                    </article><!-- #post-## -->
-
-
-                                    <article id="post-2734"
-                                             class="list-article clearfix post-2734 post type-post status-publish format-standard has-post-thumbnail hentry category-dive category-school">
-
-                                        <div class="list-article-thumb">
-                                            <a href="/school/%d0%bf%d1%80%d0%b8%d0%b3%d0%bb%d0%b0%d1%88%d0%b0%d0%b5%d0%bc-%d0%bd%d0%b0-%d0%b4%d0%b0%d0%b9%d0%b2%d0%b8%d0%bd%d0%b3-%d1%81%d0%b0%d1%84%d0%b0%d1%80%d0%b8-2018-2.php">
-                                                <img width="300" height="150"
-                                                     src="/images/1-300x150.png"
-                                                     class="attachment-onepress-blog-small size-onepress-blog-small wp-post-image"
-                                                     alt=""> </a>
-                                        </div>
-
-                                        <div class="list-article-content">
-                                            <div class="list-article-meta">
-                                                <a href="/category/dive.php" rel="category tag">Погружения</a>
-                                                / <a href="/category/school.php" rel="category tag">Школа</a>
-                                            </div>
-                                            <header class="entry-header">
-                                                <h2 class="entry-title"><a
-                                                            href="/school/%d0%bf%d1%80%d0%b8%d0%b3%d0%bb%d0%b0%d1%88%d0%b0%d0%b5%d0%bc-%d0%bd%d0%b0-%d0%b4%d0%b0%d0%b9%d0%b2%d0%b8%d0%bd%d0%b3-%d1%81%d0%b0%d1%84%d0%b0%d1%80%d0%b8-2018-2.php"
-                                                            rel="bookmark">Приглашаем на дайвинг сафари 2018</a></h2>
-                                            </header><!-- .entry-header -->
-                                            <div class="entry-excerpt">
-                                                <p>Школа дайвинга DIVEZONE приглашает всех желающих на дайвинг сафари в
-                                                    Египте на роскошной яхте. Cафари будет проходить по северу Красного
-                                                    моря с 20 по 27 октября 2018 года. Увлекательное сафари …</p>
-                                            </div><!-- .entry-content -->
-                                        </div>
-
-                                    </article><!-- #post-## -->
-
-
+                                    @php
+                                        $category = App\Models\Backend\Category\Category::where('url', 'news')->first();
+                                        $categories_pages = App\Models\Backend\CategoriesPages::whereIn('category_id', $category->children()->pluck('id'))->limit(3)->get()->groupBy('page_id');
+                                    @endphp
+                                    @if($categories_pages)
+                                        @foreach($categories_pages as $category_page)
+                                            @php
+                                                $category_page = $category_page[0];
+                                            @endphp
+                                            @if($category_page->design_blocks)
+                                                @foreach($category_page->design_blocks as $design_block)
+                                                    @include($design_block->design_block->view, ['data' => $design_block->mappedInfoBlocks($locale_id)])
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                    @endif
                                     <div class="all-news">
-                                        <a class="btn btn-theme-primary-outline" href="/news.php">Больше
-                                            новостей</a>
+                                        <a class="btn btn-theme-primary-outline" href="/news">Больше новостей</a>
                                     </div>
 
                                 </div>
@@ -503,7 +419,7 @@
                                     <div class="contact-block__item contact-block__item--icon"><i
                                                 class="contact-block__icon linearicon linearicon-phone-handset"></i><span
                                                 class="contact-block__text"><a
-                                                    href="tel:{{$general_info['Phone number']}}">+{{$general_info['Phone number']}}</a></span>
+                                                    href="tel:{{$general_info['Phone number']}}">{{$general_info['Phone number']}}</a></span>
                                     </div>
                                     <div class="contact-block__item contact-block__item--icon"><i
                                                 class="contact-block__icon linearicon linearicon-envelope"></i><span

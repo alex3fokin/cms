@@ -341,12 +341,6 @@
                     <meta property="position" content="1">
                 </span>
                 <span property="itemListElement" typeof="ListItem">
-                    <a property="item" title="Перейти к {{$category->parent()->title}}" href="/{{$category->parent()->url}}" class="post-root post post-post">
-                        <span property="name">{{$category->parent()->title}}</span>
-                    </a>
-                    <meta property="position" content="2">
-                </span>
-                <span property="itemListElement" typeof="ListItem">
                     <span property="name">{{$category->title}}</span>
                     <meta property="position" content="2">
                 </span>
@@ -355,18 +349,33 @@
         <div id="content-inside" class="container no-sidebar">
             <div id="primary" class="content-area">
                 <main id="main" class="site-main" role="main">
-                    @php
-                        $categories_pages = App\Models\Backend\CategoriesPages::where('category_id', $category->id)->get();
-                    @endphp
-                    @if($categories_pages)
-                        @foreach($categories_pages as $category_page)
-                            @if($category_page->design_blocks)
-                                @foreach($category_page->design_blocks as $design_block)
-                                    @include($design_block->design_block->view, ['data' => $design_block->mappedInfoBlocks($locale_id)])
-                                @endforeach
-                            @endif
-                        @endforeach
-                    @endif
+                    <article id="post-1260" class="post-1260 page type-page status-publish hentry">
+                        <header class="entry-header">
+                        </header><!-- .entry-header -->
+
+                        <div class="entry-content">
+                            <p style="text-align: center;">Наша школа дайвинга DIVEZONE предоставляет в аренду и на продажу снаряжение для дайвинга любого уровня!</p>
+                            <p style="text-align: center;">
+                                @php
+                                    $categories_pages = App\Models\Backend\CategoriesPages::where('category_id', $category->id)->get();
+                                @endphp
+                                @if($categories_pages)
+                                    @foreach($categories_pages as $category_page)
+                                        @if($category_page->design_blocks)
+                                            @foreach($category_page->design_blocks as $design_block)
+                                                @php
+                                                    $data = $design_block->mappedInfoBlocks($locale_id);
+                                                @endphp
+                                                <a href="/{{$category_page->page->url}}" class="equipment-category-page-link">
+                                                    <img class="wp-image-2111 alignnone" src="{{$data['image']['path']}}" alt="" width="110" height="141">
+                                                </a>
+                                            @endforeach
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </p>
+                        </div><!-- .entry-content -->
+                    </article><!-- #post-## -->
                 </main><!-- #main -->
             </div>
         </div>
