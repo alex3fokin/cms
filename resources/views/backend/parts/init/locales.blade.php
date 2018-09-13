@@ -59,7 +59,7 @@
                         <button class="btn-floating waves-effect waves-light green" data-id="{{$locale->id}}"
                                 onclick="updateLocale(this)"><i class="material-icons">save</i></button>
                         <button class="btn-floating waves-effect waves-light red" data-id="{{$locale->id}}"
-                                onclick="deleteLocale(this)"><i class="material-icons">delete</i></button>
+                                onclick="openConfirmModal(this, 'deleteLocale')"><i class="material-icons">delete</i></button>
                     </td>
                 </tr>
             @endforeach

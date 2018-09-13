@@ -7,7 +7,7 @@
                 </div>
                 @if($is_sortable)
                     <div class="right">
-                        <button class="btn-floating waves-effect waves-light red" type="button" data-id="{{$design_block->id}}" onclick="deleteCategoriesPagesChildrenDesignBlock(this)"><i class="material-icons">delete</i></button>
+                        <button class="btn-floating waves-effect waves-light red" type="button" data-id="{{$design_block->id}}" onclick="openConfirmModal(this, 'deleteCategoriesPagesChildrenDesignBlock')"><i class="material-icons">delete</i></button>
                     </div>
                 @endif
             </div>

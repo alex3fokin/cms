@@ -36,7 +36,7 @@
                                 data-id="{{$widget->id}}" onclick="updateWidget(this)"><i
                                     class="material-icons">save</i></button>
                         <button class="btn-floating waves-effect waves-light red"
-                                data-id="{{$widget->id}}" onclick="deleteWidget(this)"><i
+                                data-id="{{$widget->id}}" onclick="openConfirmModal(this, 'deleteWidget')"><i
                                     class="material-icons">delete</i></button>
                     </td>
                 </tr>

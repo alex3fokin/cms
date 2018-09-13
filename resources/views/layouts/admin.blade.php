@@ -124,6 +124,17 @@
         </div>
     </div>
 </div>
+<!-- Modal Structure -->
+<div id="ays-modal" class="modal">
+    <div class="modal-content">
+        <p class="center-align">Confirmation delete</p>
+        <p class="center-align">Are yor sure?</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" onclick="confirmDelete(-1)" class="modal-close waves-effect waves-red btn-flat">No, cancel</a>
+        <a href="#!" onclick="confirmDelete(1)" class="modal-close waves-effect waves-green btn-flat">Yes</a>
+    </div>
+</div>
 <!-- Scripts -->
 <script src="/js/backend/jquery-3.3.1.min.js"></script>
 <script src="/js/backend/jquery-ui.js"></script>
@@ -132,6 +143,23 @@
 <script src="/js/backend/bootstrap-tagsinput.min.js"></script>
 <script src="/js/backend/ckeditor/ckeditor.js"></script>
 <script>
+    var element_to_delete = null;
+    var delete_function = null;
+
+    function confirmDelete(state) {
+        if(state === 1) {
+            window[delete_function](element_to_delete);
+        }
+        element_to_delete = null;
+        delete_function = null;
+    }
+
+    function openConfirmModal(elem, function_name) {
+        element_to_delete = elem;
+        delete_function = function_name;
+        $('#ays-modal').modal('open');
+    }
+
     function setInitiator(elem) {
         $('#' + $(elem).data('target')).find('button[data-initiator]').eq(0).data('initiator', $(elem).data('initiator'));
     }

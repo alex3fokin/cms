@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="right">
                                     <button class="btn-floating waves-effect waves-light red" type="button"
-                                            data-id="{{$menu->id}}" onclick="deleteMenu(this)"><i
+                                            data-id="{{$menu->id}}" onclick="openConfirmModal(this, 'deleteMenu')"><i
                                                 class="material-icons">delete</i></button>
                                 </div>
                             </div>

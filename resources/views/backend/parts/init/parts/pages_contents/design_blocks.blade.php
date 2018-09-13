@@ -21,7 +21,7 @@
                     </div>
                     <div class="right">
                         <button class="btn-floating waves-effect waves-light red" type="button"
-                                data-id="{{$design_block->id}}" onclick="deletePageDesignBlock(this)"><i
+                                data-id="{{$design_block->id}}" onclick="openConfirmModal(this, 'deletePageDesignBlock')"><i
                                     class="material-icons">delete</i></button>
                     </div>
                 </div>

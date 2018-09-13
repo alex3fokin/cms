@@ -40,7 +40,7 @@
                     </td>
                     <td>
                         <button class="btn-floating waves-effect waves-light green" data-id="{{$page_template->id}}" onclick="updatePageTemplate(this)"><i class="material-icons">save</i></button>
-                        <button class="btn-floating waves-effect waves-light red" data-id="{{$page_template->id}}" onclick="deletePageTemplate(this)"><i class="material-icons">delete</i></button>
+                        <button class="btn-floating waves-effect waves-light red" data-id="{{$page_template->id}}" onclick="openConfirmModal(this, 'deletePageTemplate')"><i class="material-icons">delete</i></button>
                     </td>
                 </tr>
             @endforeach

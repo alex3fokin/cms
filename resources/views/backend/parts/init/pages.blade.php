@@ -111,7 +111,7 @@
                     </td>
                     <td>
                         <button class="btn-floating waves-effect waves-light green" data-id="{{$page_item->id}}" onclick="updatePage(this)"><i class="material-icons">save</i></button>
-                        <button class="btn-floating waves-effect waves-light red" data-id="{{$page_item->id}}" onclick="deletePage(this)"><i class="material-icons">delete</i></button>
+                        <button class="btn-floating waves-effect waves-light red" data-id="{{$page_item->id}}" onclick="openConfirmModal(this, 'deletePage')"><i class="material-icons">delete</i></button>
                     </td>
                 </tr>
             @endforeach

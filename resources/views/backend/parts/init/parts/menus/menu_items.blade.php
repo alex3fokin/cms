@@ -7,7 +7,7 @@
                 </div>
                 <div class="right">
                     <button class="btn-floating waves-effect waves-light red" type="button"
-                            data-id="{{$menu_item->id}}" onclick="deleteMenuItem(this)"><i
+                            data-id="{{$menu_item->id}}" onclick="openConfirmModal(this, 'deleteMenuItem')"><i
                                 class="material-icons">delete</i></button>
                 </div>
             </div>
