@@ -156,6 +156,7 @@
     }
 
     $(document).ready(function () {
+        $('.hiddendiv').css('display', 'none');
         $('.collapsible').collapsible({
             onOpenStart:function(elem) {
                 $(elem).find('.wysiwyg-textarea').each(function () {
