@@ -72,19 +72,21 @@ class PageController extends Controller
         $v = Validator::make($request->all(), [
             'name' => 'required',
             'tel' => 'required',
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'question' => 'required'
         ]);
 
         if($v->fails()) {
-            return back();
+            return response()->json(['errors' => $v->errors()], 400);
         }
 
         Notification::route('mail', GeneralInfo::where('title', 'email')->pluck('value')->first())
             ->notify(new FeedbackNotification([
                             'name' => $request->name,
                             'phone' => $request->tel,
-                            'email' => $request->email
+                            'email' => $request->email,
+                            'question' => $request->question
                         ]));
-        return back();
+        return response()->json(['status' => 1], 200);
     }
 }

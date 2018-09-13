@@ -4279,3 +4279,57 @@ span.breadcrumb-m0 {
 .equipment-category-page-link:hover {
   opacity: 0.5;
 }
+
+input[type="reset"], button[type="submit"], input[type="submit"] {
+  cursor: pointer;
+  background: #03c4eb;
+  border: none;
+  display: inline-block;
+  color: #FFFFFF;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1;
+  text-align: center;
+  padding: 15px 23px 15px 23px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.1) inset;
+  margin: 3px 0;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+@-webkit-keyframes hide {
+  0%   { opacity: 1;}
+  100% { opacity: 0;}
+}
+@-moz-keyframes hide {
+  0%   { opacity: 1;}
+  100% { opacity: 0;}
+}
+@-o-keyframes hide {
+  0%   { opacity: 1;}
+  100% { opacity: 0;}
+}
+@keyframes hide {
+  0%   { opacity: 1;}
+  100% { opacity: 0;}
+}
+
+.feedback-success {
+  display: none;
+  padding: 30px 10px;
+  border: 1px solid #42f47d;
+  color: #42f47d;
+  animation: hide 1s 2s forwards;
+}
+
+.feedback-error {
+  display: none;
+  padding: 30px 10px;
+  border: 1px solid #f45641;
+  color: #f45641;
+  animation: hide 1s 2s forwards;
+}

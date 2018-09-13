@@ -11,6 +11,8 @@
     <meta name="keywords"
           content="{{str_replace(',', ' ', $category->seo->keywords)}}">
     <title>{{$general_info['Title']}}</title>
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="/js/frontend/wp-emoji-release.min.js" type="text/javascript"
             defer=""></script>
     <style type="text/css">
@@ -446,26 +448,36 @@
                             <h5 class="follow-heading">Погружаемся! Есть вопросы?</h5>
                             <div lang="ru-RU" dir="ltr">
                                 <div class="screen-reader-response"></div>
-                                <form action="{{route('feedback')}}" method="POST">
-                                    {{csrf_field()}}
+                                <form action="{{route('feedback')}}" id="feedback-form" method="POST">
                                     <p>
                                         <span class="your-name">
-                                            <input type="text" name="name" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" aria-required="true" aria-invalid="false" placeholder="Ваше имя*" style="border: 0px solid #000;margin-bottom: 2px;">
+                                            <input type="text" name="name" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" required aria-invalid="false" placeholder="Ваше имя*" style="border: 0px solid #000;margin-bottom: 2px;">
                                         </span>
                                         <br>
                                         <span class="your-tel">
-                                            <input type="tel" name="tel" size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel" aria-required="true" aria-invalid="false" placeholder="Контактный номер*" style="border: 0px solid #000;margin-bottom: 2px;">
+                                            <input type="tel" name="tel" size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel" required aria-invalid="false" placeholder="Контактный номер*" style="border: 0px solid #000;margin-bottom: 2px;">
                                         </span>
                                         <br>
                                         <span class="your-email">
-                                            <input type="email" name="email" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-email" aria-invalid="false" placeholder="Ваш email" style="border: 0px solid #000;margin-bottom: 2px;">
+                                            <input type="email" name="email" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-email" required aria-invalid="false" placeholder="Ваш email*" style="border: 0px solid #000;margin-bottom: 2px;">
+                                        </span>
+                                        <span>
+                                            <textarea name="question" cols="40" placeholder="Ваше сообщение" required></textarea>
                                         </span>
                                     </p>
                                     <p>
-                                        <input type="submit" value="Отправить">
+                                        <button type="submit">Отправить</button>
                                         <span class="ajax-loader"></span>
                                     </p>
-                                    <div class="wpcf7-response-output wpcf7-display-none"></div>
+                                    <div class="">
+                                        <div class="feedback-success">
+                                            Ваше обращение успешно отправлено!
+                                        </div>
+                                        <div class="feedback-error">
+                                            Ошибка! Ваше обращение не было отправлено. <br>
+                                            Повторите попытку позже.
+                                        </div>
+                                    </div>
                                 </form>
                             </div>                                    <!--<form novalidate="" target="_blank" class="" name="mc-embedded-subscribe-form" id="mc-embedded-subscribe-form" method="post"
                                           action="//famethemes.us8.list-manage.com/subscribe/post?u=521c400d049a59a4b9c0550c2&#038;id=83187e0006">
@@ -510,6 +522,34 @@
         "cached": "1"
     };
     /* ]]> */
+    jQuery(document).ready(function ($) {
+        $('#feedback-form').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{route('feedback')}}',
+                data: $(this).serialize(),
+                success:function(data) {
+                    console.log(data);
+                    document.getElementById("feedback-form").reset();
+                    document.querySelector('#feedback-form .feedback-success').style.display = 'block';
+                    setTimeout(function() {
+                        document.querySelector('#feedback-form .feedback-success').style.display = 'none';
+                    }, 3000);
+                },
+                error:function(data) {
+                    console.log(data);
+                    document.querySelector('#feedback-form .feedback-error').style.display = 'block';
+                    setTimeout(function() {
+                        document.querySelector('#feedback-form .feedback-error').style.display = 'none';
+                    }, 3000);
+                }
+            });
+        });
+    });
 </script>
 <script type="text/javascript" src="/js/frontend/scripts.js"></script>
 <script type="text/javascript" src="/js/frontend/plugins.js"></script>

@@ -44,7 +44,8 @@ class FeedbackNotification extends Notification
                     ->subject('Обратная связь с сайта')
                     ->line('Имя:    ' . $this->feedback_info['name'])
                     ->line('Телефон:    ' . $this->feedback_info['phone'])
-                    ->line('Email:    ' . $this->feedback_info['email']);
+                    ->line('Email:    ' . $this->feedback_info['email'])
+                    ->line('Вопрос:     ' . $this->feedback_info['question']);
 
     }
 
