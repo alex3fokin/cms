@@ -37,6 +37,7 @@ class CategoryController extends Controller
             'keywords' => $request->keywords,
             'description' => $request->description,
         ]);
+
         $category = Category::create([
             'title' => $request->title,
             'url' => $request->url,

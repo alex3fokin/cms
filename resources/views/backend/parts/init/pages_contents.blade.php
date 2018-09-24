@@ -269,6 +269,15 @@
 
             $('.categories-sortable').sortable({
                 stop: function (event, ui) {
+                    $(ui.item).find('.wysiwyg-textarea').each(function () {
+                        CKEDITOR.instances[$(this).attr('id')].destroy();
+                        var editor = CKEDITOR.replace($(this).attr('id'));
+                        var that = this;
+                        editor.on('instanceReady', function () {
+                            $(that).parent().find('label').eq(0).addClass('active');
+                        });
+
+                    });
                     var elements = $(ui.item).parent().children();
                     var order = [];
                     console.log(elements);

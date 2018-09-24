@@ -83,9 +83,11 @@
                 },
                 success:function(data) {
                     console.log(data);
+                    M.toast({html: 'Success! Default locale has been changed.', classes: 'green'});
                 },
                 error: function(data) {
                     console.log(data);
+                    M.toast({html: 'Error! Default locale hasn\'t been changed.', classes: 'red'});
                 }
             });
         }
@@ -107,9 +109,11 @@
                 },
                 success: function (data) {
                     console.log(data);
+                    M.toast({html: 'Success! Locale has been changed.', classes: 'green'});
                 },
                 error: function (data) {
                     console.log(data);
+                    M.toast({html: 'Error! Locale hasn\'t been changed.', classes: 'red'});
                 },
             });
         }

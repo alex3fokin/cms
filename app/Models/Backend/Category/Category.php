@@ -11,7 +11,7 @@ class Category extends Model
     protected $table = 'categories';
 
     protected $fillable = [
-        'title', 'url', 'seo_id', 'page_template_id', 'parent_category', 'design_blocks'
+        'title', 'url', 'seo_id', 'page_template_id', 'parent_category', 'design_blocks', 'per_page'
     ];
 
     public function page_template() {
@@ -34,5 +34,13 @@ class Category extends Model
         return self::where('id', $this->attributes['parent_category'])->first();
     }
 
-
+    public function getUrlAttribute() {
+        $url = $this->attributes['url'];
+        $parent_category = $this->parent();
+        while($parent_category) {
+            $url = $parent_category->url . '/' . $url;
+            $parent_category = $parent_category->parent();
+        }
+        return $url;
+    }
 }

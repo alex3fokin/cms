@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Backend\CategoriesPages;
 use App\Models\Backend\Category\Category;
 use App\Models\Backend\DefaultData;
 use App\Models\Backend\GeneralInfo;
@@ -17,8 +18,7 @@ use Illuminate\Support\Facades\Validator;
 class PageController extends Controller
 {
     public function show(Request $request) {
-        $page = Page::where('url', urldecode($request->path()))->get()->first();
-        return $this->render($request, $page);
+        return $this->render($request);
     }
 
     public function home(Request $request) {
@@ -27,8 +27,18 @@ class PageController extends Controller
     }
 
     private function render(Request $request, Page $page = null) {
-        $path = urldecode($request->path());
-        $category = Category::where('url', $path)->get()->first();
+        $category = null;
+        if(!$page) {
+            $route_map = $this->getRouteMap();
+            $path = urldecode($request->path());
+            if(($route = array_search($path, array_column($route_map, 'url'))) !== false) {
+                if($route_map[$route]['entity'] === 'App\Models\Backend\Page\Page') {
+                    $page = $route_map[$route]['entity']::find($route_map[$route]['id']);
+                } else if($route_map[$route]['entity'] === 'App\Models\Backend\Category\Category') {
+                    $category = $route_map[$route]['entity']::find($route_map[$route]['id']);
+                }
+            }
+        }
         if(!($page && $page->published) && !$category) {
             abort(404);
         }
@@ -88,5 +98,35 @@ class PageController extends Controller
                             'question' => $request->question
                         ]));
         return response()->json(['status' => 1], 200);
+    }
+
+    private function getRouteMap() {
+        $route_map = [];
+        $categories = Category::all();
+        $categories_pages = CategoriesPages::all();
+        $pages_without_categories = Page::whereNotIn('id', $categories_pages->pluck('page_id')->unique()->toArray())->get();
+        foreach($pages_without_categories as $page_without_category) {
+            $route_map[] = [
+                'url' => $page_without_category->url,
+                'entity' => get_class($page_without_category),
+                'id' => $page_without_category->id
+            ];
+        }
+        foreach($categories as $category) {
+            $route_map[] = [
+                'url' => $category->url,
+                'entity' => get_class($category),
+                'id' => $category->id
+            ];
+            $categories_pages = CategoriesPages::where('category_id', $category->id)->get();
+            foreach($categories_pages as $category_page) {
+                $route_map[] = [
+                    'url' => $category_page->page->url,
+                    'entity' => get_class($category_page->page),
+                    'id' => $category_page->page->id
+                ];
+            }
+        }
+        return $route_map;
     }
 }

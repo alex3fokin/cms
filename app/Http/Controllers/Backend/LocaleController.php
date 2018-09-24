@@ -30,7 +30,7 @@ class LocaleController extends Controller
 
         $locale = Locale::create(['short_code' => $request->short_code, 'title' => $request->title]);
 
-        if(!DefaultData::where('title', 'locale')->count()) {
+        if(!DefaultData::where('title', 'locale')->count() || !DefaultData::where('title', 'locale')->pluck('value')->first()) {
             DefaultData::updateOrCreate([
                 'title' => 'locale',],[
                 'value' => $locale->id,
@@ -95,7 +95,7 @@ class LocaleController extends Controller
             if(Locale::where('id', '!=', $request->id)->count()) {
                 DefaultData::updateOrCreate([
                     'title' => 'locale',],[
-                    'value' => Locale::where('id', '!=', 9)->pluck('id')->first(),
+                    'value' => Locale::where('id', '!=', $request->id)->pluck('id')->first(),
                 ]);
             }
         }

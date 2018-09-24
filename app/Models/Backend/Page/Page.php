@@ -41,4 +41,12 @@ class Page extends Model
     public function getDesignBlocksAttribute() {
         return PagesDesignBlock::where([['parent_design_block', null], ['page_id', $this->attributes['id']]])->orderBy('order')->get();
     }
+
+    public function getUrlAttribute() {
+        $url = $this->attributes['url'];
+        if($category = $this->categories->first()) {
+            $url = $category->url . '/' . $url;
+        }
+        return $url;
+    }
 }
