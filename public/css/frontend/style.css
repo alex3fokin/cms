@@ -784,7 +784,19 @@ Footer widgets
 	width: 50%;
 	text-align: justify;
 }
-.followWrap {
+@media screen and (max-width: 550px) {
+  .gift-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .gift-article{
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+  .followWrap {
   display: block;
 }
 
