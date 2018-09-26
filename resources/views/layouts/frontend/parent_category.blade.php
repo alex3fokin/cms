@@ -454,22 +454,17 @@
                             <div lang="ru-RU" dir="ltr">
                                 <div class="screen-reader-response"></div>
                                 <form action="{{route('feedback')}}" id="feedback-form" method="POST">
-                                    <p>
-                                        <span class="your-name">
-                                            <input type="text" name="name" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" required aria-invalid="false" placeholder="Ваше имя*" style="border: 0px solid #000;margin-bottom: 2px;">
-                                        </span>
-                                        <br>
-                                        <span class="your-tel">
-                                            <input type="tel" name="tel" size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel" required aria-invalid="false" placeholder="Контактный номер*" style="border: 0px solid #000;margin-bottom: 2px;">
-                                        </span>
-                                        <br>
-                                        <span class="your-email">
-                                            <input type="email" name="email" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-email" required aria-invalid="false" placeholder="Ваш email*" style="border: 0px solid #000;margin-bottom: 2px;">
-                                        </span>
-                                        <span>
-                                            <textarea name="question" cols="40" placeholder="Ваше сообщение" required></textarea>
-                                        </span>
-                                    </p>
+
+
+                                    <input type="text" name="name" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" required aria-invalid="false" placeholder="Ваше имя*" style="border: 0px solid #000;margin-bottom: 2px; width: 100%">
+
+                                    <br>
+                                    <input type="tel" name="tel" size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel" required aria-invalid="false" placeholder="Контактный номер*" style="border: 0px solid #000;margin-bottom: 2px;width: 100%">
+
+                                    <br>
+                                    <input type="email" name="email" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-email" required aria-invalid="false" placeholder="Ваш email*" style="border: 0px solid #000;margin-bottom: 2px;width: 100%">
+                                    <br>
+                                    <textarea name="question" cols="40" placeholder="Ваше сообщение" required style="width:100%"></textarea>
                                     <p>
                                         <button type="submit">Отправить</button>
                                         <span class="ajax-loader"></span>
