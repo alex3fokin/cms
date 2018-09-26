@@ -4,6 +4,11 @@
     <script src="/js/frontend/jquery.justifiedGallery.min.js"></script>
     <script src="/js/frontend/lightgallery.min.js"></script>
     <script src="/js/frontend/lg-thumbnail.js"></script>
+    <style>
+        .lazy-block {
+            display: none;
+        }
+    </style>
     <div class="entry-content">
         @if($design_block->children)
             @foreach($design_block->children as $gallery_index => $gallery)
