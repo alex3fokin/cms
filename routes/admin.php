@@ -5,6 +5,7 @@ Route::prefix('admin')->group(function() {
     Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
     Route::post('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
     Route::get('/dashboard', 'AdminController@index')->name('admin.dashboard');
+    Route::get('/', 'AdminController@index');
 });
 
 Route::post('/add-locale', 'Backend\LocaleController@add')->name('api.locale.add');
