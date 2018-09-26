@@ -125,14 +125,7 @@
         /* ]]> */
     </script>
     <script type="text/javascript" src="/js/frontend/crayon.min.js"></script>
-    <style type="text/css">@-moz-document url-prefix() {
-                               .testimonial_slider__round .testimonial_outer_wrap::after {
-                                   margin-left: 82% !important;
-                               }
-                               .testimonial_slider__round .testimonial_outer_wrap::before {
-                                   -moz-margin-start: -18% !important;
-                               }
-                           }</style>
+
     <style type="text/css">.recentcomments a {
             display: inline !important;
             padding: 0 !important;
@@ -237,34 +230,6 @@
             margin-bottom: 2px;
         }        </style>
     <link rel="stylesheet" type="text/css" href="/css/frontend/linearicons.css">
-    <style type="text/css">.testimonial_slider_set.testimonial_slider {
-            width: 100% !important;
-            max-width: 100%;
-            display: block;
-        }
-
-        .testimonial_slider_set img {
-            max-width: 90% !important;
-        }
-
-        .testimonial_side {
-            width: 100% !important;
-        }</style>
-    <style type="text/css">#testimonial_slider_recent_nav a.selected {
-            background-position: -18px 0 !important;
-        }
-
-        .testimonial_slider__round .testimonial_outer_wrap:after {
-            border-top-color: #ffffff !important;
-        }
-
-        .testimonial_slider__round .testimonial_nav-fillup .inner_nav a {
-            border: 2px solid #999999 !important;
-        }
-
-        .testimonial_slider__round .testimonial_nav-fillup .inner_nav.selected a:after {
-            background-color: #999999 !important;
-        }</style>
     <style id="fit-vids-style">.fluid-width-video-wrapper {
             width: 100%;
             position: relative;
@@ -438,22 +403,17 @@
                             <div lang="ru-RU" dir="ltr">
                                 <div class="screen-reader-response"></div>
                                 <form action="{{route('feedback')}}" id="feedback-form" method="POST">
-                                    <p>
-                                        <span class="your-name">
-                                            <input type="text" name="name" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" required aria-invalid="false" placeholder="Ваше имя*" style="border: 0px solid #000;margin-bottom: 2px;">
-                                        </span>
+
+
+                                            <input type="text" name="name" size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" required aria-invalid="false" placeholder="Ваше имя*" style="border: 0px solid #000;margin-bottom: 2px; width: 100%">
+
+                                    <br>
+                                            <input type="tel" name="tel" size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel" required aria-invalid="false" placeholder="Контактный номер*" style="border: 0px solid #000;margin-bottom: 2px;width: 100%">
+
                                         <br>
-                                        <span class="your-tel">
-                                            <input type="tel" name="tel" size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel" required aria-invalid="false" placeholder="Контактный номер*" style="border: 0px solid #000;margin-bottom: 2px;">
-                                        </span>
-                                        <br>
-                                        <span class="your-email">
-                                            <input type="email" name="email" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-email" required aria-invalid="false" placeholder="Ваш email*" style="border: 0px solid #000;margin-bottom: 2px;">
-                                        </span>
-                                        <span>
-                                            <textarea name="question" cols="40" placeholder="Ваше сообщение" required></textarea>
-                                        </span>
-                                    </p>
+                                            <input type="email" name="email" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-email" required aria-invalid="false" placeholder="Ваш email*" style="border: 0px solid #000;margin-bottom: 2px;width: 100%">
+                                    <br>
+                                            <textarea name="question" cols="40" placeholder="Ваше сообщение" required style="width:100%"></textarea>
                                     <p>
                                         <button type="submit">Отправить</button>
                                         <span class="ajax-loader"></span>

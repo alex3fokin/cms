@@ -43,8 +43,8 @@
             appear please use a Javascript enabled browser.&lt;/strong&gt;&lt;/p&gt;
         </noscript>
         <div id="testimonial_slider_recent_wrap" class="testimonial_slider testimonial_slider_set testimonial_slider__round" style="display: block;">
-            <div class="testimonial_wrapper" style="display: block; text-align: start; float: none; position: relative; top: auto; right: auto; bottom: auto; left: auto; z-index: auto; width: 1110px; height: 450px; margin: 0px; overflow: hidden;">
-                <div id="testimonial_slider_recent" class="testimonial_slider_instance" style="text-align: left; float: none; position: absolute; top: 0px; right: auto; bottom: auto; left: 0px; margin: 0px; width: 8880px; height: 450px; z-index: auto;">
+            <div class="testimonial_wrapper" >
+                <div id="testimonial_slider_recent" class="testimonial_slider_instance" >
                     @if($design_block->children)
                         @foreach($design_block->children as $comment)
                             @php
