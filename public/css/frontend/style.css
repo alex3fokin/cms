@@ -786,14 +786,22 @@ Footer widgets
 }
 @media screen and (max-width: 550px) {
   .gift-content{
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   .gift-article{
+    width: 100%;
     display: flex;
     flex-direction: column;
   }
+  .gift-article p {
+    text-align: center;
+  }
+  .gift-article a {
+  width: 50%;
+    margin: 0 auto;}
 }
 
   .followWrap {
