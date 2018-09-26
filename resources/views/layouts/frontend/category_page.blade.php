@@ -526,7 +526,7 @@
                             style="visibility: hidden; animation-duration: 2s; animation-name: none;"></i></a>
             </div>
             Copyright © 2018 DiveZone <span class="sep"> – </span>
-            made by Unique Technologies
+            made by <a href="https://ut.in.ua" target="_blank">Unique Technologies</a>
         </div>
     </div>
     <!-- .site-info -->
