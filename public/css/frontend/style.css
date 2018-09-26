@@ -996,6 +996,7 @@ Footer widgets
   *white-space: normal;
   -webkit-transition: background .2s;
   transition: background .2s;
+  padding-bottom: 5px;
 }
 .onepress-menu li:hover,
 .onepress-menu li.sfHover {
@@ -1152,6 +1153,7 @@ Footer widgets
   overflow: hidden;
   white-space: nowrap;
   color: transparent;
+  margin-top: 8px;
 }
 #nav-toggle span {
   position: absolute;

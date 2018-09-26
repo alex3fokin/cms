@@ -193,6 +193,10 @@
             width: 100%;
         }
 
+        .site-branding .site-logo-div {
+            line-height: 0;margin-top: 11px;
+        }
+
         @media screen and (max-width: 575px) {
             .form_submit_c {
                 text-align: center;
@@ -220,6 +224,7 @@
 
             .site-branding .site-logo-div {
                 width: 200px;
+                margin-top: 20px;
             }
         }
 
@@ -252,7 +257,7 @@
         <div class="followWrap" style="height: 157px;">
             <header id="masthead" class="site-header header-contained is-sticky no-scroll no-t h-on-top header-fixed"
                     role="banner" style="top: 0px;">
-                <div class="container" style="width: 100%; padding: 15px 7px;">
+                <div class="container" style="width: 100%; padding: 0 14px;">
                     <div class="site-branding">
                         <div class="site-brand-inner has-logo-img no-desc">
                             <div class="site-logo-div"><a href="/"
