@@ -28,13 +28,27 @@
                 </div>
                 <script type="text/javascript">
                     var $animThumb_{{$gallery_index}} = jQuery('#lightgallery-{{$gallery_index}}');
+                    var loaded_{{$gallery_index}} = 0;
+
+                    var images_{{$gallery_index}} = $animThumb_{{$gallery_index}}[0].getElementsByTagName("img"),
+                        len_{{$gallery_index}} = images_{{$gallery_index}}.length - 1;
+                    function imgload_{{$gallery_index}}(e) {
+                        if(++loaded_{{$gallery_index}} > len_{{$gallery_index}}) {
+                            console.log(document.getElementById('#lightgallery-{{$gallery_index + 1}}'));
+                            document.getElementById('#lightgallery-{{$gallery_index + 1}}').style.display = 'block';
+                        }
+                    }
+
+                    for(var i = 0, img; img = images_{{$gallery_index}}[i]; i++)
+                        img.addEventListener("load", imgload_{{$gallery_index}});
+
                     if ($animThumb_{{$gallery_index}}.length) {
                         $animThumb_{{$gallery_index}}.justifiedGallery({
                             border: 6
                         }).on('jg.complete', function() {
                             lightGallery($animThumb_{{$gallery_index}}[0], {
                                 thumbnail: true
-                            });
+                            })
                         });
                     };
                 </script>
