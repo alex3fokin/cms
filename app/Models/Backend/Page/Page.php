@@ -15,7 +15,7 @@ class Page extends Model
     ];
 
     protected $appends = [
-        'design_blocks'
+        'design_blocks', 'self_url'
     ];
 
     public function page_template() {
@@ -48,5 +48,9 @@ class Page extends Model
             $url = $category->url . '/' . $url;
         }
         return $url;
+    }
+
+    public function getSelfUrlAttribute() {
+        return $this->attributes['url'];
     }
 }

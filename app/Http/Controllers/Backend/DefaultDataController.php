@@ -28,7 +28,7 @@ class DefaultDataController extends Controller
                 $tmp = $model::where('id', $locale_content->model_id)->pluck($locale_content->property)->first();
                 $model::where('id', $locale_content->model_id)->update([$locale_content->property => $locale_content->value]);
                 $locale_content->value = $tmp;
-                $locale_content->locale_id = $request->default_locale;
+                $locale_content->locale_id = $current_default_locale->value;
                 $locale_content->save();
             }
         }

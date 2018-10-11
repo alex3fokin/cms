@@ -7,6 +7,7 @@ use App\Models\Backend\Menu;
 use App\Models\Backend\MenuItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class MenuController extends Controller
 {
@@ -27,6 +28,21 @@ class MenuController extends Controller
         return response()->json(['menu' => Menu::create([
             'title' => $request->title,
         ])],200);
+    }
+
+    public function update(Request $request) {
+        $v = Validator::make($request->all(), [
+            'id' => 'required|exists:menus',
+            'title' => ['required', Rule::unique('menus')->ignore($request->id)]
+        ]);
+
+        if($v->fails()) {
+            return response()->json(['errors' => $v->errors()],400);
+        }
+        $menu = Menu::find($request->id);
+        $menu->title = $request->title;
+        $menu->save();
+        return response()->json(['menu' => $menu],200);
     }
 
     public function delete(Request $request) {

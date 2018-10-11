@@ -4,67 +4,85 @@ Route::prefix('admin')->group(function() {
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
     Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
     Route::post('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
-    Route::get('/dashboard', 'AdminController@index')->name('admin.dashboard');
-    Route::get('/', 'AdminController@index');
+    Route::get('/dashboard', 'Backend\DashboardController@home')->name('dashboard.index');
+
+    Route::get('/', 'Backend\DashboardController@index')->name('dashboard.home');
+    Route::get('/pages', 'Backend\DashboardController@pages')->name('dashboard.pages');
+    Route::get('/pages/templates/edit/{page_template}', 'Backend\DashboardController@pageTemplateEdit')->name('dashboard.pages.template.edit');
+    Route::get('/pages/edit/{page}', 'Backend\DashboardController@pageEdit')->name('dashboard.page.edit');
+    Route::get('/categories', 'Backend\DashboardController@categories')->name('dashboard.categories');
+    Route::get('/categories/edit/{category}', 'Backend\DashboardController@categoryEdit')->name('dashboard.category.edit');
+    Route::get('/widgets', 'Backend\DashboardController@widgets')->name('dashboard.widgets');
+    Route::get('/widgets/edit/{widget}', 'Backend\DashboardController@widgetEdit')->name('dashboard.widget.edit');
+    Route::get('/design-blocks', 'Backend\DashboardController@designBlocks')->name('dashboard.design_blocks');
+    Route::get('/design-blocks/edit/{design_block}', 'Backend\DashboardController@designBlockEdit')->name('dashboard.design_block.edit');
+    Route::get('/menus', 'Backend\DashboardController@menus')->name('dashboard.menus');
+    Route::get('/menus/edit/{menu}', 'Backend\DashboardController@menuEdit')->name('dashboard.menu.edit');
+    Route::get('/general_info', 'Backend\DashboardController@generalInfo')->name('dashboard.general_info');
+    Route::get('/general_info/edit/{general_info}', 'Backend\DashboardController@generalInfoEdit')->name('dashboard.general_info.edit');
+    Route::get('/locales', 'Backend\DashboardController@locales')->name('dashboard.locales');
+    Route::get('/locales/edit/{locale}', 'Backend\DashboardController@localeEdit')->name('dashboard.locale.edit');
+    Route::get('/media', 'Backend\DashboardController@media')->name('dashboard.media');
 });
 
-Route::post('/add-locale', 'Backend\LocaleController@add')->name('api.locale.add');
-Route::put('/update-locale', 'Backend\LocaleController@update')->name('api.locale.update');
-Route::delete('/delete-locale', 'Backend\LocaleController@delete')->name('api.locale.delete');
+Route::post('/locale/add', 'Backend\LocaleController@add')->name('api.locale.add');
+Route::put('/locale/update', 'Backend\LocaleController@update')->name('api.locale.update');
+Route::delete('/locale/delete', 'Backend\LocaleController@delete')->name('api.locale.delete');
 
-Route::post('/add-general-info', 'Backend\GeneralInfoController@add')->name('api.general_info.add');
-Route::put('/update-general-info', 'Backend\GeneralInfoController@update')->name('api.general_info.update');
-Route::delete('/delete-general-info', 'Backend\GeneralInfoController@delete')->name('api.general_info.delete');
+Route::post('/general-info/add', 'Backend\GeneralInfoController@add')->name('api.general_info.add');
+Route::put('/general-info/update', 'Backend\GeneralInfoController@update')->name('api.general_info.update');
+Route::delete('/general-info/delete', 'Backend\GeneralInfoController@delete')->name('api.general_info.delete');
 
-Route::post('/add-design-block', 'Backend\DesignBlockController@add')->name('api.design_block.add');
-Route::put('/update-design-block', 'Backend\DesignBlockController@update')->name('api.design_block.update');
-Route::delete('/delete-design-block', 'Backend\DesignBlockController@delete')->name('api.design_block.delete');
+Route::post('/design-block/add', 'Backend\DesignBlockController@add')->name('api.design_block.add');
+Route::put('/design-block/update', 'Backend\DesignBlockController@update')->name('api.design_block.update');
+Route::delete('/design-block/delete', 'Backend\DesignBlockController@delete')->name('api.design_block.delete');
 
-Route::post('/add-widget', 'Backend\Widget\WidgetController@add')->name('api.widget.add');
-Route::post('/add-widget-design-block', 'Backend\Widget\WidgetController@addDesignBlock')->name('api.widget.design_block.add');
-Route::post('/update-widget-design-blocks-order', 'Backend\Widget\WidgetController@updateDesignBlocksOrder')->name('api.widget.design_blocks.order.update');
-Route::put('/update-widget', 'Backend\Widget\WidgetController@update')->name('api.widget.update');
-Route::delete('/delete-widget', 'Backend\Widget\WidgetController@delete')->name('api.widget.delete');
-Route::delete('/delete-widget-design-block', 'Backend\Widget\WidgetController@deleteDesignBlock')->name('api.widget.design_block.delete');
-Route::post('/update-widget-content', 'Backend\Widget\WidgetsBlocksContentController@update')->name('api.widget_content.update');
+Route::post('/widget/add', 'Backend\Widget\WidgetController@add')->name('api.widget.add');
+Route::post('/widget/design-block/add', 'Backend\Widget\WidgetController@addDesignBlock')->name('api.widget.design_block.add');
+Route::post('/widget/design-blocks/order/update', 'Backend\Widget\WidgetController@updateDesignBlocksOrder')->name('api.widget.design_blocks.order.update');
+Route::put('/widget/update', 'Backend\Widget\WidgetController@update')->name('api.widget.update');
+Route::delete('/widget/delete', 'Backend\Widget\WidgetController@delete')->name('api.widget.delete');
+Route::delete('/widget/design-block/delete', 'Backend\Widget\WidgetController@deleteDesignBlock')->name('api.widget.design_block.delete');
+Route::post('/widget-content/update', 'Backend\Widget\WidgetsBlocksContentController@update')->name('api.widget_content.update');
 
-Route::post('/add-page-template', 'Backend\Page\PageTemplateController@add')->name('api.page_template.add');
-Route::put('/update-page-template', 'Backend\Page\PageTemplateController@update')->name('api.page_template.update');
-Route::delete('/delete-page-template', 'Backend\Page\PageTemplateController@delete')->name('api.page_template.delete');
+Route::post('/page-template/add', 'Backend\Page\PageTemplateController@add')->name('api.page_template.add');
+Route::put('/page-template/update', 'Backend\Page\PageTemplateController@update')->name('api.page_template.update');
+Route::delete('/page-template/delete', 'Backend\Page\PageTemplateController@delete')->name('api.page_template.delete');
 
-Route::post('/add-page', 'Backend\Page\PageController@add')->name('api.page.add');
-Route::put('/update-page', 'Backend\Page\PageController@update')->name('api.page.update');
-Route::delete('/delete-page', 'Backend\Page\PageController@delete')->name('api.page.delete');
-Route::put('/update-page-publicity', 'Backend\Page\PageController@updatePublicity')->name('api.page.publicity.update');
-Route::post('/update-page-design-blocks-order', 'Backend\Page\PagesDesignBlockController@updateDesignBlocksOrder')->name('api.page.design_blocks.order.update');
-Route::post('/add-page-design-block', 'Backend\Page\PagesDesignBlockController@addDesignBlock')->name('api.page.design_block.add');
-Route::post('/add-page-child-design-block', 'Backend\Page\PagesDesignBlockController@addChildDesignBlock')->name('api.page.child_design_block.add');
-Route::post('/add-page-widget', 'Backend\Page\PagesDesignBlockController@addWidget')->name('api.page.widget.add');
-Route::delete('/delete-page-design-block', 'Backend\Page\PagesDesignBlockController@deleteDesignBlock')->name('api.page.design_block.delete');
-Route::delete('/delete-page-widget', 'Backend\Page\PagesDesignBlockController@deleteWidget')->name('api.page.widget.delete');
-Route::post('/update-page-content', 'Backend\Page\PagesBlocksContentController@update')->name('api.page_content.update');
+Route::post('/page/add', 'Backend\Page\PageController@add')->name('api.page.add');
+Route::put('/page/update', 'Backend\Page\PageController@update')->name('api.page.update');
+Route::delete('/page/delete', 'Backend\Page\PageController@delete')->name('api.page.delete');
+Route::put('/page/publicity/update', 'Backend\Page\PageController@updatePublicity')->name('api.page.publicity.update');
+Route::post('/page/design-blocks/order/update', 'Backend\Page\PagesDesignBlockController@updateDesignBlocksOrder')->name('api.page.design_blocks.order.update');
+Route::post('/page/design-block/add', 'Backend\Page\PagesDesignBlockController@addDesignBlock')->name('api.page.design_block.add');
+Route::post('/page/design-block/child/add', 'Backend\Page\PagesDesignBlockController@addChildDesignBlock')->name('api.page.child_design_block.add');
+Route::post('/page/widget/add', 'Backend\Page\PagesDesignBlockController@addWidget')->name('api.page.widget.add');
+Route::delete('/page/design-block/delete', 'Backend\Page\PagesDesignBlockController@deleteDesignBlock')->name('api.page.design_block.delete');
+Route::delete('/page/widget/delete', 'Backend\Page\PagesDesignBlockController@deleteWidget')->name('api.page.widget.delete');
+Route::post('/page/content/update', 'Backend\Page\PagesBlocksContentController@update')->name('api.page_content.update');
 
-Route::get('/browse-files', 'Backend\MediaController@browseFiles')->name('api.files.browse');
-Route::post('/upload-media-file', 'Backend\MediaController@uploadFile')->name('api.file.upload');
-Route::delete('/delete-media-file', 'Backend\MediaController@deleteFile')->name('api.file.delete');
+Route::get('/files/browse', 'Backend\MediaController@browseFiles')->name('api.files.browse');
+Route::post('/media-file/upload', 'Backend\MediaController@uploadFile')->name('api.file.upload');
+Route::delete('/media-file/delete', 'Backend\MediaController@deleteFile')->name('api.file.delete');
 
-Route::post('/add-menu', 'Backend\MenuController@add')->name('api.menu.add');
-Route::delete('/delete-menu', 'Backend\MenuController@delete')->name('api.menu.delete');
+Route::post('/menu/add', 'Backend\MenuController@add')->name('api.menu.add');
+Route::put('/menu/update', 'Backend\MenuController@update')->name('api.menu.update');
+Route::delete('/menu/delete', 'Backend\MenuController@delete')->name('api.menu.delete');
 
-Route::post('/add-menu-item', 'Backend\MenuItemController@add')->name('api.menu_item.add');
-Route::post('/add-child-menu-item', 'Backend\MenuItemController@addChild')->name('api.child_menu_item.add');
-Route::post('/update-menu-item', 'Backend\MenuItemController@update')->name('api.menu_item.update');
-Route::delete('/delete-menu-item', 'Backend\MenuItemController@delete')->name('api.menu_item.delete');
-Route::post('/update-menu-item-order', 'Backend\MenuItemController@updateMenuItemOrder')->name('api.menu_item.order.update');
+Route::post('/menu-item/add', 'Backend\MenuItemController@add')->name('api.menu_item.add');
+Route::post('/menu-item/child/add', 'Backend\MenuItemController@addChild')->name('api.child_menu_item.add');
+Route::post('/menu-item/update', 'Backend\MenuItemController@update')->name('api.menu_item.update');
+Route::delete('/menu-item/delete', 'Backend\MenuItemController@delete')->name('api.menu_item.delete');
+Route::post('/menu-item/order/update', 'Backend\MenuItemController@updateMenuItemOrder')->name('api.menu_item.order.update');
 
-Route::post('/add-category', 'Backend\Category\CategoryController@add')->name('api.category.add');
-Route::put('/update-category', 'Backend\Category\CategoryController@update')->name('api.category.update');
-Route::delete('/delete-category', 'Backend\Category\CategoryController@delete')->name('api.category.delete');
+Route::post('/category/add', 'Backend\Category\CategoryController@add')->name('api.category.add');
+Route::put('/category/update', 'Backend\Category\CategoryController@update')->name('api.category.update');
+Route::delete('/category/delete', 'Backend\Category\CategoryController@delete')->name('api.category.delete');
 
-Route::post('/add-category-page-child-design-block', 'Backend\Category\CategoriesPagesDesignBlockController@addChildDesignBlock')->name('api.category_page.child_design_block.add');
-Route::delete('/delete-category-page-design-block', 'Backend\Category\CategoriesPagesDesignBlockController@deleteDesignBlock')->name('api.category_page.design_block.delete');
-Route::post('/update-category-page-content', 'Backend\Category\CategoriesPagesBlocksContentController@update')->name('api.category_page_content.update');
-Route::post('/update-category-page-design-blocks-order', 'Backend\Category\CategoriesPagesDesignBlockController@updateDesignBlocksOrder')->name('api.category_page.design_blocks.order.update');
+Route::post('/category-page/design-block/child/add', 'Backend\Category\CategoriesPagesDesignBlockController@addChildDesignBlock')->name('api.category_page.child_design_block.add');
+Route::delete('/category-page/design-block/delete', 'Backend\Category\CategoriesPagesDesignBlockController@deleteDesignBlock')->name('api.category_page.design_block.delete');
+Route::post('/category-page/content/update', 'Backend\Category\CategoriesPagesBlocksContentController@update')->name('api.category_page_content.update');
+Route::post('/category-page/design-blocks/order/update', 'Backend\Category\CategoriesPagesDesignBlockController@updateDesignBlocksOrder')->name('api.category_page.design_blocks.order.update');
 
-Route::put('/update-default-locale', 'Backend\DefaultDataController@updateLocale')->name('api.default.locale.update');
-Route::put('/update-default-home-page', 'Backend\DefaultDataController@updateHomePage')->name('api.default.home_page.update');
+Route::put('/default/locale/update', 'Backend\DefaultDataController@updateLocale')->name('api.default.locale.update');
+Route::put('/default/home-page/update', 'Backend\DefaultDataController@updateHomePage')->name('api.default.home_page.update');

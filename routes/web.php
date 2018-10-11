@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/init', 'Backend\InitController@index')->name('init');
 
-Route::get('/', 'PageController@home');
+Route::get('/', 'PageController@home')->name('home');
 
 Route::post('/feedback', 'PageController@feedback')->name('feedback');
 

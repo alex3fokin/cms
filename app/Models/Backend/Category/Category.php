@@ -14,6 +14,10 @@ class Category extends Model
         'title', 'url', 'seo_id', 'page_template_id', 'parent_category', 'design_blocks', 'per_page'
     ];
 
+    protected $appends = [
+        'self_url'
+    ];
+
     public function page_template() {
         return $this->belongsTo(PageTemplate::class);
     }
@@ -42,5 +46,9 @@ class Category extends Model
             $parent_category = $parent_category->parent();
         }
         return $url;
+    }
+
+    public function getSelfUrlAttribute() {
+        return $this->attributes['url'];
     }
 }

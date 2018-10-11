@@ -9,6 +9,7 @@ use App\Models\Backend\Page\PagesBlocksContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use League\Flysystem\Adapter\Local;
 
 class PagesBlocksContentController extends Controller
 {
@@ -52,22 +53,10 @@ class PagesBlocksContentController extends Controller
                         'alt' => $value['alt'],
                         'path' => $path
                     ];
-                    if($is_default_locale) {
-                        PagesBlocksContent::where('id', $id)->update([
-                            'value' => serialize($data),
-                        ]);
-                    } else {
-                        LocaleContent::updateOrCreate([
-                            'model' => PagesBlocksContent::class,
-                            'property' => 'value',
-                            'model_id' => $id,
-                            'locale_id' => $request->locale_id,
-                        ],[
-                            'value' => serialize($data)
-                        ]);
-                    }
+                    $value = serialize($data);
                     break;
                 case 'page_media_area':
+                    $data = [];
                     foreach($value as $media) {
                         $is_image = false;
                         if(substr(Storage::disk('public')->getMimeType('media/'.$media['name']), 0, 5) == 'image' ||
@@ -82,36 +71,15 @@ class PagesBlocksContentController extends Controller
                             'path' => $path
                         ];
                     }
-                    if($is_default_locale) {
-                        PagesBlocksContent::where('id', $id)->update([
-                            'value' => serialize($data),
-                        ]);
-                    } else {
-                        LocaleContent::updateOrCreate([
-                            'model' => PagesBlocksContent::class,
-                            'property' => 'value',
-                            'model_id' => $id,
-                            'locale_id' => $request->locale_id,
-                        ],[
-                            'value' => serialize($data)
-                        ]);
-                    }
+                    $value = serialize($data);
                     break;
-                default:
-                    if($is_default_locale) {
-                        PagesBlocksContent::where('id', $id)->update([
-                            'value' => $value,
-                        ]);
-                    } else {
-                        LocaleContent::updateOrCreate([
-                            'model' => PagesBlocksContent::class,
-                            'property' => 'value',
-                            'model_id' => $id,
-                            'locale_id' => $request->locale_id,
-                        ],[
-                            'value' => $value
-                        ]);
-                    }
+            }
+            $pages_blocks_content = PagesBlocksContent::find($id);
+            $pages_blocks_content->value = $value;
+            if($is_default_locale) {
+                $pages_blocks_content->save();
+            } else {
+                LocaleContent::createTranslatedProperty($pages_blocks_content, ['value'], $request->locale_id);
             }
         }
         return response()->json(['status' => 1],200);

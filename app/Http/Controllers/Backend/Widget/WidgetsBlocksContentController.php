@@ -50,22 +50,10 @@ class WidgetsBlocksContentController extends Controller
                         'alt' => $value['alt'],
                         'path' => $path
                     ];
-                    if($is_default_locale) {
-                        WidgetsBlocksContent::where('id', $id)->update([
-                            'value' => serialize($data),
-                        ]);
-                    } else {
-                        LocaleContent::updateOrCreate([
-                            'model' => WidgetsBlocksContent::class,
-                            'property' => 'value',
-                            'model_id' => $id,
-                            'locale_id' => $request->locale_id,
-                        ],[
-                            'value' => serialize($data)
-                        ]);
-                    }
+                    $value = serialize($data);
                     break;
                 case 'widget_media_area':
+                    $data = [];
                     foreach($value as $media) {
                         $is_image = false;
                         if(substr(Storage::disk('public')->getMimeType('media/'.$media['name']), 0, 5) == 'image' ||
@@ -80,36 +68,15 @@ class WidgetsBlocksContentController extends Controller
                             'path' => $path
                         ];
                     }
-                    if($is_default_locale) {
-                        WidgetsBlocksContent::where('id', $id)->update([
-                            'value' => serialize($data),
-                        ]);
-                    } else {
-                        LocaleContent::updateOrCreate([
-                            'model' => WidgetsBlocksContent::class,
-                            'property' => 'value',
-                            'model_id' => $id,
-                            'locale_id' => $request->locale_id,
-                        ],[
-                            'value' => serialize($data)
-                        ]);
-                    }
+                    $value = serialize($data);
                     break;
-                default:
-                    if($is_default_locale) {
-                        WidgetsBlocksContent::where('id', $id)->update([
-                            'value' => $value,
-                        ]);
-                    } else {
-                        LocaleContent::updateOrCreate([
-                            'model' => WidgetsBlocksContent::class,
-                            'property' => 'value',
-                            'model_id' => $id,
-                            'locale_id' => $request->locale_id,
-                        ],[
-                            'value' => $value
-                        ]);
-                    }
+            }
+            $widget_block_content = WidgetsBlocksContent::find($id);
+            $widget_block_content->value = $value;
+            if($is_default_locale) {
+                $widget_block_content->save();
+            } else {
+                LocaleContent::createTranslatedProperty($widget_block_content, ['value'], $request->locale_id);
             }
         }
         return response()->json(['status' => 1],200);

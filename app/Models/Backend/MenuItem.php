@@ -13,7 +13,7 @@ class MenuItem extends Model
     ];
 
     protected $appends = [
-        'children', 'main_parent'
+
     ];
 
     public function page() {

@@ -19,7 +19,6 @@ use Illuminate\Validation\Rule;
 
 class PageController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth:admin');
@@ -32,7 +31,7 @@ class PageController extends Controller
             'keywords' => 'required',
             'description' => 'required',
             'page_template_id' => 'required|exists:page_templates,id',
-            'categories.*' => ['nullable', Rule::in(Category::all()->pluck('title'))],
+            'categories.*' => 'nullable|exists:categories,id',
         ]);
 
         if ($v->fails()) {
@@ -52,7 +51,7 @@ class PageController extends Controller
             foreach($request->categories as $category) {
                 $categories_pages = CategoriesPages::create([
                     'page_id' => $page->id,
-                    'category_id' => Category::where('title', $category)->pluck('id')->first(),
+                    'category_id' => $category,
                 ]);
                 $design_blocks = explode(',', $categories_pages->category->design_blocks);
                 if($design_blocks) {
@@ -61,7 +60,7 @@ class PageController extends Controller
             }
         }
 
-        return response()->json(['page' => $page->load('seo')], 200);
+        return response()->json(['page' => $page], 200);
     }
 
     public function update(Request $request) {
@@ -73,48 +72,26 @@ class PageController extends Controller
             'description' => 'required',
             'page_template_id' => 'required|exists:page_templates,id',
             'locale_id' => 'sometimes|nullable|exists:locales,id',
+            'categories.*' => 'nullable|exists:categories,id',
         ]);
 
         if ($v->fails()) {
             return response()->json(['errors' => $v->errors()], 400);
         }
-        $page = Page::where('id', $request->id)->get()->first();
+        $page = Page::find($request->id);
+        $page->title = $request->title;
+        $page->url = $request->url;
+        $page->page_template_id = $request->page_template_id;
 
+        $seo = Seo::find($page->seo_id);
+        $seo->keywords = $request->keywords;
+        $seo->description = $request->description;
         if(!$request->locale_id || ($request->locale_id === DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
-            Seo::where('id', $page->seo_id)->update([
-                'keywords' => $request->keywords,
-                'description' => $request->description,
-            ]);
-            $page->update([
-                'title' => $request->title,
-                'url' => $request->url,
-                'page_template_id' => $request->page_template_id
-            ]);
+            $page->save();
+            $seo->save();
         } else if($request->locale_id && ($request->locale_id !== DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
-            LocaleContent::updateOrCreate([
-                'model' => Page::class,
-                'property' => 'title',
-                'model_id' => $request->id,
-                'locale_id' => $request->locale_id,
-            ],[
-                'value' => $request->title
-            ]);
-            LocaleContent::updateOrCreate([
-                'model' => Seo::class,
-                'property' => 'description',
-                'model_id' => Seo::where('id', $page->seo_id)->pluck('id')->first(),
-                'locale_id' => $request->locale_id,
-            ],[
-                'value' => $request->description
-            ]);
-            LocaleContent::updateOrCreate([
-                'model' => Seo::class,
-                'property' => 'keywords',
-                'model_id' => Seo::where('id', $page->seo_id)->pluck('id')->first(),
-                'locale_id' => $request->locale_id,
-            ],[
-                'value' => $request->keywords
-            ]);
+            LocaleContent::createTranslatedProperty($page, ['title'], $request->locale_id);
+            LocaleContent::createTranslatedProperty($seo, ['description', 'keywords'], $request->locale_id);
         }
 
         return response()->json(['status' => 1], 200);

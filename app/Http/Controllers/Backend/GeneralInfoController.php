@@ -43,21 +43,19 @@ class GeneralInfoController extends Controller
             return response()->json(['errors' => $v->errors(), 'old_data' => $old_general_info], 400);
         }
 
+        $general_info = GeneralInfo::find($request->id);
+        $general_info->title = $request->title;
+        $general_info->save();
+
+        $general_info->value = $request->value;
+
         if(!$request->locale_id || ($request->locale_id === DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
-            $status = GeneralInfo::where('id', $request->id)->update(['value' => $request->value, 'title' => $request->title]);
+            $general_info->save();
         } else if($request->locale_id && ($request->locale_id !== DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
-            LocaleContent::updateOrCreate([
-                'model' => GeneralInfo::class,
-                'property' => 'value',
-                'model_id' => $request->id,
-                'locale_id' => $request->locale_id,
-            ],[
-                'value' => $request->value
-            ]);
-            $status = 1;
+            LocaleContent::createTranslatedProperty($general_info, ['value'], $request->locale_id);
         }
 
-        return response()->json(['status' => $status], 200);
+        return response()->json(['status' => 1], 200);
     }
 
     public function delete(Request $request) {

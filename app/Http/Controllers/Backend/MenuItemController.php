@@ -8,6 +8,7 @@ use App\Models\Backend\LocaleContent;
 use App\Models\Backend\MenuItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use League\Flysystem\Adapter\Local;
 
 class MenuItemController extends Controller
 {
@@ -38,9 +39,9 @@ class MenuItemController extends Controller
         ]);
 
         if ($v->fails()) {
-            return response()->json(['errors' => $v->errors()], 200);
+            return response()->json(['errors' => $v->errors()], 400);
         }
-        $i = MenuItem::where([['parent_menu', null], ['id', $request->menu_id]])->max('order') ?? 0;
+        $i = MenuItem::where([['parent_menu', null], ['menu_id', $request->menu_id]])->max('order') ?? 0;
         $entity = explode('_', $request->page_id)[0] . '_id';
         $id = explode('_', $request->page_id)[1];
         return response()->json(['menu_item' => MenuItem::create([
@@ -55,6 +56,7 @@ class MenuItemController extends Controller
     {
         $v = Validator::make($request->all(), [
             'parent_menu' => 'required|exists:menu_items,id',
+            'menu_id' => 'required|exists:menus,id',
             'page_id' => [
                 'sometimes',
                 'nullable',
@@ -62,6 +64,7 @@ class MenuItemController extends Controller
                     $value = explode('_', $value);
                     $entity = $value[0];
                     $entity = ucfirst($entity);
+                    $entity = 'App\Models\Backend\\'.$entity.'\\'.$entity;
                     $id = $value[1];
                     if (!$entity::where('id', $id)->exists($id)) {
                         return $fail($attribute . ' is invalid.');
@@ -70,15 +73,15 @@ class MenuItemController extends Controller
             ],
             'title' => 'required',
         ]);
-
         if ($v->fails()) {
-            return response()->json(['errors' => $v->errors()], 200);
+            return response()->json(['errors' => $v->errors()], 400);
         }
-        $i = MenuItem::where('parent_menu', $request->parent_menu)->max('order') ?? 0;
+        $i = MenuItem::where([['parent_menu', $request->parent_menu], ['menu_id', $request->menu_id]])->max('order') ?? 0;
         $entity = explode('_', $request->page_id)[0] . '_id';
         $id = explode('_', $request->page_id)[1];
         return response()->json(['menu_item' => MenuItem::create([
             'title' => $request->title,
+            'parent_menu' => $request->parent_menu,
             'menu_id' => $request->menu_id,
             $entity => $id,
             'order' => ++$i,
@@ -96,6 +99,7 @@ class MenuItemController extends Controller
                     $value = explode('_', $value);
                     $entity = $value[0];
                     $entity = ucfirst($entity);
+                    $entity = 'App\Models\Backend\\'.$entity.'\\'.$entity;
                     $id = $value[1];
                     if (!$entity::where('id', $id)->exists($id)) {
                         return $fail($attribute . ' is invalid.');
@@ -107,26 +111,22 @@ class MenuItemController extends Controller
         ]);
 
         if ($v->fails()) {
-            return response()->json(['errors' => $v->errors()], 200);
+            return response()->json(['errors' => $v->errors()], 400);
         }
+        $entity = explode('_', $request->page_id)[0] . '_id';
+        $id = explode('_', $request->page_id)[1];
+        $menu = MenuItem::find($request->id);
+        $menu->$entity = $id;
+        $menu->save();
 
+        $menu->title = $request->title;
         if (!$request->locale_id || ($request->locale_id === DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
-            $entity = explode('_', $request->page_id)[0] . '_id';
-            $id = explode('_', $request->page_id)[1];
-            $status = MenuItem::where(['id' => $request->id])->update(['title' => $request->title, $entity => $id,]);
+            $menu->save();
         } else if ($request->locale_id && ($request->locale_id !== DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
-            LocaleContent::updateOrCreate([
-                'model' => MenuItem::class,
-                'property' => 'title',
-                'model_id' => $request->id,
-                'locale_id' => $request->locale_id,
-            ], [
-                'value' => $request->title
-            ]);
-            $status = 1;
+            LocaleContent::createTranslatedProperty($menu, ['title'], $request->locale_id);
         }
 
-        return response()->json(['status' => $status], 200);
+        return response()->json(['status' => 1], 200);
     }
 
     public function delete(Request $request)
@@ -136,7 +136,7 @@ class MenuItemController extends Controller
         ]);
 
         if ($v->fails()) {
-            return response()->json(['errors' => $v->errors()], 200);
+            return response()->json(['errors' => $v->errors()], 400);
         }
 
         return response()->json(['status' => $this->removeMenuItems($request->id)], 200);

@@ -53,29 +53,17 @@ class LocaleController extends Controller
             return response()->json(['errors' => $v->errors(), 'old_data' => $old_locale], 400);
         }
 
+        $locale = Locale::find($request->id);
+        $locale->title = $request->title;
+        $locale->short_code = $request->short_code;
+
         if(!$request->locale_id || ($request->locale_id === DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
-            $status = Locale::where('id', $request->id)->update(['short_code' => $request->short_code, 'title' => $request->title]);
+            $locale->save();
         } else if($request->locale_id && ($request->locale_id !== DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
-            LocaleContent::updateOrCreate([
-                'model' => Locale::class,
-                'property' => 'short_code',
-                'model_id' => $request->id,
-                'locale_id' => $request->locale_id,
-            ],[
-                'value' => $request->short_code
-            ]);
-            LocaleContent::updateOrCreate([
-                'model' => Locale::class,
-                'property' => 'title',
-                'model_id' => $request->id,
-                'locale_id' => $request->locale_id,
-            ],[
-                'value' => $request->title
-            ]);
-            $status = 1;
+            LocaleContent::createTranslatedProperty($locale, ['title', 'short_code'], $request->locale_id);
         }
 
-        return response()->json(['status' => $status], 200);
+        return response()->json(['status' => 1], 200);
     }
 
     public function delete(Request $request) {

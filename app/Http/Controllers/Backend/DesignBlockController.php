@@ -66,7 +66,7 @@ class DesignBlockController extends Controller
         $result = DesignBlock::where('id', $request->id)->update([
             'title' => $request->title,
             'view' => $request->view,
-            'design_blocks' => implode(',', $request->design_blocks),
+            'design_blocks' => $request->design_blocks ? implode(',', $request->design_blocks) : '',
             'css_classes' => $request->css_classes,
         ]);
         $design_blocks = DesignBlock::all()->pluck('title');

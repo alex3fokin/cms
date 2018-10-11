@@ -46,7 +46,8 @@ class CategoryController extends Controller
             'parent_category' => $request->parent_category,
             'design_blocks' => implode(',', $request->design_blocks),
         ]);
-        return response()->json(['category' => $category->load('seo')], 200);
+        $category->parent = $category->parent();
+        return response()->json(['category' => $category], 200);
     }
 
     public function update(Request $request) {
@@ -65,45 +66,24 @@ class CategoryController extends Controller
         if ($v->fails()) {
             return response()->json(['errors' => $v->errors()], 400);
         }
-        $category = Category::where('id', $request->id)->get()->first();
+        $category = Category::find($request->id);
+        $category->url = $request->url;
+        $category->page_template_id = $request->page_template_id;
+        $category->parent_category = $request->parent_category;
+        $category->design_blocks = implode(',', $request->design_blocks);
+        $category->save();
 
+        $category->title = $request->title;
+
+        $seo = Seo::find($category->seo_id);
+        $seo->description = $request->description;
+        $seo->keywords = $request->keywords;
         if(!$request->locale_id || ($request->locale_id === DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
-            Seo::where('id', $category->seo_id)->update([
-                'keywords' => $request->keywords,
-                'description' => $request->description,
-            ]);
-            $category->update([
-                'title' => $request->title,
-                'url' => $request->url,
-                'page_template_id' => $request->page_template_id,
-                'parent_category' => $request->parent_category,
-                'design_blocks' => implode(',', $request->design_blocks),
-            ]);
+            $category->save();
+            $seo->save();
         } else if($request->locale_id && ($request->locale_id !== DefaultData::where('title', 'locale')->get()->pluck('value')->first())) {
-            LocaleContent::updateOrCreate([
-                'model' => Category::class,
-                'property' => 'title',
-                'model_id' => $request->id,
-                'locale_id' => $request->locale_id,
-            ],[
-                'value' => $request->title
-            ]);
-            LocaleContent::updateOrCreate([
-                'model' => Seo::class,
-                'property' => 'description',
-                'model_id' => Seo::where('id', $category->seo_id)->pluck('id')->first(),
-                'locale_id' => $request->locale_id,
-            ],[
-                'value' => $request->description
-            ]);
-            LocaleContent::updateOrCreate([
-                'model' => Seo::class,
-                'property' => 'keywords',
-                'model_id' => Seo::where('id', $category->seo_id)->pluck('id')->first(),
-                'locale_id' => $request->locale_id,
-            ],[
-                'value' => $request->keywords
-            ]);
+            LocaleContent::createTranslatedProperty($category, ['title'], $request->locale_id);
+            LocaleContent::createTranslatedProperty($seo, ['description', 'keywords'], $request->locale_id);
         }
 
         return response()->json(['status' => 1], 200);

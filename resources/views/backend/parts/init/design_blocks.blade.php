@@ -253,36 +253,7 @@
                         if (data.design_blocks) {
                             design_blocks = data.design_blocks;
                         }
-                        $('#design_blocks_table').append('<tr>\n' +
-                            '                    <td>\n' +
-                            '                        <div class="input-field col">\n' +
-                            '                            <label class="active" for="design_block_title_' + data.id + '">Title</label>\n' +
-                            '                            <input type="text" name="design_block_title_' + data.id + '" id="design_block_title_' + data.id + '" value="' + data.title + '">\n' +
-                            '                        </div>\n' +
-                            '                    </td>\n' +
-                            '                    <td>\n' +
-                            '                        <div class="input-field col">\n' +
-                            '                            <label class="active" for="design_block_view_' + data.id + '">View</label>\n' +
-                            '                            <input type="text" name="design_block_view_' + data.id + '" id="design_block_view_' + data.id + '" value="' + data.view + '">\n' +
-                            '                        </div>\n' +
-                            '                    </td>\n' +
-                            '                    <td>\n' +
-                            '                        <div class="col s12">\n' +
-                            '                            <label class="active" for="design_block_css_classes_' + data.id + '">CSS Classes</label>\n' +
-                            '                            <input type="text" name="design_block_css_classes_' + data.id + '" id="design_block_css_classes_' + data.id + '" value="' + css_classes + '">\n' +
-                            '                        </div>\n' +
-                            '                    </td>\n' +
-                            '                    <td>\n' +
-                            '                        <div class="col">\n' +
-                            '                            <label class="active" for="design_block_children_design_blocks_' + data.id + '">Design blocks</label>\n' +
-                            '                            <input type="text" name="design_block_children_design_blocks_' + data.id + '" id="design_block_children_design_blocks_' + data.id + '" value="' + design_blocks + '">\n' +
-                            '                        </div>\n' +
-                            '                    </td>\n' +
-                            '                    <td>\n' +
-                            '                        <button class="btn-floating waves-effect waves-light green" data-id="' + data.id + '" onclick="updateDesignBlock(this)"><i class="material-icons">save</i></button>\n' +
-                            '                        <button class="btn-floating waves-effect waves-light red" data-id="' + data.id + '" onclick="deleteDesignBlock(this)"><i class="material-icons">delete</i></button>\n' +
-                            '                    </td>\n' +
-                            '                </tr>');
+
                         available_design_blocks.push(data.name);
                         $('#design_block_children_design_blocks_' + data.id).tagsinput();
                         $('#design_block_css_classes_' + data.id).tagsinput();
