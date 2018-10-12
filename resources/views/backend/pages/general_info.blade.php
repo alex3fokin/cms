@@ -113,7 +113,7 @@
                             '                    <td>'+general_info.title+'</td>\n' +
                             '                    <td>'+general_info.value+'</td>\n' +
                             '                    <td class="right">\n' +
-                            '                        <a href="/admin/general_info/edit/'+general_info.id+'"\n' +
+                            '                        <a href="/dashboard/general_info/edit/'+general_info.id+'"\n' +
                             '                           class="btn btn-floating waves-effect waves-light orange tooltipped"\n' +
                             '                           data-position="top" data-tooltip="Edit general info item">\n' +
                             '                            <i class="material-icons">edit</i>\n' +

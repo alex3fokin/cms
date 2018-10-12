@@ -18,8 +18,8 @@ class CreateCategoriesPagesTable extends Migration
             $table->unsignedInteger('category_id');
             $table->unsignedInteger('page_id');
 
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('page_id')->references('id')->on('pages');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
 
             $table->timestamps();
         });

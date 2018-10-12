@@ -28,8 +28,16 @@
   height: 100%
 }
 
+.h-100-vh {
+  height: 100vh;
+}
+
 .h-80 {
   height: 80%;
+}
+
+.d-flex {
+  display: flex;
 }
 
 .justify-content-start {
@@ -43,7 +51,12 @@
 .justify-content-around {
   justify-content: space-around;
 }
-
+.justify-content-center {
+  justify-content: center;
+}
+.align-content-center {
+  align-content: center;
+}
 .fs-10x {
   font-size: 10rem;
 }

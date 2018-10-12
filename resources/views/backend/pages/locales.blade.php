@@ -158,7 +158,7 @@
                             '                    <td>' + locale.title + '</td>\n' +
                             '                    <td>' + locale.short_code + '</td>\n' +
                             '                    <td class="right">\n' +
-                            '                        <a href="/admin/locales/edit/' + locale.id + '"\n' +
+                            '                        <a href="/dashboard/locales/edit/' + locale.id + '"\n' +
                             '                           class="btn btn-floating waves-effect waves-light orange tooltipped"\n' +
                             '                           data-position="top" data-tooltip="Edit locale">\n' +
                             '                            <i class="material-icons">edit</i>\n' +

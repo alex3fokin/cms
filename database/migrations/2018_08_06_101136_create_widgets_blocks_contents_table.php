@@ -19,8 +19,8 @@ class CreateWidgetsBlocksContentsTable extends Migration
             $table->unsignedInteger('widgets_design_block_id');
             $table->text('value')->nullable();
 
-            $table->foreign('design_blocks_info_block_id')->references('id')->on('design_blocks_info_blocks');
-            $table->foreign('widgets_design_block_id')->references('id')->on('widgets_design_blocks');
+            $table->foreign('design_blocks_info_block_id')->references('id')->on('design_blocks_info_blocks')->onDelete('cascade');
+            $table->foreign('widgets_design_block_id')->references('id')->on('widgets_design_blocks')->onDelete('cascade');
 
             $table->timestamps();
         });

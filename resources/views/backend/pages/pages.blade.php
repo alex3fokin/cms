@@ -292,7 +292,7 @@
                         $('#page_templates_table').append('<tr>\n' +
                             '                                <td>' + page_template.title + '</td>\n' +
                             '                                <td class="right">\n' +
-                            '                                    <a href="/admin/pages/templates/edit/' + page_template.id + '" class="btn btn-floating waves-effect waves-light orange tooltipped" data-position="top" data-tooltip="Edit page template">\n' +
+                            '                                    <a href="/dashboard/pages/templates/edit/' + page_template.id + '" class="btn btn-floating waves-effect waves-light orange tooltipped" data-position="top" data-tooltip="Edit page template">\n' +
                             '                                       <i class="material-icons">edit</i>\n' +
                             '                                    </a>\n' +
                             '                                    <a class="btn btn-floating waves-effect waves-light red tooltipped" data-position="top" data-tooltip="Delete page template" data-id="' + page_template.id + '" onclick="openConfirmModal(this, \'deletePageTemplate\')">\n' +

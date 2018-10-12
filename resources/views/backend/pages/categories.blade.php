@@ -161,7 +161,7 @@
                             '                    <td>'+category.title+'</td>\n' +
                             '                    <td>'+(category.parent ? category.parent.title : "")+'</td>\n' +
                             '                    <td class="right">\n' +
-                            '                        <a href="/admin/categories/edit/'+category.id+'"\n' +
+                            '                        <a href="/dashboard/categories/edit/'+category.id+'"\n' +
                             '                           class="btn btn-floating waves-effect waves-light orange tooltipped"\n' +
                             '                           data-position="top" data-tooltip="Edit category">\n' +
                             '                            <i class="material-icons">edit</i>\n' +

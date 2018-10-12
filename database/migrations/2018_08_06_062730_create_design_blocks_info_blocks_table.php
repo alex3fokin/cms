@@ -19,8 +19,8 @@ class CreateDesignBlocksInfoBlocksTable extends Migration
             $table->unsignedInteger('design_block_id');
             $table->unsignedInteger('info_block_id');
 
-            $table->foreign('design_block_id')->references('id')->on('design_blocks');
-            $table->foreign('info_block_id')->references('id')->on('info_blocks');
+            $table->foreign('design_block_id')->references('id')->on('design_blocks')->onDelete('cascade');
+            $table->foreign('info_block_id')->references('id')->on('info_blocks')->onDelete('cascade');
 
             $table->timestamps();
         });

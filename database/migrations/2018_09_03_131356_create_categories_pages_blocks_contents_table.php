@@ -19,8 +19,8 @@ class CreateCategoriesPagesBlocksContentsTable extends Migration
             $table->unsignedInteger('design_blocks_info_block_id');
             $table->text('value')->nullable();
 
-            $table->foreign('categories_pages_design_block_id', 'cpbc_cpdb')->references('id')->on('categories_pages_design_blocks');
-            $table->foreign('design_blocks_info_block_id', 'cpbc_dbib')->references('id')->on('design_blocks_info_blocks');
+            $table->foreign('categories_pages_design_block_id', 'cpbc_cpdb')->references('id')->on('categories_pages_design_blocks')->onDelete('cascade');
+            $table->foreign('design_blocks_info_block_id', 'cpbc_dbib')->references('id')->on('design_blocks_info_blocks')->onDelete('cascade');
 
             $table->timestamps();
         });

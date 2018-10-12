@@ -21,10 +21,10 @@ class CreatePagesDesignBlocksTable extends Migration
             $table->unsignedInteger('parent_design_block')->nullable();
             $table->unsignedInteger('widget_id')->nullable();
 
-            $table->foreign('page_id')->references('id')->on('pages');
-            $table->foreign('design_block_id')->references('id')->on('design_blocks');
-            $table->foreign('parent_design_block')->references('id')->on('pages_design_blocks');
-            $table->foreign('widget_id')->references('id')->on('widgets');
+            $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
+            $table->foreign('design_block_id')->references('id')->on('design_blocks')->onDelete('cascade');
+            $table->foreign('parent_design_block')->references('id')->on('pages_design_blocks')->onDelete('cascade');
+            $table->foreign('widget_id')->references('id')->on('widgets')->onDelete('cascade');
 
             $table->timestamps();
         });

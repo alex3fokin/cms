@@ -9534,8 +9534,18 @@ input[type=range]::-ms-thumb {
   height: 100%;
 }
 
+.h-100-vh {
+  height: 100vh;
+}
+
 .h-80 {
   height: 80%;
+}
+
+.d-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .justify-content-start {
@@ -9553,6 +9563,17 @@ input[type=range]::-ms-thumb {
 .justify-content-around {
   -ms-flex-pack: distribute;
       justify-content: space-around;
+}
+
+.justify-content-center {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.align-content-center {
+  -ms-flex-line-pack: center;
+      align-content: center;
 }
 
 .fs-10x {

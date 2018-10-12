@@ -18,13 +18,14 @@ class CreateCategoriesTable extends Migration
             $table->string('title')->unique();
             $table->string('url')->unique();
             $table->string('design_blocks');
+            $table->unsignedInteger('per_page')->nullable();
             $table->unsignedInteger('seo_id');
             $table->unsignedInteger('page_template_id');
             $table->unsignedInteger('parent_category')->nullable();
 
-            $table->foreign('seo_id')->references('id')->on('seos');
-            $table->foreign('page_template_id')->references('id')->on('page_templates');
-            $table->foreign('parent_category')->references('id')->on('categories');
+            $table->foreign('seo_id')->references('id')->on('seos')->onDelete('cascade');
+            $table->foreign('page_template_id')->references('id')->on('page_templates')->onDelete('cascade');
+            $table->foreign('parent_category')->references('id')->on('categories')->onDelete('cascade');
 
             $table->timestamps();
         });

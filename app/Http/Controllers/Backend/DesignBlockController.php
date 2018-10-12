@@ -16,8 +16,6 @@ class DesignBlockController extends Controller
         $this->middleware('auth:admin');
     }
 
-    //Add, update, delete design blocks
-
     public function add(Request $request) {
         $v = Validator::make($request->all(), [
             'title' => 'required|unique:design_blocks',

@@ -20,9 +20,9 @@ class CreateCategoriesPagesDesignBlocksTable extends Migration
             $table->unsignedInteger('design_block_id');
             $table->unsignedInteger('parent_design_block')->nullable();
 
-            $table->foreign('categories_pages_id')->references('id')->on('categories_pages');
-            $table->foreign('design_block_id')->references('id')->on('design_blocks');
-            $table->foreign('parent_design_block')->references('id')->on('categories_pages_design_blocks');
+            $table->foreign('categories_pages_id')->references('id')->on('categories_pages')->onDelete('cascade');
+            $table->foreign('design_block_id')->references('id')->on('design_blocks')->onDelete('cascade');
+            $table->foreign('parent_design_block')->references('id')->on('categories_pages_design_blocks')->onDelete('cascade');
 
             $table->timestamps();
         });

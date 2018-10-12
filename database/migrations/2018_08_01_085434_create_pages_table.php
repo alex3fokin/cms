@@ -21,8 +21,8 @@ class CreatePagesTable extends Migration
             $table->unsignedInteger('seo_id');
             $table->unsignedInteger('page_template_id');
 
-            $table->foreign('seo_id')->references('id')->on('seos');
-            $table->foreign('page_template_id')->references('id')->on('page_templates');
+            $table->foreign('seo_id')->references('id')->on('seos')->onDelete('cascade');
+            $table->foreign('page_template_id')->references('id')->on('page_templates')->onDelete('cascade');
 
             $table->timestamps();
         });

@@ -21,7 +21,7 @@ class CreateLocaleContentsTable extends Migration
             $table->unsignedInteger('locale_id');
             $table->text('value')->nullable();
 
-            $table->foreign('locale_id')->references('id')->on('locales');
+            $table->foreign('locale_id')->references('id')->on('locales')->onDelete('cascade');
 
             $table->timestamps();
         });

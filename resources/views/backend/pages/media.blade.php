@@ -23,10 +23,12 @@
         </div>
     </div>
     <div class="fixed-action-btn">
-        <input type="file" name="files" id="media_upload_input" multiple class="btn-floating btn-large" style="position:relative; z-index: 2; opacity: 0">
+        <input type="file" name="files" id="media_upload_input" multiple class="btn-floating btn-large tooltipped"
+               style="position:relative; z-index: 2; opacity: 0"
+        data-position="left" data-tooltip="Upload new files">
         <button id="btn_upload" class="btn-floating btn-large green tooltipped"
                 data-position="left" data-tooltip="Save changes"
-        style="position: absolute; top:15px;">
+                style="position: absolute; top:15px;">
             <i class="large material-icons">cloud_upload</i>
         </button>
     </div>
@@ -52,8 +54,7 @@
             });
         }
 
-        $(document).ready(function() {
-
+        $(document).ready(function () {
             $('#media_upload_input').change(function () {
                 var length = this.files.length;
                 var data = new FormData();

@@ -1,10 +1,10 @@
 <?php
 
-Route::prefix('admin')->group(function() {
-    Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-    Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
-    Route::post('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
-    Route::get('/dashboard', 'Backend\DashboardController@home')->name('dashboard.index');
+Route::get('/admin/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+Route::post('/admin/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
+Route::post('/admin/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
+Route::get('/admin', 'Backend\DashboardController@index')->name('admin.home');
+Route::prefix('dashboard')->group(function() {
 
     Route::get('/', 'Backend\DashboardController@index')->name('dashboard.home');
     Route::get('/pages', 'Backend\DashboardController@pages')->name('dashboard.pages');

@@ -101,7 +101,7 @@
                         $('#menus_table').append('<tr>\n' +
                             '                    <td>'+menu.title+'</td>\n' +
                             '                    <td class="right">\n' +
-                            '                        <a href="/admin/menus/edit/'+menu.id+'"\n' +
+                            '                        <a href="/dashboard/menus/edit/'+menu.id+'"\n' +
                             '                           class="btn btn-floating waves-effect waves-light orange tooltipped"\n' +
                             '                           data-position="top" data-tooltip="Edit menu">\n' +
                             '                            <i class="material-icons">edit</i>\n' +
