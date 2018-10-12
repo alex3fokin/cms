@@ -25,7 +25,7 @@ class PagesDesignBlock extends Model
         return $this->belongsTo(Widget::class);
     }
 
-    public function pages_blocks_contents() {
+    public function blocks_contents() {
         return $this->hasMany(PagesBlocksContent::class);
     }
 

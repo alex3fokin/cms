@@ -24,7 +24,7 @@ class CategoriesPagesDesignBlock extends Model
         return self::where('parent_design_block', $this->attributes['id'])->orderBy('order')->get();
     }
 
-    public function categories_pages_blocks_contents() {
+    public function blocks_contents() {
         return $this->hasMany(CategoriesPagesBlocksContent::class);
     }
 

@@ -15,11 +15,11 @@
                 @endif
             </div>
             <div class="collapsible-body">
-                @if(count($design_block->categories_pages_blocks_contents))
+                @if(count($design_block->blocks_contents))
                     <div class="row">
                         <h5 class="center-align">Element content</h5>
                         <form class="form_categories_design_blocks" onkeypress="return event.keyCode != 13;">
-                            @foreach($design_block->categories_pages_blocks_contents as $categories_pages_block_content)
+                            @foreach($design_block->blocks_contents as $categories_pages_block_content)
                                 @include('backend.info_blocks_inputs.'.$categories_pages_block_content->design_blocks_info_block->info_block->type, ['data' => $categories_pages_block_content->getInputData(($current_locale !== $default_language) ? $current_locale : null)])
                             @endforeach
                         </form>

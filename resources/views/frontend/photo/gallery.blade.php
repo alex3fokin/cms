@@ -5,9 +5,6 @@
     <script src="/js/frontend/lightgallery.min.js"></script>
     <script src="/js/frontend/lg-thumbnail.js"></script>
     <style>
-        .lazy-block {
-            display: none;
-        }
     </style>
     <div class="entry-content">
         @if($design_block->children)
@@ -15,7 +12,7 @@
                 @php
                     $gallery = $gallery->mappedInfoBlocks($locale_id);
                 @endphp
-            <div class="{{$loop->first ? '' : 'lazy-block'}}" style="margin-bottom: 15px;">
+            <div>
                 <h3>{!! $gallery['title'] !!}</h3>
                 <div id="lightgallery-{{$gallery_index}}">
                     @if($gallery['gallery'])

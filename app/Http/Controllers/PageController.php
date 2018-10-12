@@ -50,12 +50,11 @@ class PageController extends Controller
             LocaleContent::translate($locales, $locale_id);
             LocaleContent::translate($general_info, $locale_id);
             if($page) {
-                LocaleContent::translate(collect([$page->seo]), $locale_id);
+                LocaleContent::translate($page->seo, $locale_id);
             } else if($category) {
-                LocaleContent::translate(collect([$category->seo]), $locale_id);
+                LocaleContent::translate($category->seo, $locale_id);
             }
         }
-
         $general_info = $general_info->mapWithKeys(function($general_info_item) {
             return [$general_info_item->title => $general_info_item->value];
         });
