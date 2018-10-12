@@ -51,7 +51,7 @@
                     <div class="input-field col s12">
                         <label class="active" for="page_categories">Categories</label>
                         <select name="page_categories" id="page_categories" multiple>
-                            <option value="" disabled selected>Choose categories</option>
+                            <option value="" disabled selected></option>
                             @php
                                 $page_categories = $page->categories->pluck('id')->toArray();
                             @endphp
@@ -408,10 +408,6 @@
 
             $('#btn_update_page').click(function () {
                 var is_success = true;
-                is_success = $('#form_update_page_main').submit();
-                if(!is_success) {
-                    M.toast({html: 'Error! Couldn\'t save main or seo info', classes: 'red'});
-                }
                 $('.form_design_block').each(function () {
                     is_success = updatePageDesignBlockContent(this);
                     if(!is_success) {
@@ -424,6 +420,10 @@
                         M.toast({html: 'Error! Couldn\'t save category excerpt design block', classes: 'red'});
                     }
                 });
+                is_success = $('#form_update_page_main').submit();
+                if(!is_success) {
+                    M.toast({html: 'Error! Couldn\'t save main or seo info', classes: 'red'});
+                }
 
                 if(is_success) {
                     M.toast({html: 'Success! Page has been updated.', classes: 'green'});

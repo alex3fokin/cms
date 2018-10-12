@@ -94,6 +94,35 @@ class PageController extends Controller
             LocaleContent::createTranslatedProperty($seo, ['description', 'keywords'], $request->locale_id);
         }
 
+        $current_categories = $page->categories->pluck('id')->toArray();
+
+        //add categories
+        foreach($request->categories as $category) {
+            if(!in_array($category, $current_categories)) {
+                $categories_pages = CategoriesPages::create([
+                    'page_id' => $page->id,
+                    'category_id' => $category,
+                ]);
+                $design_blocks = explode(',', $categories_pages->category->design_blocks);
+                if($design_blocks) {
+                    CategoriesPagesDesignBlock::addDesignBlocks($categories_pages->id, null, $design_blocks);
+                }
+            }
+        }
+
+        //delete categories
+        foreach($current_categories as $category) {
+            if(!in_array($category, $request->categories)) {
+                CategoriesPages::where([['page_id', $page->id], ['category_id', $category]])->each(function($categories_pages) {
+                    CategoriesPagesDesignBlock::where([['categories_pages_id', $categories_pages->id], ['parent_design_block', null]])->get()->each(function ($categories_pages_design_block) {
+                        CategoriesPagesDesignBlock::removeDesignBlocks($categories_pages_design_block->id);
+                    });
+                    CategoriesPagesDesignBlock::removeDesignBlocks($categories_pages->id);
+                });
+                CategoriesPages::where([['page_id', $page->id], ['category_id', $category]])->delete();
+            }
+        }
+
         return response()->json(['status' => 1], 200);
     }
 

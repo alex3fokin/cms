@@ -27,13 +27,17 @@
         <div id="main_tab">
             <div class="row">
                 <form id="form_update_category" onkeypress="return event.keyCode != 13;" class="col s12">
-                    <div class="input-field col s6">
+                    <div class="input-field col s5">
                         <label class="active" for="category_title">Title</label>
                         <input type="text" name="category_title" id="category_title" value="{{$category->title}}">
                     </div>
-                    <div class="input-field col s6">
+                    <div class="input-field col s5">
                         <label class="active" for="category_url">URL</label>
                         <input type="text" name="category_url" id="category_url" value="{{$category->self_url}}">
+                    </div>
+                    <div class="input-field col s2">
+                        <label class="active" for="category_per_page">Per page <i class="material-icons tooltipped" data-position="top" data-tooltip="Number specify how much pages will be displayed per one category page<br>If set 0 all pages will be displayed">info</i></label>
+                        <input type="number" id="category_per_page" name="category_per_page" min="0" step="1" value="{{$category->per_page}}">
                     </div>
                     <div class="input-field col s12">
                         <label for="category_design_blocks" class="active">Choose excerpt design blocks</label>
@@ -112,6 +116,7 @@
                         id: {{$category->id}},
                         title: $('#category_title').val(),
                         url: $('#category_url').val(),
+                        per_page: $('#category_per_page').val(),
                         design_blocks: $('#category_design_blocks').val(),
                         parent_category: $('#category_parent_id').val(),
                         page_template_id: $('#category_page_template_id').val(),

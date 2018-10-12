@@ -365,9 +365,6 @@
                         <div class="entry-content">
                             <p style="text-align: center;">Наша школа дайвинга DIVEZONE предоставляет в аренду и на продажу снаряжение для дайвинга любого уровня!</p>
                             <p style="text-align: center;">
-                                @php
-                                    $categories_pages = App\Models\Backend\CategoriesPages::where('category_id', $category->id)->get();
-                                @endphp
                                 @if($categories_pages)
                                     @foreach($categories_pages as $category_page)
                                         @if($category_page->design_blocks)

@@ -23,6 +23,7 @@ class CategoryController extends Controller
         $v = Validator::make($request->all(), [
             'title' => 'required|unique:categories',
             'url' => 'required|unique:categories',
+            'per_page' => 'nullable|integer',
             'keywords' => 'required',
             'description' => 'required',
             'parent_category' => 'sometimes|nullable|exists:categories,id',
@@ -43,6 +44,7 @@ class CategoryController extends Controller
             'url' => $request->url,
             'page_template_id' => $request->page_template_id,
             'seo_id' => $seo->id,
+            'per_page' => $request->per_page,
             'parent_category' => $request->parent_category,
             'design_blocks' => implode(',', $request->design_blocks),
         ]);
@@ -55,6 +57,7 @@ class CategoryController extends Controller
             'id' => 'required|exists:categories',
             'title' => ['required', Rule::unique('categories')->ignore($request->id)],
             'url' => ['required', Rule::unique('categories')->ignore($request->id)],
+            'per_page' => 'nullable|integer',
             'keywords' => 'required',
             'description' => 'required',
             'page_template_id' => 'required|exists:page_templates,id',
@@ -71,6 +74,7 @@ class CategoryController extends Controller
         $category->page_template_id = $request->page_template_id;
         $category->parent_category = $request->parent_category;
         $category->design_blocks = implode(',', $request->design_blocks);
+        $category->per_page = $request->per_page;
         $category->save();
 
         $category->title = $request->title;

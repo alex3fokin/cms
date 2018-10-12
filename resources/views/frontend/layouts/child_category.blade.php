@@ -285,7 +285,6 @@
             height: 100%;
         }</style>
 </head>
-
 <body class="single archive category home blog page-template page-template-template-frontpage page-template-template-frontpage-php page page-id-4 wp-custom-logo body-desktop">
 <div id="page" class="hfeed site">
     <a class="skip-link screen-reader-text" href="/#content">Skip to content</a>
@@ -364,12 +363,6 @@
         <div id="content-inside" class="container no-sidebar">
             <div id="primary" class="content-area">
                 <main id="main" class="site-main" role="main">
-                    @php
-                        $count_items = App\Models\Backend\CategoriesPages::where('category_id', $category->id)->get()->groupBy('page_id')->count();
-                        $current_page = request()->page ? request()->page : 1;
-                        $items_per_page = 10;
-                        $categories_pages = App\Models\Backend\CategoriesPages::where('category_id', $category->id)->get()->slice(($current_page-1) * $items_per_page, $items_per_page);
-                    @endphp
                     @if($categories_pages)
                         @foreach($categories_pages as $category_page)
                             @if($category_page->design_blocks)
@@ -395,8 +388,8 @@
                     <nav class="navigation posts-navigation" role="navigation">
                         <h2 class="screen-reader-text">Навигация по записям</h2>
                         <div class="nav-links">
-                            @if(ceil($count_items/$items_per_page) > 1)
-                                @if(ceil($count_items/$items_per_page) != intval(request()->page))
+                            @if(ceil($amount_of_categories_pages/$category->per_page) > 1)
+                                @if(ceil($amount_of_categories_pages/$category->per_page) != intval(request()->page))
                                     <div class="nav-previous"><a href="/{{$category->url}}?page={{request()->page ? request()->page + 1 : 2}}">Предыдущие записи</a></div>
                                 @endif
                                 @if(request()->page && intval(request()->page) > 1)

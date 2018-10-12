@@ -65,6 +65,18 @@ class PageController extends Controller
             $view = $page->page_template->view;
         } else if($category) {
             $view = $category->page_template->view;
+
+            if($category->children()) {
+                $categories_pages = CategoriesPages::whereIn('category_id', $category->children()->pluck('id'))->get()->groupBy('page_id');
+            } else {
+                $categories_pages = CategoriesPages::where('category_id', $category->id)->get();
+            }
+            $amount_of_categories_pages = $categories_pages->count();
+
+            if($category->per_page) {
+                $current_page = $request->page ? $request->page : 1;
+                $categories_pages = $categories_pages->slice(($current_page - 1) * $category->per_page, $category->per_page);
+            }
         }
         setlocale(LC_TIME, 'ru_RU.UTF-8');
         return view($view, compact(
@@ -74,7 +86,9 @@ class PageController extends Controller
             'locale_id',
             'menus',
             'locales',
-            'default_language'));
+            'default_language',
+            'amount_of_categories_pages',
+            'categories_pages'));
     }
 
     public function feedback(Request $request) {
