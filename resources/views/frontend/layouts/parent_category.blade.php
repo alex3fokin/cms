@@ -386,12 +386,14 @@
                     <nav class="navigation posts-navigation" role="navigation">
                         <h2 class="screen-reader-text">Навигация по записям</h2>
                         <div class="nav-links">
-                            @if(ceil($amount_of_categories_pages/$category->per_page) > 1)
-                                @if(ceil($amount_of_categories_pages/$category->per_page) != intval(request()->page))
-                                    <div class="nav-previous"><a href="/{{$category->url}}?page={{request()->page ? request()->page + 1 : 2}}">Предыдущие записи</a></div>
-                                @endif
-                                @if(request()->page && intval(request()->page) > 1)
-                                    <div class="nav-next"><a href="/{{$category->url}}?page={{request()->page - 1}}">Следующие записи</a></div>
+                            @if($category->per_page)
+                                @if(ceil($amount_of_categories_pages/$category->per_page) > 1)
+                                    @if(ceil($amount_of_categories_pages/$category->per_page) != intval(request()->page))
+                                        <div class="nav-previous"><a href="/{{$category->url}}?page={{request()->page ? request()->page + 1 : 2}}">Предыдущие записи</a></div>
+                                    @endif
+                                    @if(request()->page && intval(request()->page) > 1)
+                                        <div class="nav-next"><a href="/{{$category->url}}?page={{request()->page - 1}}">Следующие записи</a></div>
+                                    @endif
                                 @endif
                             @endif
                         </div>

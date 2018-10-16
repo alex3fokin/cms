@@ -5,7 +5,20 @@
     <div class="entry-content">
         @if($design_block->children)
             @foreach($design_block->children as $design_block)
-                @include($design_block->design_block->view, ['data' => $design_block->mappedInfoBlocks($locale_id)])
+                @php
+                    $blocks_contents = $design_block->blocks_contents;
+                    App\Models\Backend\LocaleContent::translate($blocks_contents, $locale_id);
+                    $data = [];
+                    foreach($blocks_contents as $block_contents) {
+                        $value = $block_contents->value;
+                        $info_block_type = $block_contents->design_blocks_info_block->info_block->type;
+                        if($info_block_type === 'media' || $info_block_type === 'media_area') {
+                            $value = unserialize($value);
+                        }
+                        $data[$block_contents->design_blocks_info_block->title] = $value;
+                    }
+                @endphp
+                @include($design_block->design_block->view, ['data' => $data])
             @endforeach
         @endif
     </div><!-- .entry-content -->
