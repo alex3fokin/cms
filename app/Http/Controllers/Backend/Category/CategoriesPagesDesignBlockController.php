@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Category;
 
 use App\Http\Controllers\Controller;
+use App\Models\Backend\Category\CategoriesPagesBlocksContent;
 use App\Models\Backend\Category\CategoriesPagesDesignBlock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -41,7 +42,7 @@ class CategoriesPagesDesignBlockController extends Controller
             return response()->json(['errors' => $v->errors()], 400);
         }
 
-        CategoriesPagesDesignBlock::removeDesignBlocks($request->id);
+        CategoriesPagesDesignBlock::where('id', $request->id)->delete();
 
         return response()->json(['status' => 1], 200);
     }

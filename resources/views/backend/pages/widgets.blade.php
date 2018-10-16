@@ -3,7 +3,7 @@
 @section('content')
     <div class="mb-5">
         <h1 class="center-align">Widgets</h1>
-        <table class="highlight">
+        <table class="highlight" id="widgets_table">
             <tr>
                 <th>Name</th>
                 <th class="right">Actions</th>
@@ -46,7 +46,7 @@
                         <input type="text" name="widget_title" id="widget_title">
                     </div>
                     <div class="input-field col s12">
-                        <label for="widget_design_blocks" class="active">Choose excerpt design blocks</label>
+                        <label for="widget_design_blocks" class="active">Choose design blocks</label>
                         <select type="text" name="widget_design_blocks" id="widget_design_blocks" multiple>
                             <option value="" selected disabled></option>
                             @foreach($design_blocks as $design_block)
@@ -113,7 +113,23 @@
                     success: function(data) {
                         console.log(data);
                         widget = data.widget;
-                        M.toast({html: 'Success! Category has been created', classes: 'green'});
+                        $('#widgets_table').append('<tr>\n' +
+                            '                    <td>'+widget.title+'</td>\n' +
+                            '                    <td class="right">\n' +
+                            '                        <a href="/dashboard/widgets/edit/'+widget.id+'"\n' +
+                            '                           class="btn btn-floating waves-effect waves-light orange tooltipped"\n' +
+                            '                           data-position="top" data-tooltip="Edit widget">\n' +
+                            '                            <i class="material-icons">edit</i>\n' +
+                            '                        </a>\n' +
+                            '                        <a class="btn btn-floating waves-effect waves-light red tooltipped"\n' +
+                            '                           data-position="top" data-tooltip="Delete widget"\n' +
+                            '                           data-id="'+widget.id+'"\n' +
+                            '                           onclick="openConfirmModal(this, \'deleteWidget\')">\n' +
+                            '                            <i class="material-icons">delete</i>\n' +
+                            '                        </a>\n' +
+                            '                    </td>\n' +
+                            '                </tr>');
+                        M.toast({html: 'Success! Widget has been created', classes: 'green'});
                     },
                     error: function(data) {
                         console.log(data);

@@ -427,6 +427,7 @@
 
                 if(is_success) {
                     M.toast({html: 'Success! Page has been updated.', classes: 'green'});
+                    window.location.reload();
                 }
             });
 

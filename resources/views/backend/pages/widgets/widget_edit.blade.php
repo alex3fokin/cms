@@ -139,6 +139,16 @@
         }
 
         $(document).ready(function () {
+            $(document).find('.wysiwyg-textarea').each(function () {
+                if (!CKEDITOR.instances[$(this).attr('id')]) {
+                    var editor = CKEDITOR.replace($(this).attr('id'));
+                    var that = this;
+                    editor.on('instanceReady', function () {
+                        $(that).parent().find('label').eq(0).addClass('active');
+                    });
+                }
+            });
+
             $('#locale_select_id').change(function () {
                 window.location = window.location.origin + window.location.pathname + '?locale_id=' + $(this).val();
             });
@@ -231,6 +241,7 @@
                 }
                 if (is_success) {
                     M.toast({html: 'Success! Widget has been updated.', classes: 'green'});
+                    window.location.reload();
                 }
             });
         });

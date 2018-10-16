@@ -116,12 +116,6 @@ class PageController extends Controller
         //delete categories
         foreach($current_categories as $category) {
             if(!in_array($category, $request->categories)) {
-                CategoriesPages::where([['page_id', $page->id], ['category_id', $category]])->each(function($categories_pages) {
-                    CategoriesPagesDesignBlock::where([['categories_pages_id', $categories_pages->id], ['parent_design_block', null]])->get()->each(function ($categories_pages_design_block) {
-                        CategoriesPagesDesignBlock::removeDesignBlocks($categories_pages_design_block->id);
-                    });
-                    CategoriesPagesDesignBlock::removeDesignBlocks($categories_pages->id);
-                });
                 CategoriesPages::where([['page_id', $page->id], ['category_id', $category]])->delete();
             }
         }
@@ -138,18 +132,6 @@ class PageController extends Controller
             return response()->json(['errors' => $v->errors()], 400);
         }
         $seo_id = Page::where('id', $request->id)->get()->pluck('seo_id')->first();
-        PagesDesignBlock::where([['page_id', $request->id], ['parent_design_block', null]])->get()->each(function ($page_design_block) {
-            PagesDesignBlock::removeDesignBlocks($page_design_block->id);
-        });
-        PagesDesignBlock::removeDesignBlocks($request->id);
-
-        CategoriesPages::where('page_id', $request->id)->each(function($categories_pages) {
-            CategoriesPagesDesignBlock::where([['categories_pages_id', $categories_pages->id], ['parent_design_block', null]])->get()->each(function ($categories_pages_design_block) {
-                CategoriesPagesDesignBlock::removeDesignBlocks($categories_pages_design_block->id);
-            });
-            CategoriesPagesDesignBlock::removeDesignBlocks($categories_pages->id);
-        });
-        CategoriesPages::where('page_id', $request->id)->delete();
         $page = Page::find($request->id);
         $page->delete();
         $seo = Seo::find($seo_id);

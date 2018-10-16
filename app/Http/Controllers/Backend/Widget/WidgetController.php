@@ -88,10 +88,10 @@ class WidgetController extends Controller
         foreach($current_design_blocks as $design_block) {
             if(!in_array($design_block, $request->design_blocks)) {
                 $design_block_id = DesignBlock::where('title', $design_block)->get()->pluck('id')->first();
-                WidgetsDesignBlock::removeDesignBlocks(WidgetsDesignBlock::where([
+                WidgetsDesignBlock::where([
                     ['widget_id', $widget->id],
                     ['design_block_id', $design_block_id]
-                ])->get()->pluck('id')->first());
+                ])->delete();
             }
         }
 
@@ -107,10 +107,6 @@ class WidgetController extends Controller
         if ($v->fails()) {
             return response()->json(['errors' => $v->errors()], 400);
         }
-        WidgetsDesignBlock::where([['widget_id', $request->id], ['parent_design_block', null]])->get()->each(function ($widget_design_block) {
-            WidgetsDesignBlock::removeDesignBlocks($widget_design_block->id);
-
-        });
         Widget::where('id', $request->id)->delete();
         return response()->json(['status' => 1], 200);
     }
@@ -125,7 +121,7 @@ class WidgetController extends Controller
             return response()->json(['errors' => $v->errors()], 400);
         }
 
-        WidgetsDesignBlock::removeDesignBlocks($request->id);
+        WidgetsDesignBlock::where('id', $request->id);
 
         return response()->json(['status' => 1], 200);
     }

@@ -7,7 +7,18 @@
             @if($design_block->children)
                 @foreach($design_block->children as $service)
                     @php
-                        $service = $service->mappedInfoBlocks($locale_id);
+                        $blocks_contents = $service->blocks_contents;
+                        App\Models\Backend\LocaleContent::translate($blocks_contents, $locale_id);
+                        $data = [];
+                        foreach($blocks_contents as $block_contents) {
+                            $value = $block_contents->value;
+                            $info_block_type = $block_contents->design_blocks_info_block->info_block->type;
+                            if($info_block_type === 'media' || $info_block_type === 'media_area') {
+                                $value = unserialize($value);
+                            }
+                            $data[$block_contents->design_blocks_info_block->title] = $value;
+                        }
+                        $service = $data;
                     @endphp
                     <div class="col-sm-6 col-lg-6 wow slideInUp" style="visibility: hidden; animation-name: none;">
                         <div class="service-item ">

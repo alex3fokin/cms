@@ -77,7 +77,7 @@ class PagesDesignBlockController extends Controller
             return response()->json(['errors' => $v->errors()], 400);
         }
 
-        PagesDesignBlock::removeDesignBlocks($request->id);
+        PagesDesignBlock::where('id', $request->id)->delete();
 
         return response()->json(['status' => 1], 200);
     }
