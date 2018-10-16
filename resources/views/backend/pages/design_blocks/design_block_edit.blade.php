@@ -77,6 +77,7 @@
                         @foreach($design_block->info_blocks as $design_info_block)
                             <tr>
                                 <td>
+                                    <input type="hidden" class="design_block_info_block_id" value="{{$design_info_block->id}}">
                                     <div class="input-field col s12">
                                         <label class="active" for="design_block_info_blocks_title">Title</label>
                                         <input type="text" class="design_block_info_blocks_title"
@@ -89,7 +90,7 @@
                                         <select class="design_block_info_blocks_id">
                                             <option value="" selected disabled></option>
                                             @foreach($info_blocks as $info_block)
-                                                <option value="{{$info_block->id}}" {{$info_block->id === $design_info_block->id ? 'selected' : ''}}>{{$info_block->type}}</option>
+                                                <option value="{{$info_block->id}}" {{$info_block->id === $design_info_block->info_block_id ? 'selected' : ''}}>{{$info_block->type}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -119,13 +120,56 @@
 
 @push('after-scripts')
     <script>
+        var info_blocks = {!! json_encode($info_blocks) !!};
         function removeDesignBlockInfoBlock(elem) {
             $(elem).parent().parent().remove();
         }
 
         $(document).ready(function () {
+            $('#design_block_add_info_block').click(function () {
+                var info_blocks_select_options = '';
+                var current_info_block_type_id = $('#design_block_info_block_id').val();
+                info_blocks.forEach(function (info_block) {
+                    var selected = parseInt(current_info_block_type_id) === parseInt(info_block.id) ? 'selected' : '';
+                    info_blocks_select_options += '<option value="'+info_block.id+'" '+ selected +'>'+info_block.type+'</option>';
+                });
+                $('#design_block_info_blocks_table').append('<tr>\n' +
+                    '                            <td>\n' +
+                    '                                <div class="input-field col s12">\n' +
+                    '                                    <label class="active" for="design_block_info_blocks_title">Title</label>\n' +
+                    '                                    <input type="text" class="design_block_info_blocks_title" value="'+$('#design_block_info_block_title').val()+'">\n' +
+                    '                                    <input type="hidden" class="design_block_info_block_id" value="-1">' +
+                    '                                </div>\n' +
+                    '                            </td>\n' +
+                    '                            <td>\n' +
+                    '                                <div class="input-field col s12">\n' +
+                    '                                    <label class="active" for="design_block_info_blocks_id">Type</label>\n' +
+                    '                                    <select class="design_block_info_blocks_id" name="" id="">\n' +
+                    '                                        <option value="" disabled selected></option>\n' + info_blocks_select_options +
+                    '                                    </select>\n' +
+                    '                                </div>\n' +
+                    '                            </td>\n' +
+                    '                            <td>\n' +
+                    '                                <button type="button" class="btn-floating waves-effect waves-light red tooltipped" name="action" onclick="removeDesignBlockInfoBlock(this)"' +
+                    'data-position="top" data-tooltip="Delete info block">\n' +
+                    '                                    <i class="material-icons right">delete</i>\n' +
+                    '                                </button>\n' +
+                    '                            </td>\n' +
+                    '                        </tr>');
+                $('#design_block_info_block_title').val("");
+                $('.design_block_info_blocks_id').formSelect();
+            });
+
             $('#form_update_design_block').submit(function(e) {
                 e.preventDefault();
+                var info_blocks = [];
+                var info_blocks_count = $('.design_block_info_blocks_title').length;
+                for(i = 0; i < info_blocks_count; i++) {
+                    info_blocks.push({
+                        title: $('.design_block_info_blocks_title').eq(i).val(),
+                        id: $('.design_block_info_blocks_id').eq(i).val(),
+                        design_block_info_block_id: $('.design_block_info_block_id').eq(i).val()});
+                }
                 $.ajax({
                     type: 'POST',
                     headers: {
@@ -138,6 +182,7 @@
                         title: $('#design_block_title').val(),
                         css_classes: $('#design_block_css_classes' ).val(),
                         design_blocks: $('#design_block_children_design_blocks').val(),
+                        info_blocks: info_blocks,
                         _method: 'PUT'
                     },
                     success: function (data) {

@@ -32,7 +32,7 @@
                         <input type="text" name="widget_title" id="widget_title" value="{{$widget->title}}">
                     </div>
                     <div class="input-field col s12">
-                        <label for="widget_design_blocks" class="active">Choose excerpt design blocks</label>
+                        <label for="widget_design_blocks" class="active">Choose design blocks</label>
                         <select type="text" name="widget_design_blocks" id="widget_design_blocks" multiple>
                             <option value="" selected disabled></option>
                             @php
@@ -199,7 +199,11 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     url: '{{route('api.widget.update')}}',
-                    data: {id: {{$widget->id}}, title: $('#widget_title').val(), _method: 'PUT'},
+                    data: {
+                        id: {{$widget->id}},
+                        title: $('#widget_title').val(),
+                        design_blocks: $('#widget_design_blocks').val(),
+                        _method: 'PUT'},
                     success: function (data) {
                         console.log(data);
                         status = true;
@@ -215,19 +219,18 @@
 
             $('#btn_update_widget').click(function () {
                 var is_success = true;
-                is_success = $('#form_update_widget').submit();
-                if (!is_success) {
-                    M.toast({html: 'Error! Couldn\'t save main info', classes: 'red'});
-                }
                 $('.form_design_block').each(function () {
                     is_success = updateWidgetDesignBlockContent(this);
                     if (!is_success) {
                         M.toast({html: 'Error! Couldn\'t save design block', classes: 'red'});
                     }
                 });
-
+                is_success = $('#form_update_widget').submit();
+                if (!is_success) {
+                    M.toast({html: 'Error! Couldn\'t save main info', classes: 'red'});
+                }
                 if (is_success) {
-                    M.toast({html: 'Success! Page has been updated.', classes: 'green'});
+                    M.toast({html: 'Success! Widget has been updated.', classes: 'green'});
                 }
             });
         });

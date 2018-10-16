@@ -64,6 +64,7 @@ class WidgetController extends Controller
         $v = Validator::make($request->all(), [
             'id' => 'required|exists:widgets,id',
             'title' => ['required', Rule::unique('widgets')->ignore($request->id)],
+            'design_blocks.*' => 'nullable|exists:design_blocks,title',
         ]);
 
         if ($v->fails()) {
@@ -71,9 +72,30 @@ class WidgetController extends Controller
             return response()->json(['errors' => $v->errors(), 'old_data' => $old_widget], 400);
         }
 
-        return response()->json(['status' => Widget::where('id', $request->id)->update([
-            'title' => $request->title,
-        ])], 200);
+        $widget = Widget::find($request->id);
+        $widget->title = $request->title;
+        $widget->save();
+
+        $current_design_blocks = DesignBlock::whereIn('id', $widget->design_blocks->pluck('design_block_id')->toArray())->get()->pluck('title')->toArray();
+        //add design blocks
+        foreach($request->design_blocks as $design_block) {
+            if(!in_array($design_block, $current_design_blocks)) {
+                WidgetsDesignBlock::addDesignBlocks($widget->id, null, [$design_block]);
+            }
+        }
+
+        //remove design blocks
+        foreach($current_design_blocks as $design_block) {
+            if(!in_array($design_block, $request->design_blocks)) {
+                $design_block_id = DesignBlock::where('title', $design_block)->get()->pluck('id')->first();
+                WidgetsDesignBlock::removeDesignBlocks(WidgetsDesignBlock::where([
+                    ['widget_id', $widget->id],
+                    ['design_block_id', $design_block_id]
+                ])->get()->pluck('id')->first());
+            }
+        }
+
+        return response()->json(['status' => $widget], 200);
     }
 
     public function delete(Request $request)
