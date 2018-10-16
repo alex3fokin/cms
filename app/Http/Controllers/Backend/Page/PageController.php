@@ -7,6 +7,7 @@ use App\Models\Backend\CategoriesPages;
 use App\Models\Backend\Category\CategoriesPagesDesignBlock;
 use App\Models\Backend\Category\Category;
 use App\Models\Backend\DefaultData;
+use App\Models\Backend\Locale;
 use App\Models\Backend\LocaleContent;
 use App\Models\Backend\Page\Page;
 use App\Models\Backend\Page\PagesBlocksContent;
@@ -97,15 +98,17 @@ class PageController extends Controller
         $current_categories = $page->categories->pluck('id')->toArray();
 
         //add categories
-        foreach($request->categories as $category) {
-            if(!in_array($category, $current_categories)) {
-                $categories_pages = CategoriesPages::create([
-                    'page_id' => $page->id,
-                    'category_id' => $category,
-                ]);
-                $design_blocks = explode(',', $categories_pages->category->design_blocks);
-                if($design_blocks) {
-                    CategoriesPagesDesignBlock::addDesignBlocks($categories_pages->id, null, $design_blocks);
+        if($request->categories) {
+            foreach($request->categories as $category) {
+                if(!in_array($category, $current_categories)) {
+                    $categories_pages = CategoriesPages::create([
+                        'page_id' => $page->id,
+                        'category_id' => $category,
+                    ]);
+                    $design_blocks = explode(',', $categories_pages->category->design_blocks);
+                    if($design_blocks) {
+                        CategoriesPagesDesignBlock::addDesignBlocks($categories_pages->id, null, $design_blocks);
+                    }
                 }
             }
         }
@@ -139,14 +142,7 @@ class PageController extends Controller
             PagesDesignBlock::removeDesignBlocks($page_design_block->id);
         });
         PagesDesignBlock::removeDesignBlocks($request->id);
-        LocaleContent::where([
-            ['model', Page::class],
-            ['model_id', $request->id]
-        ])->delete();
-        LocaleContent::where([
-            ['model', Seo::class],
-            ['model_id', $seo_id]
-        ])->delete();
+
         CategoriesPages::where('page_id', $request->id)->each(function($categories_pages) {
             CategoriesPagesDesignBlock::where([['categories_pages_id', $categories_pages->id], ['parent_design_block', null]])->get()->each(function ($categories_pages_design_block) {
                 CategoriesPagesDesignBlock::removeDesignBlocks($categories_pages_design_block->id);
@@ -154,8 +150,10 @@ class PageController extends Controller
             CategoriesPagesDesignBlock::removeDesignBlocks($categories_pages->id);
         });
         CategoriesPages::where('page_id', $request->id)->delete();
-        Page::where('id', $request->id)->delete();
-        Seo::where('id', $seo_id)->delete();
+        $page = Page::find($request->id);
+        $page->delete();
+        $seo = Seo::find($seo_id);
+        $seo->delete();
         return response()->json(['status' => 1], 200);
     }
 

@@ -103,15 +103,6 @@ class CategoryController extends Controller
         }
         $seo_id = Category::where('id', $request->id)->get()->pluck('seo_id')->first();
 
-
-        LocaleContent::where([
-            ['model', Category::class],
-            ['model_id', $request->id]
-        ])->delete();
-        LocaleContent::where([
-            ['model', Seo::class],
-            ['model_id', $seo_id]
-        ])->delete();
         Category::where('id', $request->id)->delete();
         Seo::where('id', $seo_id)->delete();
         return response()->json(['status' => 1], 200);

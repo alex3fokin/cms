@@ -57,23 +57,11 @@ class WidgetsDesignBlock extends Model
     public static function removeDesignBlocks($id)
     {
         if (!WidgetsDesignBlock::where('parent_design_block', $id)->get()->count()) {
-            WidgetsBlocksContent::where('widgets_design_block_id', $id)->each(function($widgets_blocks_content) {
-                LocaleContent::where([
-                    ['model', WidgetsBlocksContent::class],
-                    ['model_id', $widgets_blocks_content->id]
-                ])->delete();
-            });
             WidgetsBlocksContent::where('widgets_design_block_id', $id)->delete();
             return WidgetsDesignBlock::where('id', $id)->delete();
         } else {
             WidgetsDesignBlock::where('parent_design_block', $id)->get()->each(function ($widget_design_block) {
                 self::removeDesignBlocks($widget_design_block->id);
-            });
-            WidgetsBlocksContent::where('widgets_design_block_id', $id)->each(function($widgets_blocks_content) {
-                LocaleContent::where([
-                    ['model', WidgetsBlocksContent::class],
-                    ['model_id', $widgets_blocks_content->id]
-                ])->delete();
             });
             WidgetsBlocksContent::where('widgets_design_block_id', $id)->delete();
             return WidgetsDesignBlock::where('id', $id)->delete();

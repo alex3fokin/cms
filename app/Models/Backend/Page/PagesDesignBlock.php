@@ -65,23 +65,11 @@ class PagesDesignBlock extends Model
     public static function removeDesignBlocks($id)
     {
         if (!PagesDesignBlock::where('parent_design_block', $id)->get()->count()) {
-            PagesBlocksContent::where('pages_design_block_id', $id)->each(function($pages_blocks_content) {
-                LocaleContent::where([
-                    ['model', PagesBlocksContent::class],
-                    ['model_id', $pages_blocks_content->id]
-                ])->delete();
-            });
             PagesBlocksContent::where('pages_design_block_id', $id)->delete();
             return PagesDesignBlock::where('id', $id)->delete();
         } else {
             PagesDesignBlock::where('parent_design_block', $id)->get()->each(function ($page_design_block) {
                 self::removeDesignBlocks($page_design_block->id);
-            });
-            PagesBlocksContent::where('pages_design_block_id', $id)->each(function($pages_blocks_content) {
-                LocaleContent::where([
-                    ['model', PagesBlocksContent::class],
-                    ['model_id', $pages_blocks_content->id]
-                ])->delete();
             });
             PagesBlocksContent::where('pages_design_block_id', $id)->delete();
             return PagesDesignBlock::where('id', $id)->delete();

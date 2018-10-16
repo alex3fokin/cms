@@ -57,12 +57,6 @@ class CategoriesPagesDesignBlock extends Model
     public static function removeDesignBlocks($id)
     {
         if (!CategoriesPagesDesignBlock::where('parent_design_block', $id)->get()->count()) {
-            CategoriesPagesBlocksContent::where('categories_pages_design_block_id', $id)->each(function($categories_pages_blocks_content) {
-                LocaleContent::where([
-                    ['model', CategoriesPagesBlocksContent::class],
-                    ['model_id', $categories_pages_blocks_content->id]
-                ])->delete();
-            });
             CategoriesPagesBlocksContent::where('categories_pages_design_block_id', $id)->delete();
             return CategoriesPagesDesignBlock::where('id', $id)->delete();
         } else {
@@ -70,10 +64,6 @@ class CategoriesPagesDesignBlock extends Model
                 self::removeDesignBlocks($categories_pages_design_block->id);
             });
             CategoriesPagesBlocksContent::where('categories_pages_design_block_id', $id)->each(function($categories_pages_blocks_content) {
-                LocaleContent::where([
-                    ['model', CategoriesPagesBlocksContent::class],
-                    ['model_id', $categories_pages_blocks_content->id]
-                ])->delete();
             });
             CategoriesPagesBlocksContent::where('categories_pages_design_block_id', $id)->delete();
             return CategoriesPagesDesignBlock::where('id', $id)->delete();

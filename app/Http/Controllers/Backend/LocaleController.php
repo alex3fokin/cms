@@ -87,14 +87,7 @@ class LocaleController extends Controller
                 ]);
             }
         }
-        LocaleContent::where([
-            ['model', Locale::class],
-            ['model_id', $request->id]
-        ])->delete();
-        LocaleContent::where([
-            ['model', Locale::class],
-            ['locale_id', $request->id]
-        ])->delete();
+
         return response()->json(['status' => Locale::where('id', $request->id)->delete()], 200);
     }
 }

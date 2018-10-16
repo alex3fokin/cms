@@ -67,11 +67,6 @@ class GeneralInfoController extends Controller
             return response()->json(['errors' => $v->errors()], 400);
         }
 
-        LocaleContent::where([
-            ['model', GeneralInfo::class],
-            ['model_id', $request->id]
-        ])->delete();
-
         return response()->json(['status' => GeneralInfo::where('id', $request->id)->delete()], 200);
     }
 }

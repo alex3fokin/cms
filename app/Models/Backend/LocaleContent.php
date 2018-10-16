@@ -36,7 +36,7 @@ class LocaleContent extends Model
             $array_of_properties = [$array_of_properties];
         }
         foreach($array_of_properties as $property) {
-            LocaleContent::updateOrCreate([
+            self::updateOrCreate([
                 'model' => get_class($model),
                 'property' => $property,
                 'model_id' => $model->id,
@@ -45,5 +45,12 @@ class LocaleContent extends Model
                 'value' => $model[$property]
             ]);
         }
+    }
+
+    public static function deleteTranslatedProperty($model) {
+        self::where([
+            ['model', get_class($model)],
+            ['model_id', $model->id],
+        ])->delete();
     }
 }
