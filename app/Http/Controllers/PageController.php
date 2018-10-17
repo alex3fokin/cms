@@ -67,9 +67,20 @@ class PageController extends Controller
             $view = $category->page_template->view;
 
             if($category->children()) {
-                $categories_pages = CategoriesPages::whereIn('category_id', $category->children()->pluck('id'))->get()->groupBy('page_id');
+                $categories_pages = CategoriesPages::with('page')
+                    ->whereHas('page', function($q) {
+                        $q->where('published', 1);
+                    })
+                    ->whereIn('category_id', $category->children()->pluck('id'))
+                    ->get()
+                    ->groupBy('page_id');
             } else {
-                $categories_pages = CategoriesPages::where('category_id', $category->id)->get();
+                $categories_pages = CategoriesPages::with('page')
+                    ->whereHas('page', function($q) {
+                        $q->where('published', 1);
+                    })
+                    ->where('category_id', $category->id)
+                    ->get();
             }
             $amount_of_categories_pages = $categories_pages->count();
 

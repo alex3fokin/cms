@@ -31,8 +31,9 @@
                 @endif
                 @stack('additional_btns')
                 <div class="right">
-                    <button class="dropdown-trigger btn waves-effect waves-light" data-target='header_nav_dropdown'>
-                        <i class="material-icons right">keyboard_arrow_down</i> {{ Auth::user()->name }}
+                    <span>Welcome back, {{ Auth::user()->name }} </span>
+                    <button class="dropdown-trigger btn waves-effect waves-light btn-flat" data-target='header_nav_dropdown'>
+                        <i class="material-icons">settings</i>
                     </button>
                     <ul id='header_nav_dropdown' class='dropdown-content'>
                         <li>
