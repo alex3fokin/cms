@@ -219,4 +219,14 @@ class DashboardController extends Controller
         return view('backend.pages.media', compact(
             'media'));
     }
+
+    public function adminSettings() {
+        $admin = \Auth::user();
+        return view('backend.pages.admin.settings', compact('admin'));
+    }
+
+    public function adminChangePassword() {
+        $admin = \Auth::user();
+        return view('backend.pages.admin.change_password', compact('admin'));
+    }
 }

@@ -4,6 +4,9 @@ Route::get('/admin/login', 'Auth\AdminLoginController@showLoginForm')->name('adm
 Route::post('/admin/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
 Route::post('/admin/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
 Route::get('/admin', 'Backend\DashboardController@index')->name('admin.home');
+Route::post('/admin/settings/update/{admin}', 'AdminController@settingsUpdate')->name('admin.settings.update');
+Route::post('/admin/password/update/{admin}', 'AdminController@passwordUpdate')->name('admin.password.update');
+
 Route::prefix('dashboard')->group(function() {
 
     Route::get('/', 'Backend\DashboardController@index')->name('dashboard.home');
@@ -23,6 +26,8 @@ Route::prefix('dashboard')->group(function() {
     Route::get('/locales', 'Backend\DashboardController@locales')->name('dashboard.locales');
     Route::get('/locales/edit/{locale}', 'Backend\DashboardController@localeEdit')->name('dashboard.locale.edit');
     Route::get('/media', 'Backend\DashboardController@media')->name('dashboard.media');
+    Route::get('/admin/settings', 'Backend\DashboardController@adminSettings')->name('dashboard.admin.settings');
+    Route::get('/admin/change-password', 'Backend\DashboardController@adminChangePassword')->name('dashboard.admin.change_password');
 });
 
 Route::post('/locale/add', 'Backend\LocaleController@add')->name('api.locale.add');

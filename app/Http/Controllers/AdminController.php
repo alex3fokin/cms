@@ -2,19 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Backend\Category\Category;
-use App\Models\Backend\DefaultData;
-use App\Models\Backend\DesignBlock;
-use App\Models\Backend\GeneralInfo;
-use App\Models\Backend\InfoBlock;
-use App\Models\Backend\Locale;
-use App\Models\Backend\LocaleContent;
-use App\Models\Backend\Media;
-use App\Models\Backend\Menu;
-use App\Models\Backend\Page\Page;
-use App\Models\Backend\Page\PageTemplate;
-use App\Models\Backend\Widget\Widget;
+use App\Models\Backend\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -28,51 +20,38 @@ class AdminController extends Controller
         $this->middleware('auth:admin');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        $default_language = DefaultData::where('title', 'Locale')->pluck('value')->first();
-        $default_home_page = DefaultData::where('title', 'home_page')->pluck('value')->first();
-        $current_locale = $request->locale_id ?? ($default_language ?? '');
-        $locales = Locale::all();
-        $general_infos = GeneralInfo::all();
-        $pages = Page::all()->load('page_template', 'seo');
-        if($current_locale && ($current_locale !== $default_language) || !$current_locale) {
-            LocaleContent::translate($locales, $current_locale);
-            LocaleContent::translate($general_infos, $current_locale);
-            LocaleContent::translate($pages, $current_locale);
-            foreach($pages as $page) {
-                LocaleContent::translate(collect([$page->seo]), $current_locale);
-            }
+    public function settingsUpdate(Admin $admin, Request $request) {
+        $v = Validator::make($request->all(), [
+            'email' => ['required', Rule::unique('admins')->ignore($request->id)],
+        ]);
+
+        if($v->fails()) {
+            return response()->json(['errors' => $v->errors()],400);
         }
-        $available_block_types = InfoBlock::all();
-        $available_categories = Category::all()->pluck('title');
-        $design_blocks = DesignBlock::all();
-        $available_design_blocks = DesignBlock::all()->pluck('title');
-        $page_templates = PageTemplate::all();
-        $widgets = Widget::all();
-        $media = Media::getAllMedia();
-        $menus = Menu::all();
-        $categories = Category::all();
-        return view('admin.dashboard', compact(
-            'locales',
-            'general_infos',
-            'available_block_types',
-            'design_blocks',
-            'available_design_blocks',
-            'page_templates',
-            'pages',
-            'widgets',
-            'current_locale',
-            'media',
-            'menus',
-            'default_language',
-            'default_home_page',
-            'categories',
-            'available_categories'));
+
+        $admin->email = $request->email;
+        $admin->save();
+
+        return response()->json(['status' => 1],200);
+    }
+
+    public function passwordUpdate(Admin $admin, Request $request) {
+        $v = Validator::make($request->all(), [
+            'old_password' => ['required', function ($attribute, $value, $fail) use ($admin) {
+                if (!Hash::check($value, $admin->password)) {
+                    $fail($attribute.' is invalid.');
+                }
+            },],
+            'password' => 'required|confirmed'
+        ]);
+
+        if($v->fails()) {
+            return response()->json(['errors' => $v->errors()],400);
+        }
+
+        $admin->password = bcrypt($request->password);
+        $admin->save();
+
+        return response()->json(['status' => 1],200);
     }
 }

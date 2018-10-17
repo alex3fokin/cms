@@ -29,13 +29,18 @@
                 @if($prev_url = url()->previous())
                     <a href="{{$prev_url}}" class="btn-floating blue tooltipped" data-position="bottom" data-tooltip="Go to the previous page"><i class="material-icons">reply</i></a>
                 @endif
-                @stack('additional_btns')
                 <div class="right">
                     <span>Welcome back, {{ Auth::user()->name }} </span>
                     <button class="dropdown-trigger btn waves-effect waves-light btn-flat" data-target='header_nav_dropdown'>
                         <i class="material-icons">settings</i>
                     </button>
                     <ul id='header_nav_dropdown' class='dropdown-content'>
+                        <li>
+                            <a href="{{route('dashboard.admin.settings')}}">Settings</a>
+                        </li>
+                        <li>
+                            <a href="{{route('dashboard.admin.change_password')}}">Change password</a>
+                        </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
@@ -109,11 +114,7 @@
 </div>
 <!--JavaScript at end of body for optimized loading-->
 <script src="/js/backend/jquery-3.3.1.min.js"></script>
-{{--<script src="/js/backend/jquery-ui.js"></script>--}}
-{{--<script src="/js/backend/dropzone.min.js"></script>--}}
 <script src="{{ asset('js/backend/app.js') }}"></script>
-{{--<script src="/js/backend/bootstrap-tagsinput.min.js"></script>--}}
-{{--<script src="/js/backend/ckeditor/ckeditor.js"></script>--}}
 <script>
     var element_to_delete = null;
     var delete_function = null;
