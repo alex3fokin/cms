@@ -11,18 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-
 Auth::routes();
-
-Route::get('/init', 'Backend\InitController@index')->name('init');
 
 Route::get('/', 'PageController@home')->name('home');
 
 Route::post('/feedback', 'PageController@feedback')->name('feedback');
 
+Route::get('/sitemap.xml', 'PageController@sitemap')->name('sitemap');
 Route::get('/{word}', 'PageController@show');
 Route::get('/{word}/{word2}', 'PageController@show');
 Route::get('/{word}/{word2}/{word3}', 'PageController@show');

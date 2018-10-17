@@ -28,6 +28,19 @@ class CategoriesPagesDesignBlock extends Model
         return $this->hasMany(CategoriesPagesBlocksContent::class);
     }
 
+    public function mapContent($blocks_contents) {
+        $data = [];
+        foreach($blocks_contents as $block_contents) {
+            $value = $block_contents->value;
+            $info_block_type = $block_contents->design_blocks_info_block->info_block->type;
+            if($info_block_type === 'media' || $info_block_type === 'media_area') {
+                $value = unserialize($value);
+            }
+            $data[$block_contents->design_blocks_info_block->title] = $value;
+        }
+        return $data;
+    }
+
     public static function addDesignBlocks($id, $parent_id, $design_blocks)
     {
         $i = CategoriesPagesDesignBlock::where([['parent_design_block', $parent_id], ['categories_pages_id', $id]])->max('order') ?? 0;

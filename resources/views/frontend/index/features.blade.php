@@ -10,16 +10,7 @@
                         @php
                             $blocks_contents = $feature_item->blocks_contents;
                             App\Models\Backend\LocaleContent::translate($blocks_contents, $locale_id);
-                            $data = [];
-                            foreach($blocks_contents as $block_contents) {
-                                $value = $block_contents->value;
-                                $info_block_type = $block_contents->design_blocks_info_block->info_block->type;
-                                if($info_block_type === 'media' || $info_block_type === 'media_area') {
-                                    $value = unserialize($value);
-                                }
-                                $data[$block_contents->design_blocks_info_block->title] = $value;
-                            }
-                            $feature_item = $data;
+                            $feature_item = $design_block->mapContent($blocks_contents);
                         @endphp
                         <div class="feature-item col-lg-3 col-sm-6 wow slideInUp"
                              style="visibility: hidden; animation-name: none;">

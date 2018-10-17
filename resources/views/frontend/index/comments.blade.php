@@ -50,16 +50,7 @@
                             @php
                                 $blocks_contents = $comment->blocks_contents;
                                 App\Models\Backend\LocaleContent::translate($blocks_contents, $locale_id);
-                                $data = [];
-                                foreach($blocks_contents as $block_contents) {
-                                    $value = $block_contents->value;
-                                    $info_block_type = $block_contents->design_blocks_info_block->info_block->type;
-                                    if($info_block_type === 'media' || $info_block_type === 'media_area') {
-                                        $value = unserialize($value);
-                                    }
-                                    $data[$block_contents->design_blocks_info_block->title] = $value;
-                                }
-                                $comment = $data;
+                                $comment = $design_block->mapContent($blocks_contents);
                             @endphp
                             <div class="testimonial_slideri" style="width: 555px; height: 450px;">
                                 <div class="testimonial_outer_wrap" style="background-color:#ffffff;border:1px solid #03c4eb;margin-left:50px;">

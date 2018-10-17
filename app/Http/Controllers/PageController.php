@@ -113,6 +113,11 @@ class PageController extends Controller
         return response()->json(['status' => 1], 200);
     }
 
+    public function sitemap() {
+        $routes = $this->getRouteMap();
+        return response()->view('backend.sitemap', compact('routes'))->header('Content-Type', 'text/xml');
+    }
+
     private function getRouteMap() {
         $route_map = [];
         $categories = Category::all();
