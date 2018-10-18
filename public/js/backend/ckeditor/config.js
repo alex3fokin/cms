@@ -41,7 +41,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeDialogTabs = 'image:advanced;link:advanced';
     config.shiftEnterMode = CKEDITOR.ENTER_BR;
     config.forcePasteAsPlainText = true;
-    config.filebrowserBrowseUrl = '/browse-files';
-    config.filebrowserUploadUrl = '/upload-media-file';
+    config.filebrowserBrowseUrl = '/files/browse';
+    config.filebrowserUploadUrl = '/media-file/upload';
     config.extraPlugins = 'justify';
 };
