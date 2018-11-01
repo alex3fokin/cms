@@ -69,17 +69,19 @@ class PageController extends Controller
             if($category->children()) {
                 $categories_pages = CategoriesPages::with('page')
                     ->whereHas('page', function($q) {
-                        $q->where('published', 1);
+                        $q->where('published', 1)->orderBy('created_at', 'DESC');
                     })
                     ->whereIn('category_id', $category->children()->pluck('id'))
+                    ->orderBy('created_at', 'DESC')
                     ->get()
                     ->groupBy('page_id');
             } else {
                 $categories_pages = CategoriesPages::with('page')
                     ->whereHas('page', function($q) {
-                        $q->where('published', 1);
+                        $q->where('published', 1)->orderBy('created_at', 'DESC');
                     })
                     ->where('category_id', $category->id)
+                    ->orderBy('created_at', 'DESC')
                     ->get();
             }
             $amount_of_categories_pages = $categories_pages->count();
